@@ -129,3 +129,6 @@ crashlytics-build.properties
 
 /*.apk
 /cncjjfjffjjc.apk
+/*.csproj
+/*.vsconfig
+/*.sln
