@@ -1,10 +1,9 @@
-﻿using InatesiCharacter.Testing.LeoEcs3;
+﻿using InatesiCharacter.Testing.LeoEcs;
+using InatesiCharacter.Testing.Shared;
 using Leopotam.EcsLite;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
-using Zenject.Asteroids;
 
 
 namespace InatesiCharacter.Testing.Stuff
@@ -15,27 +14,9 @@ namespace InatesiCharacter.Testing.Stuff
 
         public override void InstallBindings()
         {
-            //Container.BindInstance(_SetupLeoEcs).AsSingle().NonLazy();
             Container.Bind<SetupLeoEcs>().FromInstance(_SetupLeoEcs).AsSingle().NonLazy();
 
-
-            Container.Bind<string>().FromInstance("Hello World!");
-            Container.Bind<Services>().AsSingle().NonLazy();
-
             Container.CreateSubContainer();
-
-
-            //Container.Bind<IInitializable>().FromInstance(_SetupLeoEcs).AsSingle().NonLazy();
-            //Container.Bind<SetupLeoEcs>().FromInstance(_SetupLeoEcs).AsSingle().NonLazy();
-        }
-    }
-
-    [System.Serializable]
-    public class Services
-    {
-        public Services(string message)
-        {
-            Debug.Log(message);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace InatesiCharacter.Testing.LeoEcs3.Shared.Components
+namespace InatesiCharacter.Testing.LeoEcs.Shared.Components
 {
     public struct SpawnGameObjectEvent
     {

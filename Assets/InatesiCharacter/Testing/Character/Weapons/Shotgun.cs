@@ -90,28 +90,21 @@ namespace InatesiCharacter.Testing.Character.Weapons
                     hitComponent.owner = CharacterMotion.gameObject;
                     hitComponent.target = hit.transform.root.gameObject;
                     hitComponent.damage = _Damage;
-                    hitComponent.velocity =
+                    /*hitComponent.velocity =
                         velocity * (_forceVelocityDamage) +
-                        new Vector3(0,Random.Range(2,2f),0);
+                        new Vector3(0,Random.Range(2,2f),0);*/
                     hitComponent.position = hit.point;
+                    hitComponent.isHit = isHit;
+                    hitComponent.hit = hit;
+                    hitComponent.sizeParticle = _SizeParticle;
+                    hitComponent.speedParticle = _VelocityParticle;
+                    hitComponent.ray = new Ray(_startRaycastPosition, _startRaycastDirection);
+
 
                     if (hit.rigidbody != null)
                     {
                         hit.rigidbody.AddForce(CharacterMotion.LookSource.Transform.forward * (_forceVelocityDamage), _ForceMode);
                     }
-
-                    if (_ShootParticle != null)
-                    {
-                        var g = Instantiate(_ShootParticle, hit.point, Quaternion.identity);
-                        g.Play();
-                        Destroy(g.gameObject, 2f);
-                    }
-
-                    LineSystem.Instance.SetLine(startLinePosition, hit.distance < 10 ? hit.point : _startRaycastPosition + _startRaycastDirection * 10f);
-                }
-                else
-                {
-                    LineSystem.Instance.SetLine(startLinePosition, _startRaycastPosition + _startRaycastDirection * 10f);
                 }
             }
 

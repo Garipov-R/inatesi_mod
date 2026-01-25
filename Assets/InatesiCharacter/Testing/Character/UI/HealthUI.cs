@@ -3,6 +3,7 @@ using InatesiCharacter.Testing.UI;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace InatesiCharacter.Testing.Character.UI
 {
@@ -49,6 +50,18 @@ namespace InatesiCharacter.Testing.Character.UI
         public void Pain(float hp)
         {
             SetColorPanel(new Color(1, 0, 0, .3f));
+        }
+
+
+        public void SetActivePanel(bool active)
+        {
+            if (RootUI.Instance == null)
+            {
+                return;
+            }
+
+            RootUI.Instance.UiDocument.rootVisualElement.Q<VisualElement>("health-panel").style.display =
+                active == false ? DisplayStyle.None : DisplayStyle.Flex;
         }
     }
 }

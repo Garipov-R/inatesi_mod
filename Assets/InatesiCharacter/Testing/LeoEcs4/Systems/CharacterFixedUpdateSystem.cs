@@ -27,6 +27,9 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                 ref var characterComponent = ref _CharacterPool.Get(character);
 
                 characterComponent.CharacterMotionBase.FixedUpdateCharacterMethod();
+                //characterComponent.InventoryInteraction2.FixedUpdateTick();
+                /*if (characterComponent.InventoryInteraction2 != null)
+                    characterComponent.InventoryInteraction2.UpdateEffectTick();*/
             }
         }
     }

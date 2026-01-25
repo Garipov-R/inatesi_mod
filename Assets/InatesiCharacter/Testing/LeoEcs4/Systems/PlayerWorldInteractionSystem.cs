@@ -1,5 +1,7 @@
 ﻿using InatesiCharacter.SuperCharacter;
+using InatesiCharacter.Testing.Character.InteractionSystem;
 using InatesiCharacter.Testing.Character.Weapons;
+using InatesiCharacter.Testing.LeoEcs;
 using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.LeoEcs4.Events;
 using InatesiCharacter.Testing.Shared;
@@ -35,6 +37,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
         public void Run(IEcsSystems systems)
         {
             if (GameSettings.IsPause) return;
+            if (G.IsPause) return;
 
             foreach (var characterEntity in _PlayerCharacterFilter)
             {
@@ -43,6 +46,12 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
                 if (characterComponent.Dead == true) continue;
 
+                if (playerComponent.canAttack == false) continue;
+
+
+                /* ======================================================== */
+                /* ======================================================== */
+                /* ======================================================== */
                 if (Inatesi.Inputs.Input.Pressed("Use"))
                 {
                     RaycastHit hit;
@@ -65,10 +74,22 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                             if (canAdd)
                                 GameObject.Destroy(component.gameObject);
                         }
+                        else if (hit.transform.TryGetComponent(out TriggerTouch triggerTouch))
+                        {
+                            triggerTouch.OnTouch.Invoke();
+                        }
+                        else if (hit.transform.TryGetComponent(out CollisionEvent collisionEvent))
+                        {
+                            collisionEvent.Use();
+                        }
                     }
                 }
+                /* ======================================================== */
+                /* ======================================================== */
+                /* ======================================================== */
 
-                if (Mathf.Abs(Inatesi.Inputs.Input.GetVector("Zoom").y) > 0 && !Inatesi.Inputs.Input.Down("Attack"))
+
+                if (Mathf.Abs(Inatesi.Inputs.Input.GetVector("Zoom").y) > 0 && !Inatesi.Inputs.Input.Down("Attack") && playerComponent.canAttack == true)
                 {
                     var index = Inatesi.Inputs.Input.GetVector("Zoom").y < 0 ? 1 : -1;
                     index = characterComponent.InventoryInteraction2.InventoryContainer.ActiveSlotIndex + index;
@@ -102,7 +123,8 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                 if (characterComponent.InventoryInteraction2.CurrentWeaponBase)
                     characterComponent.InventoryInteraction2.CurrentWeaponBase.FPC = playerComponent.fpc;
 
-                characterComponent.InventoryInteraction2.UpdateEffectTick();
+                /*if (characterComponent.InventoryInteraction2 != null)
+                    characterComponent.InventoryInteraction2.UpdateEffectTick();*/
 
                 bool attack = Inatesi.Inputs.Input.Down("attack");
                 bool secondaryAttack = Inatesi.Inputs.Input.Down("Secondary Attack");
@@ -118,17 +140,36 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                 }
 
                 // =============================================================================================================
+                // =============================================================================================================
+                // =============================================================================================================
                 if (Inatesi.Inputs.Input.Pressed("flashlight"))
                 {
-                    foreach (var child in characterComponent.GameObject.GetComponentsInChildren<Transform>())
+                    if (playerComponent.fpc == true)
                     {
-                        if (child.gameObject.name == "flashlight")
+                        foreach (var child in characterComponent.GameObject.GetComponentsInChildren<Transform>())
                         {
-                            child.SetParent(characterComponent.CharacterMotionBase.LookSource.Transform);
-                            child.localEulerAngles = Vector3.zero;
-                            child.localPosition = Vector3.zero;
+                            if (child.gameObject.name == "flashlight")
+                            {
+                                child.SetParent(characterComponent.CharacterMotionBase.LookSource.Transform);
+                                child.localEulerAngles = Vector3.zero;
+                                child.localPosition = Vector3.zero;
 
-                            _flashlight = child.gameObject.GetComponent<Light>();
+                                _flashlight = child.gameObject.GetComponent<Light>();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var child in characterComponent.CharacterMotionBase.LookSource.GameObject.GetComponentsInChildren<Transform>())
+                        {
+                            if (child.gameObject.name == "flashlight")
+                            {
+                                child.SetParent(characterComponent.GameObject.transform);
+                                child.localEulerAngles = Vector3.zero;
+                                child.localPosition = new Vector3(0, characterComponent.CharacterMotionBase.Height - characterComponent.CharacterMotionBase.Radius / 2, characterComponent.CharacterMotionBase.Radius / 2) ;
+
+                                _flashlight = child.gameObject.GetComponent<Light>();
+                            }
                         }
                     }
 
@@ -136,7 +177,12 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                     {
                         _flashlight.enabled = !_flashlight.enabled;
                     }
+
+                    if (systems.GetShared<SharedData>().PlayerSettingsSO.FlashlightClip)
+                        characterComponent.CharacterMotionBase.AudioSource.PlayOneShot(systems.GetShared<SharedData>().PlayerSettingsSO.FlashlightClip);
                 }
+                // =============================================================================================================
+                // =============================================================================================================
                 // =============================================================================================================
 
                 break;

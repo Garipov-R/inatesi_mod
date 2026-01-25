@@ -87,17 +87,18 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
         {
             if (_SpawnedViewModel)
             {
-                _SwayBob.Sway(_CameraMotion.LookInputVector);
-                _SwayBob.SwayRotation(_CameraMotion.LookInputVector);
-                _SwayBob.Movement(
-                    new Vector2(
-                        Mathf.Clamp(Mathf.Abs(CharacterMotion.InputDirection.x), 0, 1),
-                        Mathf.Clamp(Mathf.Abs(CharacterMotion.InputDirection.y), 0, 1)
-                    ), 
-                    CharacterMotion.OnGrounded
-                );
-                _SwayBob.BobRotation(CharacterMotion.InputDirection);
-                _SwayBob.ShakeProccess();
+                
+                //_SwayBob.Sway(_CameraMotion.LookInputVector);
+                //_SwayBob.SwayRotation(_CameraMotion.LookInputVector);
+                //_SwayBob.Movement(
+                //    new Vector2(
+                //        Mathf.Clamp(Mathf.Abs(CharacterMotion.InputDirection.x), 0, 1),
+                //        Mathf.Clamp(Mathf.Abs(CharacterMotion.InputDirection.y), 0, 1)
+                //    ), 
+                //    CharacterMotion.OnGrounded
+                //);
+                //_SwayBob.BobRotation(CharacterMotion.InputDirection);
+                //_SwayBob.ShakeProccess();
 
                 //_SwayBob.IsOffset = CharacterMotion.;
 
@@ -119,17 +120,17 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
                 
 
 
-                _SpawnedViewModel.transform.localPosition = Vector3.Lerp(
-                    _SpawnedViewModel.transform.localPosition,
-                    _SwayBob.SwayPos + _SwayBob.BobPosition,
-                    Time.deltaTime * _SwayBob.Smooth
-                );
+                //_SpawnedViewModel.transform.localPosition = Vector3.Lerp(
+                //    _SpawnedViewModel.transform.localPosition,
+                //    _SwayBob.SwayPos + _SwayBob.BobPosition,
+                //    Time.deltaTime * _SwayBob.Smooth
+                //);
 
-                _SpawnedViewModel.transform.localRotation = Quaternion.Slerp(
-                    _SpawnedViewModel.transform.localRotation,
-                    Quaternion.Euler(_SwayBob.SwayEulerRot) * Quaternion.Euler(_SwayBob.BobEulerRotation),
-                    Time.deltaTime * _SwayBob.SmoothRot
-                );
+                //_SpawnedViewModel.transform.localRotation = Quaternion.Slerp(
+                //    _SpawnedViewModel.transform.localRotation,
+                //    Quaternion.Euler(_SwayBob.SwayEulerRot) * Quaternion.Euler(_SwayBob.BobEulerRotation),
+                //    Time.deltaTime * _SwayBob.SmoothRot
+                //);
             }
 
             if (Game.PlayerInstance != null)

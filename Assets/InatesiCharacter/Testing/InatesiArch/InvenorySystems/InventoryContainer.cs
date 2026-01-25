@@ -53,11 +53,6 @@ namespace InatesiCharacter.Testing.InatesiArch.InventorySystems
             {
                 _inventoryItems.Add(null);
             }
-
-            OnAdded += (item, state) =>
-            {
-
-            };
         }
 
 

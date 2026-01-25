@@ -467,6 +467,11 @@ namespace InatesiCharacter.Testing.Decals
                 meshRenderer.enabled = true;
             }
 
+            if (sourceMesh == null)
+            {
+                return;
+            }
+
             var meshName = sourceMesh.name + "_" + name;
             if (!mesh || mesh.name != meshName)
                 mesh = new Mesh() { name = meshName };

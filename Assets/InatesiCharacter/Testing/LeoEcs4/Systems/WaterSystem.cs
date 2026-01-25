@@ -7,7 +7,7 @@ using Leopotam.EcsLite;
 using TMPro;
 using UnityEngine;
 
-namespace InatesiCharacter.Testing.LeoEcs3.Shared.Systems
+namespace InatesiCharacter.Testing.LeoEcs.Shared.Systems
 {
     public class WaterSystem : IEcsRunSystem
     {
@@ -130,20 +130,29 @@ namespace InatesiCharacter.Testing.LeoEcs3.Shared.Systems
 
             if (waterDepth >= .5f)
             {
-                //_surfer.MoveType = MoveType.Swim;
+                if (rigidbody.isKinematic == false) 
+                {
+                    //_surfer.MoveType = MoveType.Swim;
 
-                //_underwater = true;
-                rigidbody.useGravity = false;
-                rigidbody.angularVelocity = Vector3.Lerp(rigidbody.angularVelocity, Vector3.zero, Time.deltaTime * 2f);
+                    //_underwater = true;
+                    rigidbody.useGravity = false;
+                    rigidbody.angularVelocity = Vector3.Lerp(rigidbody.angularVelocity, Vector3.zero, Time.deltaTime * 2f);
 
-                rigidbody.linearVelocity = Vector3.MoveTowards(rigidbody.linearVelocity, Vector3.up, Time.deltaTime * 200f);
+                    rigidbody.linearVelocity = Vector3.MoveTowards(rigidbody.linearVelocity, Vector3.up, Time.deltaTime * 200f);
 
-                //rigidbody.transform.localRotation = Quaternion.RotateTowards(rigidbody.transform.localRotation, Quaternion.LookRotation(Vector3.up), Time.deltaTime * 300f);
+                    //rigidbody.transform.localRotation = Quaternion.RotateTowards(rigidbody.transform.localRotation, Quaternion.LookRotation(Vector3.up), Time.deltaTime * 300f);
+                }
+
+
             }
             else if (waterDepth <= .5f)
             {
-                rigidbody.angularVelocity = Vector3.Lerp(rigidbody.angularVelocity, Vector3.zero, Time.deltaTime * 10f);
-                rigidbody.linearVelocity = Vector3.Lerp(rigidbody.linearVelocity, Vector3.zero, Time.deltaTime * 10f);
+                if (rigidbody.isKinematic == false)
+                {
+                    rigidbody.angularVelocity = Vector3.Lerp(rigidbody.angularVelocity, Vector3.zero, Time.deltaTime * 10f);
+                    rigidbody.linearVelocity = Vector3.Lerp(rigidbody.linearVelocity, Vector3.zero, Time.deltaTime * 10f);
+                }
+               
 
                 //rigidbody.transform.localRotation = Quaternion.RotateTowards(rigidbody.transform.localRotation, Quaternion.LookRotation(Vector3.up), Time.deltaTime * 300f);
             }

@@ -105,7 +105,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
 
             _WeaponsDictionary.Add(weaponBase, viewModel);
-            _WeaponsDictionary2.Add(item.SlotIndex, weaponBase);
+            _WeaponsDictionary2.TryAdd(item.SlotIndex, weaponBase);
         }
 
         private void InitializeSelectedItemType(InventoryItem inventoryItem)
@@ -226,6 +226,14 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             }
         }
 
+        public void FixedUpdateTick()
+        {
+            if (_CurrentWeaponBase != null)
+            {
+                _CurrentWeaponBase.FixedUpdateTick();
+            }
+        }
+
         public void Drop()
         {
             try
@@ -271,6 +279,22 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             catch (Exception e)
             {
                 //Debug.LogError(e.ToString());
+            }
+        }
+
+        public void DisableCurrentWeapon()
+        {
+            if (_CurrentWeaponBase != null)
+            {
+                _CurrentWeaponBase.Disable();
+            }
+        }
+
+        public void EnableCurrentWeapon()
+        {
+            if (_CurrentWeaponBase != null)
+            {
+                _CurrentWeaponBase.Enable();
             }
         }
     }

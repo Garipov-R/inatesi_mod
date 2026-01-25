@@ -17,9 +17,9 @@ namespace InatesiCharacter.Testing.Props
             if (_SetupLeoEcs == null)
                 return;
 
-            var characterFilter = _SetupLeoEcs.World.Filter<InatesiCharacter.Testing.LeoEcs4.Components.CharacterComponent>().End();
-            var characterPool = _SetupLeoEcs.World.GetPool<InatesiCharacter.Testing.LeoEcs4.Components.CharacterComponent>();
-            var playerPool = _SetupLeoEcs.World.GetPool<InatesiCharacter.Testing.LeoEcs4.Components.PlayerComponent>();
+            var characterFilter = _SetupLeoEcs.EcsWorld.Filter<InatesiCharacter.Testing.LeoEcs4.Components.CharacterComponent>().End();
+            var characterPool = _SetupLeoEcs.EcsWorld.GetPool<InatesiCharacter.Testing.LeoEcs4.Components.CharacterComponent>();
+            var playerPool = _SetupLeoEcs.EcsWorld.GetPool<InatesiCharacter.Testing.LeoEcs4.Components.PlayerComponent>();
 
             foreach (var characterEntity in characterFilter)
             {

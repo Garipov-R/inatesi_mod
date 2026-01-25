@@ -28,6 +28,8 @@ namespace InatesiCharacter.Testing.Character.Data
         [Header("Effects")]
         [SerializeField] private Material _DissolveMaterial;
         [SerializeField] private VisualEffect _DamageVisualEffect;
+        [SerializeField] private VisualEffectAsset _DamageVisualEffectAsset;
+        [SerializeField] private GameObject _BloodMeshDecal;
 
         [Space(5)]
         [Header("Bot settings")]
@@ -47,6 +49,8 @@ namespace InatesiCharacter.Testing.Character.Data
         public float ScaleMagnitude { get => _ScaleMagnitude; set => _ScaleMagnitude = value; }
         public Material DissolveMaterial { get => _DissolveMaterial; set => _DissolveMaterial = value; }
         public VisualEffect DamageVisualEffect { get => _DamageVisualEffect; set => _DamageVisualEffect = value; }
+        public VisualEffectAsset DamageVisualEffectAsset { get => _DamageVisualEffectAsset; set => _DamageVisualEffectAsset = value; }
+        public GameObject BloodMeshDecal { get => _BloodMeshDecal; set => _BloodMeshDecal = value; }
     }
 
     [System.Serializable]

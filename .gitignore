@@ -92,6 +92,10 @@ crashlytics-build.properties
 [Aa]ssets/_Game
 [Aa]ssets/_SHITS
 [Aa]ssets/_TerrainAutoUpgrade
+[Aa]ssets/_Recovery
+[Aa]ssets/_OUTSIDE
+[Aa]ssets/_Horror_Game_Assets
+[Aa]ssets/AddressableAssetsData
 [Aa]ssets/AcousticGuitar
 [Aa]ssets/Alien
 [Aa]ssets/AddOns
@@ -108,11 +112,15 @@ crashlytics-build.properties
 [Aa]ssets/GVX URP Decal
 [Aa]ssets/Guitar_amps
 [Aa]ssets/IgniteCoders(water)
+[Aa]ssets/itsMakingThings
 [Aa]ssets/KinematicCharacterController
 [Aa]ssets/Mirror
-[Aa]ssets/Model
+[Aa]ssets/Models
+[Aa]ssets/Model666
 [Aa]ssets/nappin
 [Aa]ssets/Other
+[Aa]ssets/PixelCrown
+[Aa]ssets/PleebieJeebies
 [Aa]ssets/Plugins
 [Aa]ssets/PluginYourGames
 [Aa]ssets/ProBuilder Data
@@ -126,6 +134,12 @@ crashlytics-build.properties
 [Aa]ssets/Weapons Pack(LOW POLY)
 [Aa]ssets/WeaponsPack (LowPoly)
 [Aa]ssets/WebGLTemplates
+[Aa]ssets/VhsFx-master
+[Aa]ssets/TextMesh Pro
+[Aa]ssets/Thirdparty
+[Aa]ssets/VHSEffect
+[Aa]ssets/VolFx-master
+[Aa]ssets/_Horror_Game
 
 /*.apk
 /cncjjfjffjjc.apk

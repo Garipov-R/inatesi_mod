@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using InatesiCharacter.Testing.Shared;
+using System.Collections;
 using UnityEngine;
 
 namespace InatesiCharacter.Testing.Character.Bots
@@ -47,6 +48,14 @@ namespace InatesiCharacter.Testing.Character.Bots
 
         public override void UpdateTick()
         {
+            base.UpdateTick();
+
+            if (Target == null || GameSettings.IsPause)
+            {
+                CharacterMotion.Move(Vector2.zero);
+                return;
+            }
+
             if (_damagedSinceTime >= 0)
             {
                 _damagedSinceTime -= Time.deltaTime;
@@ -56,24 +65,8 @@ namespace InatesiCharacter.Testing.Character.Bots
                 _attackSinceTime -= Time.deltaTime;
 
 
-            if (Target == null)
-            {
-                CharacterMotion.Move(Vector2.zero);
-                return;
-            }
-
-
-            var buildPath = BuildPath(Target.transform.position, Transform.position, out Vector3 movePosition);
-            if (buildPath)
-            {
-                SetWalkPoint(movePosition);
-            }
-
-            bool obstacle = NavMeshPath.corners != null && NavMeshPath.corners.Length > 1;
-            var move = movePosition - Transform.position;
+            var move = _walkPoint - Transform.position;
             move = Vector2.ClampMagnitude(new Vector2(move.x, move.z), 1);
-            //move.Normalize();
-            _move = move;
 
             var dot = Vector3.Dot(Transform.forward, (Target.transform.position - Transform.position).normalized) > .9f;
 

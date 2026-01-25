@@ -2,9 +2,9 @@
 using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.Character;
 using InatesiCharacter.Testing.Character.Weapons;
-using InatesiCharacter.Testing.LeoEcs3;
-using InatesiCharacter.Testing.LeoEcs3.Character.Componentts;
-using InatesiCharacter.Testing.LeoEcs3.Shared;
+using InatesiCharacter.Testing.LeoEcs;
+using InatesiCharacter.Testing.LeoEcs.Character.Componentts;
+using InatesiCharacter.Testing.LeoEcs.Shared;
 using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.LeoEcs4.Events;
 using InatesiCharacter.Testing.Props;
@@ -88,6 +88,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
             var input =  Inatesi.Inputs.Input.GetVector("Move");
             var wishRun = Inatesi.Inputs.Input.Down("Run");
             var wishView = Inatesi.Inputs.Input.Pressed("View");
+            var wishCrouch = Inatesi.Inputs.Input.Pressed("Crouch");
             var wishInventory = Inatesi.Inputs.Input.GetKeyDown(UnityEngine.InputSystem.Key.I);
 
             foreach (var playerEntity in _PlayerFilter)
@@ -102,7 +103,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
                 if (wishInventory)
                 {
-                    playerComponent.InventoryUI.SetActivePanel(false);
+                    playerComponent.InventoryUI.TogglePanel(false);
                 }
 
                 foreach (var hitEntity in _HitFilter)
@@ -174,6 +175,11 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
                 characterComponent.CharacterMotionBase.Move(input);
                 characterComponent.CharacterMotionBase.LookSource.CameraMotion.InputEnabled = playerComponent.cameraInputEnabled;
+
+                if (wishCrouch && characterComponent.CharacterMotionBase.Velocity.magnitude > 0 && characterComponent.CharacterMotionBase.OnGrounded && characterComponent.Crouched == false)
+                {
+                    //characterComponent.CharacterMotionBase.AddForce(( characterComponent.CharacterMotionBase.transform.rotation * new Vector3(input.x, 0, input.y)) * 5f);
+                }
 
                 if (characterComponent.Crouched)
                 {
@@ -261,45 +267,6 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                     characterComponent.CharacterMotionBase.LookSource.CameraMotion.InputEnabled = !active;
                 }
             }
-        }
-
-
-
-
-        public void OnEntityChanged(int entity)
-        {
-
-        }
-
-        public void OnEntityCreated(int entity)
-        {
-            if (_World.GetPool<CharacterComponent>().Has(entity))
-            {
-                //Debug.Log(string.Format("{0} changed {1}", entity, 222));
-            }
-        }
-
-        public void OnEntityDestroyed(int entity)
-        {
-            if (_World == null) return;
-            
-
-            //Debug.Log(string.Format("{0} destroy", entity));
-        }
-
-        public void OnFilterCreated(EcsFilter filter)
-        {
-
-        }
-
-        public void OnWorldDestroyed(EcsWorld world)
-        {
-
-        }
-
-        public void OnWorldResized(int newSize)
-        {
-
         }
     }
 }

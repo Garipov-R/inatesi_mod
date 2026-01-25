@@ -1,13 +1,15 @@
 ﻿using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
-using System.Collections;
 using UnityEngine;
-using InatesiCharacter.Testing.LeoEcs3.Character.Componentts;
+using InatesiCharacter.Testing.LeoEcs.Character.Componentts;
 using InatesiCharacter.Testing.Shared;
 using InatesiCharacter.Testing.InatesiArch.WeaponsTest;
-using InatesiCharacter.SuperCharacter;
-using UnityEngine.UIElements;
+using InatesiCharacter.Testing.LeoEcs.Shared;
+using System.ComponentModel;
+using InatesiCharacter.Testing.LeoEcs4.PoolSystems;
+using Unity.VisualScripting;
+using InatesiCharacter.Testing.Decals;
 
 namespace InatesiCharacter.Testing.LeoEcs4.Systems
 {
@@ -35,7 +37,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
         public void Run(IEcsSystems systems)
         {
-            if (GameSettings.IsPause) return;
+            if (G.IsPause) return;
 
 
             foreach (var entity in _DieFilter)
@@ -60,8 +62,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                         cdMode = CollisionDetectionMode.Continuous,
                         onlyCollider = false,
                     };
-                    int _ragdollTotalWeight = 60;
-                    ragdoller.ApplyRagdoll(_ragdollTotalWeight, _ragdollProperties);
+                    ragdoller.ApplyRagdoll(60, _ragdollProperties);
                     characterComponent.CharacterMotionBase.RagdollMonitor.Initialize(characterComponent.CharacterMotionBase);
                     characterComponent.CharacterMotionBase.RagdollMonitor.EnableRagdoll();
                     characterComponent.CharacterMotionBase.RagdollMonitor.Force(characterComponent.CharacterMotionBase.Up * 2, ForceMode.VelocityChange);
@@ -148,7 +149,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                                 var color = renderer.material.color;
 
                                 renderer.material = new Material(characterComponent.CharacterSO.DissolveMaterial);
-                                renderer.material.SetTexture("_Texture_1", texture);
+                                renderer.material.SetTexture("_Texture", texture);
                                 renderer.material.SetColor("_Color", color);
                                 renderer.material.SetFloat("_Dissolve", 0);
 
@@ -181,7 +182,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                 {
                     ref var characterComponent = ref _CharacterPool.Get(characterEntity);
 
-                    if (characterComponent.GameObject == damageComponent.target)
+                    if (damageComponent.isHit == true && characterComponent.GameObject == damageComponent.target)
                     {
                         characterComponent.Health -= (int)damageComponent.damage;
                         characterComponent.OnHealthChanged?.Invoke(characterComponent.Health);
@@ -194,8 +195,8 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                                 {
                                     //characterComponent.CharacterMotionBase.AddForce(damageComponent.velocity);
                                 }
-                                
                             }
+
                             characterComponent.CharacterMotionBase.AddForce(damageComponent.velocity);
                             //if (characterComponent.CharacterMotionBase.AudioSource.isPlaying) characterComponent.CharacterMotionBase.AudioSource.Stop();
 
@@ -212,18 +213,47 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                             characterComponent.CharacterMotionBase.AudioSource.PlayOneShot(audio, characterComponent.CharacterSO.AudioCharacter.VolumeHurt);
                         }
 
-                        if (characterComponent.CharacterSO.DamageVisualEffect != null && damageComponent.owner != null)
+                        if (characterComponent.CharacterSO.DamageVisualEffect != null)
                         {
-                            var visualEffect = GameObject.Instantiate(
-                                characterComponent.CharacterSO.DamageVisualEffect,
-                                damageComponent.position,
-                                Quaternion.LookRotation((characterComponent.GameObject.transform.position - damageComponent.owner.transform.position).normalized, Vector3.up)
-                            );
-                            GameObject.Destroy(visualEffect.gameObject, 1f);
+                            var damageParticle = characterComponent.CharacterSO.DamageVisualEffect;
+                            var pos = damageComponent.position;
+
+                            var damageParticleAsset = characterComponent.CharacterSO.DamageVisualEffectAsset;
+                            if (damageParticleAsset != null)
+                            {
+                                /*ParticlesManager.SendParticleEvent(
+                                    systems.GetWorld(), 
+                                    characterComponent.CharacterMotionBase.transform.position + characterComponent.CharacterMotionBase.Up * (characterComponent.CharacterMotionBase.Height / 2),
+                                    characterComponent.CharacterMotionBase.transform.forward,
+                                    damageParticle.visualEffectAsset
+                                );*/
+
+                                if (damageParticle.gameObject)
+                                {
+                                    SendEventObjectPool.Send(
+                                        systems.GetWorld(),
+                                        damageParticle.gameObject,
+                                        characterComponent.CharacterMotionBase.transform.position + characterComponent.CharacterMotionBase.Up * (characterComponent.CharacterMotionBase.Height / 2),
+                                        Quaternion.identity,
+                                        Pooling.PoolType.Particle
+                                    );
+                                }
+                               
+                                if (characterComponent.CharacterSO.BloodMeshDecal)
+                                {
+                                    SendEventObjectPool.Send(
+                                        systems.GetWorld(),
+                                        characterComponent.CharacterSO.BloodMeshDecal,
+                                        characterComponent.CharacterMotionBase.transform.position,
+                                        Quaternion.LookRotation(-characterComponent.CharacterMotionBase.Up),
+                                        Pooling.PoolType.Particle
+                                    );
+                                }
+                            }
                         }
                     }
 
-                    if (characterComponent.GameObject == damageComponent.target && characterComponent.Dead == true)
+                    if (damageComponent.isHit == true && characterComponent.GameObject == damageComponent.target && characterComponent.Dead == true)
                     {
                         if (characterComponent.CharacterMotionBase.RagdollMonitor.IsActive)
                         {
@@ -247,7 +277,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                 if (characterComponent.CharacterMotionBase.Renderer && characterComponent.CharacterSO.DissolveMaterial != null)
                 {
                     float t = 1;
-                    if (characterComponent.TimeOfDeath > t)
+                    if (characterComponent.TimeOfDeath > characterComponent.CharacterSO.CharacterConfig.TimeAfterDeath + t)
                     {   
                         var tt = characterComponent.TimeOfDeath - t / characterComponent.CharacterSO.CharacterConfig.TimeAfterDeath - t ;
                         var time = Mathf.Lerp(

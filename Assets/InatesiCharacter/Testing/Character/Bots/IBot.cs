@@ -23,7 +23,6 @@ namespace InatesiCharacter.Testing.Character.Bots
         public abstract void Enabled();
         public abstract void UpdateTick();
 
-        public abstract Vector2 PathInput(Vector3 playerPosition, Vector3 botPosition, NavMeshPath navMeshPath, float distance = 2);
         public abstract void Damage();
         public abstract void Died();
     }

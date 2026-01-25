@@ -67,24 +67,17 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 hitComponent.damage = _Damage;
                 hitComponent.velocity = velocity * _forceVelocityDamage;
                 hitComponent.position = hit.point;
+                hitComponent.isHit = isHit;
+                hitComponent.hit = hit;
+                hitComponent.sizeParticle = _SizeParticle;
+                hitComponent.speedParticle = _VelocityParticle;
+                hitComponent.ray = new Ray(_startRaycastPosition, _startRaycastDirection);
 
                 if (hit.rigidbody != null)
                 {
                     hit.rigidbody.AddForce(CharacterMotion.LookSource.Transform.forward * _AttackForce, _ForceMode);
                 }
-
-                if (_ShootParticle != null)
-                {
-                    var g = Instantiate(_ShootParticle, hit.point, Quaternion.identity);
-                    g.Play();
-                    Destroy(g.gameObject, 2f);
-                }
-
-                LineSystem.Instance.SetLine(startLinePosition, hit.distance < 10 ? hit.point : _startRaycastPosition + _startRaycastDirection * 10f);
-            }
-            else
-            {
-                LineSystem.Instance.SetLine(startLinePosition, _startRaycastPosition + _startRaycastDirection * 10f);
+                Shared.ParticlesManager.SendParticleEvent(EcsWorld, hitComponent.hit);
             }
 
             _SwayBob.Shake(_ForceShake);

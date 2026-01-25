@@ -78,8 +78,8 @@ namespace InatesiCharacter.Camera
         {
             if (_IsEditor)
             {
-                Cursor.lockState = _CursorLockMode;
-                Cursor.visible = _CursorVisible;
+                //Cursor.lockState = _CursorLockMode;
+                //Cursor.visible = _CursorVisible;
             }
 #if UNITY_STANDALONE || UNITY_EDITOR
             MouseInput = true;
@@ -96,8 +96,8 @@ namespace InatesiCharacter.Camera
 
         private void OnValidate()
         {
-            Cursor.lockState = _CursorLockMode;
-            Cursor.visible = _CursorVisible;
+            //Cursor.lockState = _CursorLockMode;
+            //Cursor.visible = _CursorVisible;
         }
 
         private void Update()

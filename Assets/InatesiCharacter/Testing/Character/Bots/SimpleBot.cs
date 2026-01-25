@@ -34,21 +34,12 @@ namespace InatesiCharacter.Testing.Character.Bots
             base.Died();
 
             
-            var render = GameObject.GetComponentInChildren<Renderer>();
-
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                Debug.Log(transform.GetChild(i).name);
-            }
-
-            if (render != null)
-            {
-                render.material.SetColor("_Color", Color.red);
-            }
         }
 
         public override void UpdateTick()
         {
+            base.UpdateTick();
+
             if (Target == null || GameSettings.IsPause)
             {
                 CharacterMotion.Move(Vector2.zero);
@@ -60,32 +51,35 @@ namespace InatesiCharacter.Testing.Character.Bots
                 _damagedSinceTime -= Time.deltaTime;
             }
 
-            var buildPath = BuildPath(Target.transform.position, Transform.position, out Vector3 movePosition);
-            if (buildPath)
-            {
-                SetWalkPoint(movePosition);
-            }
 
-            bool obstacle = NavMeshPath.corners != null && NavMeshPath.corners.Length > 1;
-            var move = movePosition - Transform.position;
+            var move = _walkPoint - Transform.position;
             move = Vector2.ClampMagnitude(new Vector2(move.x, move.z), 1);
-            //move.Normalize();
-            _move = move;
 
-            var dot = Vector3.Dot(Transform.forward, (Target.transform.position - Transform.position).normalized) > .9f;
+            var dot = Vector3.Dot(Transform.forward, (Target.transform.position - Transform.position).normalized) > .2f;
 
             if (Vector3.Distance(transform.position, Target.transform.position) < _stopDistance + 10)
             {
+                CharacterMotion.AnimatorMonitor.SetSlot0(0);
                 _attackSinceTime -= Time.deltaTime;
             }
 
-            if (Vector3.Distance(transform.position, Target.transform.position) < (CharacterMotion.Radius / 2) + _stopDistance && dot)
+            if (Vector3.Distance(transform.position, Target.transform.position) < (CharacterMotion.Radius) + _stopDistance && dot)
             {
-                move = Vector3.zero;
-
                 Attack();
             }
-            
+
+            if (
+                _walkPointSet == false && 
+                Vector3.Distance(transform.position, _walkPoint) < (CharacterMotion.Radius)
+            )
+            {
+                move = Vector3.zero;
+            }
+
+            if (_walkPointSet == false)
+            {
+                move = Vector3.zero;
+            }
 
             if (_damagedSinceTime > 0)
             {
@@ -118,6 +112,8 @@ namespace InatesiCharacter.Testing.Character.Bots
             {
                 CharacterMotion.AudioSource.PlayOneShot(_AttackClips[Random.Range(0, _AttackClips.Count)]);
             }
+
+            CharacterMotion.AnimatorMonitor.SetSlot0(101);
 
             base.Attack();
         }

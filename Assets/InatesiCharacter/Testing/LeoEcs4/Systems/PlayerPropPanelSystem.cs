@@ -1,4 +1,4 @@
-﻿using InatesiCharacter.Testing.LeoEcs3.Character.Componentts;
+﻿using InatesiCharacter.Testing.LeoEcs.Character.Componentts;
 using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.LeoEcs4.Events;
 using InatesiCharacter.Testing.Shared;
@@ -76,8 +76,10 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                     if (wishMoveCameraReleased)
                     {
                         playerComponent.moveInputEnabled = true;
-                        playerComponent.cameraInputEnabled = false;
+                        //playerComponent.cameraInputEnabled = false;
                     }
+
+
                 }
             }
             
@@ -91,6 +93,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                 {
                     ref var playerComponent = ref _PlayerPool.Get(entity);
                     playerComponent.moveInputEnabled = true;
+                    playerComponent.canAttack = _activePanel;
                     playerComponent.cameraInputEnabled = _activePanel;
                 }
 
@@ -101,8 +104,9 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                 //playerInputEvent.enable = !statt;
 
 
-                UnityEngine.Cursor.visible = !_activePanel;
-                UnityEngine.Cursor.lockState = !_activePanel ? CursorLockMode.Confined : CursorLockMode.Locked;
+                G.SetVisibleCursor(!_activePanel);
+                //UnityEngine.Cursor.visible = !_activePanel;
+                //UnityEngine.Cursor.lockState = !_activePanel ? CursorLockMode.Confined : CursorLockMode.Locked;
             }
         }
     }

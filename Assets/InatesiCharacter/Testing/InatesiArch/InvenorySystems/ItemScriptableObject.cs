@@ -1,4 +1,5 @@
-﻿using InatesiCharacter.Testing.Character.InteractionSystem;
+﻿using GameToolkit.Localization;
+using InatesiCharacter.Testing.Character.InteractionSystem;
 using System.Collections;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace InatesiCharacter.Testing.InatesiArch.InventorySystems
         [Space(10)]
 
         [SerializeField] private string _name;
+        [SerializeField] private GameToolkit.Localization.LocalizedText _localizedText;
         [SerializeField] private Sprite _sprite;
         private GameObject _prefab;
         [SerializeField] private GameObject _modelPrefab;
@@ -22,5 +24,6 @@ namespace InatesiCharacter.Testing.InatesiArch.InventorySystems
         public Sprite Sprite { get => _sprite; set => _sprite = value; }
         public InventoryItem InventoryItem { get => inventoryItem; set => inventoryItem = value; }
         public GameObject ModelPrefab { get => _modelPrefab; set => _modelPrefab = value; }
+        public LocalizedText LocalizedText { get => _localizedText; set => _localizedText = value; }
     }
 }

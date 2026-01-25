@@ -3,8 +3,8 @@ using InatesiCharacter.SuperCharacter.MovementTypes;
 using InatesiCharacter.Testing.Character;
 using InatesiCharacter.Testing.Character.Data;
 using InatesiCharacter.Testing.Character.UI;
-using InatesiCharacter.Testing.LeoEcs3;
-using InatesiCharacter.Testing.LeoEcs3.Character.Componentts;
+using InatesiCharacter.Testing.LeoEcs;
+using InatesiCharacter.Testing.LeoEcs.Character.Componentts;
 using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.LeoEcs4.Events;
 using InatesiCharacter.Testing.UI;
@@ -28,6 +28,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
             _CharacterFilter = systems.GetWorld().Filter<CharacterComponent>().Exc<PlayerComponent>().End();
             _PlayerFilter = systems.GetWorld().Filter<PlayerComponent>().End();
             _sharedData = systems.GetShared<SharedData>();
+            if (_sharedData.RootUI) _sharedData.RootUI.Init();
         }
 
         public void Run(IEcsSystems systems)
@@ -65,9 +66,10 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                     characterComponent.CharacterMotionBase.LookSource.CameraMotion = characterComponent.CharacterMotionBase.LookSource.GameObject.GetComponent<CameraMotion>();
 
 
-                    foreach (var child in characterComponent.GameObject.GetComponentsInChildren<Transform>())
+                    foreach (var child in characterComponent.Renderers)
                     {
                         child.gameObject.layer = LayerMask.NameToLayer("Player");
+                        //child.gameObject.layer = LayerMask.NameToLayer("Player");
                     }
 
 
@@ -85,9 +87,9 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                     characterComponent.InventoryInteraction2.InitializeWeapons();
                     characterComponent.InventoryInteraction2.SetActiveInventoryItem(0);
 
-                    playerComponent.InventoryUI = new InventoryUI(characterComponent.InventoryInteraction2.InventoryContainer);
-                    playerComponent.HealthUI = new();
+                   
                     playerComponent.fpc = true;
+                    playerComponent.canAttack = true;
                     if (characterComponent.InventoryInteraction2.CurrentWeaponBase) characterComponent.InventoryInteraction2.CurrentWeaponBase.FPC = playerComponent.fpc;
 
                     var playerSpawn = systems.GetWorld().NewEntity();
@@ -95,6 +97,23 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                     //characterComponent.OnHealthChange?.Invoke(characterComponent.Health);
 
                     PlayerBuilder.SetCameraView(playerComponent.fpc, characterComponent.CharacterMotionBase);
+
+                    if (_sharedData.RootUI) 
+                    {
+                        _sharedData.RootUI.Init();
+
+                        if (_sharedData.PlayerSettingsSO)
+                        {
+                            _sharedData.RootUI.UiDocument.rootVisualElement.Q<VisualElement>("crosshair").style.backgroundImage
+                            = new StyleBackground(_sharedData.PlayerSettingsSO.Crosshair ? _sharedData.PlayerSettingsSO.Crosshair : null);
+
+                            _sharedData.RootUI.UiDocument.rootVisualElement.Q<VisualElement>("crosshair").style.unityBackgroundImageTintColor
+                                = new StyleColor(_sharedData.PlayerSettingsSO.CrosshairColor);
+                        }
+                    }
+
+                    playerComponent.InventoryUI = new(characterComponent.InventoryInteraction2.InventoryContainer);
+                    playerComponent.HealthUI = new();
 
                     break;
                 }

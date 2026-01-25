@@ -1,5 +1,5 @@
-﻿using InatesiCharacter.Testing.Shared;
-using InatesiCharacter.Testing.Stuff;
+﻿using GameToolkit.Localization;
+using InatesiCharacter.Testing.Shared;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,8 +11,24 @@ using Input = Inatesi.Inputs.Input;
 
 namespace InatesiCharacter.Testing.UI
 {
+
+
     public class MainMenuControl : MonoBehaviour
     {
+        [Serializable]
+        private class QualityData
+        {
+            [SerializeField] private string _nameQuality;
+            [SerializeField] private LocalizedText _LocalizedText;
+
+            public LocalizedText LocalizedText { get => _LocalizedText; set => _LocalizedText = value; }
+            public string NameQuality { get => _nameQuality; set => _nameQuality = value; }
+        }
+
+        [Header("Settings")]
+        [SerializeField] private bool _SetActiveMenuPanel = true;
+        [SerializeField] private bool _enabledInput = true;
+        [SerializeField] private List<QualityData> _qualityData = new();
         [Header("Scenes")]
         [SerializeField] private string _LoadGameScene = "PresentationSceneLeoEcs";
         [SerializeField] private string _MainMenuScene = "MainMenu";
@@ -40,6 +56,7 @@ namespace InatesiCharacter.Testing.UI
         private Label _MouseSensLabel;
         private Slider _FovSlider;
         private Label _FovLabel;
+        private DropdownField _GraphicQualityDropdownField;
 
         private const string c_startSinglePlayer = "start-single-player";
         private const string c_startServerClientPlayer = "start-server-client-player";
@@ -59,6 +76,7 @@ namespace InatesiCharacter.Testing.UI
         private const string c_MouseSensText = "mouse-sensivity-value-text";
         private const string c_FovSlider = "fov-slider";
         private const string c_FovText = "fov-value-text";
+        private const string c_GraphicQualityDropdownField = "graphic-quality";
 
         private Dictionary<string, Button> _ButtonDictionary = new Dictionary<string, Button>();
 
@@ -85,6 +103,7 @@ namespace InatesiCharacter.Testing.UI
             _MouseSensLabel = _rootElement.Q("root").Q<Label>(c_MouseSensText);
             _FovSlider = _rootElement.Q("root").Q<Slider>(c_FovSlider);
             _FovLabel = _rootElement.Q("root").Q<Label>(c_FovText);
+            _GraphicQualityDropdownField = _rootElement.Q("root").Q<DropdownField>(c_GraphicQualityDropdownField);
 
             _ButtonDictionary.Add(c_startSinglePlayer, _StartSinglePlayerButton);
             _ButtonDictionary.Add(c_startServerClientPlayer, _StartServerClientPlayerButton);
@@ -117,6 +136,29 @@ namespace InatesiCharacter.Testing.UI
             _MouseSensLabel.text = GameSettings.GameSettingsValue.MouseSens.ToString("0.00");
             _FovLabel.text = GameSettings.GameSettingsValue.Fov.ToString("0");
 
+
+            
+            _GraphicQualityDropdownField.choices.Clear();
+
+            foreach (var item in _qualityData)
+            {
+                _GraphicQualityDropdownField.choices.Add(item.LocalizedText.Value);
+            }
+
+
+            _GraphicQualityDropdownField.RegisterCallback<ChangeEvent<string>>((text ) => 
+            {
+                for (int i = 0; i < QualitySettings.names.Length; i++)
+                {
+                    if (_GraphicQualityDropdownField.index == i)
+                    {
+                        QualitySettings.SetQualityLevel(i);
+                    }
+                }
+            } 
+            );
+            _GraphicQualityDropdownField.index = 0;
+
             SetActiveButton(_ContinueButton, false);
             SetActiveButton(_StartServerClientPlayerButton, false);
             SetActiveButton(_StartClientPlayerButton, false);
@@ -133,17 +175,41 @@ namespace InatesiCharacter.Testing.UI
             SetActivePanel(c_ButtonContainer);
 
             _LoadPanel.style.display = DisplayStyle.None;
+
+            SetVisibleRootPanel(_SetActiveMenuPanel);
+            if (_SetActiveMenuPanel == false) 
+            {
+                G.SetVisibleCursor(false);
+                GameSettings.SetPause(false); 
+            }
+            else
+            {
+                G.SetVisibleCursor(true);
+            }
         }
 
 
         private void Update()
         {
-            if (SceneManager.GetActiveScene().name == _MainMenuScene) return;
-            if (Input.GetKeyDown(Key.Escape)) 
+            if (SceneManager.GetActiveScene().name == _MainMenuScene)
             {
+                G.SetVisibleCursor(true);
+
+                return; 
+            }
+
+            if (G.IsPause == true)
+            {
+                //G.SetVisibleCursor(true);
+            }
+
+            if (Input.GetKeyDown(Key.Escape) && _enabledInput)
+            {
+                G.SetVisibleCursor(G.IsPause);
                 ToggleVisibleRootPanel();
 
                 GameSettings.SetPause(!GameSettings.IsPause);
+                G.SetPause(!G.IsPause);
             }
         }
 
@@ -157,6 +223,7 @@ namespace InatesiCharacter.Testing.UI
             SetActiveButton(_StartSinglePlayerButton, false);
 
             GameSettings.SetPause(false);
+            G.SetPause(false);
         }
 
         private void StartFreeGame()
@@ -170,6 +237,7 @@ namespace InatesiCharacter.Testing.UI
             SetActiveButton(_FreeGameButton, false);
 
             GameSettings.SetPause(false);
+            G.SetPause(false);
         }
 
         private void SettingsButton_clicked()
@@ -181,6 +249,7 @@ namespace InatesiCharacter.Testing.UI
 
         private void HomeMenuButton_clicked()
         {
+            //G.SetPause(false);
             //GameToolkit.Localization.Localization.Instance.SetSystemLanguage();
             SetActivePanel(c_ButtonContainer);
             SetActiveButton(_HomeMenuButton, false);
@@ -194,6 +263,7 @@ namespace InatesiCharacter.Testing.UI
 
         private void GoMainMenu()
         {
+            G.SetPause(false);
             LoadScene(_MainMenuScene);
 
             SetActiveButton(_ContinueButton, false);
@@ -218,6 +288,7 @@ namespace InatesiCharacter.Testing.UI
             SetActiveButton(_FreeGameButton, false);
 
             GameSettings.SetPause(false);
+            G.SetPause(false);
         }
 
         private void ExitGame()
@@ -230,6 +301,7 @@ namespace InatesiCharacter.Testing.UI
         {
             SetVisibleRootPanel(false);
             GameSettings.SetPause(false);
+            G.SetPause(false);
         }
 
         private void ToggleVisibleRootPanel()
@@ -250,7 +322,24 @@ namespace InatesiCharacter.Testing.UI
 
         private void LocaleChanged(object sender, GameToolkit.Localization.LocaleChangedEventArgs e)
         {
+            UpdateLocalizationFlag();
 
+            _GraphicQualityDropdownField.choices.Clear();
+
+            foreach (var item in _qualityData)
+            {
+                _GraphicQualityDropdownField.choices.Add(item.LocalizedText.Value);
+                
+                for (int i = 0; i < QualitySettings.names.Length; i++)
+                {
+                    if (item.NameQuality == QualitySettings.names[i] && _GraphicQualityDropdownField.index == i)
+                    {
+                        _GraphicQualityDropdownField.value = item.LocalizedText.Value;
+                    }
+                }
+            }
+
+            
         }
 
         private void ChangeLocalizationButton_clicked()

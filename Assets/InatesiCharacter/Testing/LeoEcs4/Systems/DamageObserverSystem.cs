@@ -8,7 +8,7 @@ using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
 using UnityEngine;
 
-namespace InatesiCharacter.Testing.LeoEcs3.Shared.Systems
+namespace InatesiCharacter.Testing.LeoEcs.Shared.Systems
 {
     public class DamageObserverSystem : IEcsRunSystem, IEcsInitSystem
     {
@@ -26,6 +26,8 @@ namespace InatesiCharacter.Testing.LeoEcs3.Shared.Systems
             foreach (var entity in _damageFilter) 
             {
                 ref var damageComponent = ref _damagePool.Get(entity);
+
+                if (damageComponent.target == null) continue;   
 
                 if (damageComponent.target.TryGetComponent(out Prop prop))
                 {

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
 
-namespace InatesiCharacter.Testing.LeoEcs3.Shared
+namespace InatesiCharacter.Testing.LeoEcs.Shared
 {
     public class CollisionCheckerView : MonoBehaviour
     {
@@ -23,7 +23,7 @@ namespace InatesiCharacter.Testing.LeoEcs3.Shared
         protected Collider _collider;
         protected AudioSource _OnTriggerAudioSource;
 
-        public EcsWorld ecsWorld { get => _SetupLeoEcs.World;  }
+        public EcsWorld ecsWorld { get => _SetupLeoEcs.EcsWorld;  }
 
 
         [Inject]

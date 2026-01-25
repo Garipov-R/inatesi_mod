@@ -265,7 +265,6 @@ namespace InatesiCharacter.SuperCharacter
 
             //_CharacterFootstep.UnderWater = _waterDepth >= 0.5f;
             //_CharacterFootstep.OnWater = _waterDepth > 0 && _waterDepth < 0.5f;
-            if (LookSource != null) LookSource.GameObject.GetComponent<AudioLowPassFilter>().enabled = _waterDepth > 0.9f;
 
             //_CharacterFootstep.UpdateTick();
         }
@@ -524,6 +523,7 @@ namespace InatesiCharacter.SuperCharacter
         [SerializeField] float maxVolume = 0.5f;
         [SerializeField] float groundCheckHeight = 3.5f;
         [SerializeField] float groundCheckDistance = 1f;
+        [SerializeField] bool _enabled = true;
 
         private float stepCycleProgress;
         private bool previouslyGrounded;
@@ -543,6 +543,8 @@ namespace InatesiCharacter.SuperCharacter
 
         public void UpdateTick(RaycastHit raycastHit)
         {
+            if (_enabled == false) return;
+
             _currentGroundInfo = raycastHit;
             if (_characterMotionBase == null) return;
             if (SurfaceManager.singleton == null) return;

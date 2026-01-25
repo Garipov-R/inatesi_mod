@@ -37,7 +37,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
         public void Run(IEcsSystems systems)
         {
-            if (GameSettings.IsPause) return;
+            if (G.IsPause) return;
 
             foreach (var characterEntity in _CharacterFilter)
             {

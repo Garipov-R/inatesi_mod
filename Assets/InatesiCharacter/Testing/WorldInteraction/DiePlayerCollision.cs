@@ -1,4 +1,4 @@
-﻿using InatesiCharacter.Testing.LeoEcs3.Shared;
+﻿using InatesiCharacter.Testing.LeoEcs.Shared;
 using InatesiCharacter.Testing.Shared.Components;
 using System.Collections;
 using UnityEngine;

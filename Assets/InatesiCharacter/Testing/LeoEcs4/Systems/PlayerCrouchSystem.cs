@@ -1,7 +1,7 @@
 ﻿using InatesiCharacter.Movements.SourceEngine.TraceUtility;
 using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.Character;
-using InatesiCharacter.Testing.LeoEcs3;
+using InatesiCharacter.Testing.LeoEcs;
 using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.Shared;
 using Leopotam.EcsLite;
@@ -115,7 +115,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                         _canUncrouch = true;
 
                         CapsuleCollider capsuleCollider = (CapsuleCollider)_CharacterMotionBase.Collider;
-                        Vector3 point1 = capsuleCollider.center + _CharacterMotionBase.Up * capsuleCollider.height * 1.5f * (1f); // 0.5f
+                        Vector3 point1 = capsuleCollider.center + _CharacterMotionBase.Up * capsuleCollider.height * 0.9f; // 0.5f // check UP
                         Vector3 point2 = capsuleCollider.center + -_CharacterMotionBase.Up * capsuleCollider.height / 2 * (.2f); // 0.5f
                         Vector3 startPos = _CharacterMotionBase.transform.position;
                         Vector3 endPos = _CharacterMotionBase.transform.position + (_uncrouchDown ? Vector3.zero : _CharacterMotionBase.Up) * _heightDifference;
@@ -155,7 +155,8 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
                             _CharacterMotionBase.Height = _CharacterMotionBase.DefaultHeight;
 
-                            var KLDFHJG = !_uncrouchDown ? Vector3.up * _heightDifference / 2 : _CharacterMotionBase.Up;
+                            var KLDFHJG = !_uncrouchDown ? _CharacterMotionBase.Up * _heightDifference : _CharacterMotionBase.Up;
+                            KLDFHJG = !_uncrouchDown ? Vector3.zero : _CharacterMotionBase.Up;
                             _CharacterMotionBase.SetPositionAndRotation(
                                         _CharacterMotionBase.transform.position + KLDFHJG,
                                         _CharacterMotionBase.transform.rotation
@@ -169,12 +170,14 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
                             foreach (Transform child in _CharacterMotionBase.transform)
                             {
-                                child.localPosition = new Vector3(child.localPosition.x, child.localPosition.y / _crouchingHeight, child.localPosition.z);
+                                //child.localPosition = new Vector3(child.localPosition.x, child.localPosition.y / _crouchingHeight, child.localPosition.z);
                             }
 
                             PlayerBuilder.SetCameraView(playerComponent.fpc);
-
-                            _CharacterMotionBase.AnimatorMonitor.SetAbilityID(0);
+                        }
+                        else
+                        {
+                            _CharacterMotionBase.AnimatorMonitor.SetAbilityID(4);
                         }
                     }
 

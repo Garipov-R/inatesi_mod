@@ -20,9 +20,9 @@ namespace InatesiCharacter.Testing.UI
 
         private void Awake()
         {
-            Awakee();
+            Init();
         }
-        public void Awakee()
+        public void Init()
         {
             Instance = this;
         }

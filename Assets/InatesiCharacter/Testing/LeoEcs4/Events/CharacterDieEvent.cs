@@ -1,4 +1,4 @@
-﻿namespace InatesiCharacter.Testing.LeoEcs3.Character.Componentts
+﻿namespace InatesiCharacter.Testing.LeoEcs.Character.Componentts
 {
     public struct CharacterDieEvent
     {

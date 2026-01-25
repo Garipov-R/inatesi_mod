@@ -36,13 +36,16 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 Reload();
             }
 
-            if (Input.Pressed("Attack") && _TimeSinceAttack >= _delayShootTime)
+            if (Input.Down("Attack") && _TimeSinceAttack >= _delayShootTime)
             {
                 RaycastHit hit;
+                _RaycastDistance = 1.5f;
                 var isHit = RaycastSphere(
-                    .2f,
+                    .1f,
                     out hit
                 );
+
+                //isHit = Raycast(out  hit, Vector2.zero, false);
 
                 if (isHit)
                 {
@@ -59,30 +62,32 @@ namespace InatesiCharacter.Testing.Character.Weapons
                     hitComponent.damage = _Damage;
                     hitComponent.velocity = (hit.point - CharacterMotion.gameObject.transform.position).normalized * _forceVelocityDamage;
                     hitComponent.position = hit.point;
+                    hitComponent.isHit = isHit;
+                    hitComponent.hit = hit;
+                    hitComponent.sizeParticle = _SizeParticle;
+                    hitComponent.speedParticle = _VelocityParticle;
+                    hitComponent.ray = new Ray(_startRaycastPosition, _startRaycastDirection);
+
 
                     if (hit.rigidbody != null)
                     {
                         hit.rigidbody.AddForce(CharacterMotion.LookSource.Transform.forward * _forceVelocityDamage, _ForceMode);
                     }
 
-                    if (_ShootParticle != null)
-                    {
-                        var g = Instantiate(_ShootParticle, hit.point, Quaternion.identity);
-                        g.Play();
-                        Destroy(g.gameObject, 2f);
-                    }
-
-                    CharacterMotion.AudioSource.PlayOneShot(_HitAudioClips[Random.Range(0, _HitAudioClips.Length - 1)]);
+                    // CharacterMotion.AudioSource.PlayOneShot(_HitAudioClips[Random.Range(0, _HitAudioClips.Length - 1)]);
+                    CharacterMotion.AudioSource.PlayOneShot(_AudioClips[Random.Range(0, _AudioClips.Length - 1)]);
+                    Shared.ParticlesManager.SendParticleEvent(EcsWorld, _RaycastHit);
                     //LineSystem.Instance.SetLine(startLinePosition, hit.distance < 10 ? hit.point : _startRaycastPosition + _startRaycastDirection * 10f);
                 }
                 else
                 {
                     //LineSystem.Instance.SetLine(startLinePosition, _startRaycastPosition + _startRaycastDirection * 10f);
-                    CharacterMotion.AudioSource.PlayOneShot(_AudioClips[_animID]);
+                    CharacterMotion.AudioSource.PlayOneShot(_AudioClips[Random.Range(0, _AudioClips.Length - 1)]);
                 }
 
 
-                _SpawnedViewModel.GetComponent<Animator>().Play(_Animation[_animID].name);
+                if (_SpawnedViewModel.activeSelf) 
+                    _SpawnedViewModel.GetComponent<Animator>().Play(_Animation[_animID].name);
                 
                 _animID++;
                 if (_Animation.Length <= _animID) _animID = 0;

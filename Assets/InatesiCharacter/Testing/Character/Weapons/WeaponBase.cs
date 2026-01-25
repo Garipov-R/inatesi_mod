@@ -2,12 +2,16 @@
 using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.Character.InteractionSystem;
 using InatesiCharacter.Testing.InatesiArch.WeaponsTest;
-using InatesiCharacter.Testing.LeoEcs3;
+using InatesiCharacter.Testing.LeoEcs;
+using InatesiCharacter.Testing.LeoEcs.Shared;
+using InatesiCharacter.Testing.LeoEcs4.Events;
+using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.VFX;
 
 namespace InatesiCharacter.Testing.Character.Weapons
@@ -21,6 +25,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
         [SerializeField] protected float _Damage = 1f;
         [SerializeField] protected ForceMode _ForceMode = ForceMode.VelocityChange;
         [SerializeField] protected float _RaycastDistance = 100f;
+        [SerializeField] protected LayerMask _HitLM = 4625;
 
         [Header("Base Settings")]
         [SerializeField] protected CarriableObjectData _carriableObjectData = new();
@@ -34,13 +39,17 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
         [Header("effects")]
         [SerializeField] protected VisualEffect _ShootVisualEffect;
+        [SerializeField] protected VisualEffect _TrailVisualEffect;
         [SerializeField] protected float _ShootLightTime = 1f;
         [SerializeField] protected float _ShootLightIntensity = 1f;
         [SerializeField] protected Light _ShootLight;
         [SerializeField] protected AudioClip _OutOfAmmoClip;
         [SerializeField] protected float _VolumeShoot = 1f;
-        [SerializeField] protected ParticleSystem _ShootParticle;
         [SerializeField] protected float _ForceShake = -1f;
+
+        [Header("Particle settings")]
+        [SerializeField] protected float _VelocityParticle = 10f;
+        [SerializeField] protected float _SizeParticle = .4f;
 
         protected SwayBob _SwayBob;
         protected GameObject _SpawnedViewModel;
@@ -66,8 +75,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
             get 
             {
                 if (_SetupLeoEcs == null) return null; 
-                if (_SetupLeoEcs.World == null) return null; 
-                return _SetupLeoEcs.World; 
+                if (_SetupLeoEcs.EcsWorld == null) return null; 
+                return _SetupLeoEcs.EcsWorld; 
             } 
         }
         public CarriableObjectData CarriableObjectData { get => _carriableObjectData; set => _carriableObjectData = value; }
@@ -131,12 +140,19 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             if (_SpawnedViewModel != null)
             {
-                _SpawnedViewModel.SetActive(FPC);
+                _SpawnedViewModel.SetActive(FPC && enabled == true);
             }
+        }
+
+        public virtual void FixedUpdateTick()
+        {
+
         }
 
         public virtual void UpdateTick()
         {
+            if (enabled == false) return;
+
             if (IsEmpty() && Inatesi.Inputs.Input.Pressed("Attack")) 
             {
                 if (_OutOfAmmoClip) CharacterMotion.AudioSource.PlayOneShot(_OutOfAmmoClip, _VolumeShoot);
@@ -199,17 +215,16 @@ namespace InatesiCharacter.Testing.Character.Weapons
         }
         public virtual void Enable() 
         {
+            var shootPoint = _SpawnedViewModel.transform.Find("shootPoint");
+            _ShootPoint =  shootPoint ? shootPoint : null;
+
             if (_ShootVisualEffect != null)
             {
-                var shootPoint = _SpawnedViewModel.transform.Find("shootPoint");
                 if (shootPoint != null)
                 {
                     _ShootVisualEffect.transform.SetParent(shootPoint.transform, false);
                     _ShootVisualEffect.transform.position = shootPoint.position;
-                    _ShootVisualEffect.Stop();
-                    //var s = _ShootVisualEffect.transform.localScale - _ShootVisualEffect.transform.lossyScale;
-                    //_ShootVisualEffect.transform.localScale = _ShootVisualEffect.transform.localScale * ((s.magnitude * 100) % 100);
-                    _ShootPoint = shootPoint;
+                    //_ShootVisualEffect.Stop();
                 }
             }
 
@@ -219,7 +234,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
             _onAmmoChanged?.Invoke(_CurrentAmmo);
 
             enabled = true;
-            _SpawnedViewModel?.SetActive(true);
+            _SpawnedViewModel?.SetActive(FPC == true ? true : false);
         }
 
         public bool RaycastSphere(float radius, out RaycastHit raycastHit)
@@ -237,7 +252,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 _startRaycastPosition,
                 radius,
                 _startRaycastDirection,
-                LayerMask.NameToLayer("Everything"),
+                InatesiCharacter.Testing.Configs.Config.s_DamageLayerMask,
                 out raycastHit,
                 _RaycastDistance,
                 QueryTriggerInteraction.Collide
@@ -255,7 +270,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
             LayerMask layerMask,
             out RaycastHit hit,
             float distance = 100f,
-            QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
+            QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Collide)
         {
             return Physics.SphereCast(
                 start,
@@ -293,7 +308,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
             var hit = Raycast(
                 _startRaycastPosition,
                 _startRaycastDirection,
-                LayerMask.NameToLayer("Everything"),
+                InatesiCharacter.Testing.Configs.Config.s_DamageLayerMask,
                 out raycastHit,
                 _RaycastDistance,
                 QueryTriggerInteraction.Collide
@@ -301,6 +316,14 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             _RaycastHit = raycastHit;
 
+            if (raycastHit.transform != null)
+            {
+                if (raycastHit.transform.TryGetComponent(out CollisionEvent component))
+                {
+                    component.Damage();
+                }
+            }
+            
             return hit && raycastHit.transform.gameObject != CharacterMotion.gameObject;
         }
 
@@ -345,7 +368,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
             LayerMask layerMask,
             out RaycastHit hit,
             float distance = 100f,
-            QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore
+            QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Collide
         )
         {
             return Physics.Raycast(
@@ -457,8 +480,18 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 }
                 
             }
-        }
 
+            if (_TrailVisualEffect != null)
+            {
+                var shootPoint = _SpawnedViewModel.transform.Find("shootPoint");
+                _TrailVisualEffect.transform.rotation = Quaternion.LookRotation(_startRaycastDirection, _CharacterMotionBase.LookSource.Transform.up);
+                _TrailVisualEffect.Play();
+
+                //_TrailVisualEffect.Play(VFXEventAttribute )
+            }
+
+            //Shared.ParticlesManager.SendParticleEvent(EcsWorld, _RaycastHit, .67f, 30);
+        }
         public virtual void Shoot()
         {
             Shoot(1);

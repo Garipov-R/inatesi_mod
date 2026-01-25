@@ -20,6 +20,9 @@ namespace InatesiCharacter.Testing.LeoEcs4.Components
         public CharacterWorldInteractionSystem CharacterWorldInteractionSystem;
         public CharacterSO CharacterSO;
         public ICharacter ICharacter;
+        public GameObject Model;
+        public Renderer Renderer;
+        public Renderer[] Renderers;
 
         public bool Dead;
         public float Health;

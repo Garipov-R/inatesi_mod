@@ -123,9 +123,10 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
 
         public void ShakeProccess()
         {
-            //_shake.z = Mathf.Lerp(_shake.z, 0, Time.deltaTime * _SmoothShake);
-            _shake = Vector3.Lerp(_shake, Vector3.zero, Time.deltaTime * _SmoothShake);
-            _shakeRot = Quaternion.Lerp(_shakeRot, Quaternion.identity, Time.deltaTime * _SmoothShake);
+
+            //_shake.z = Mathf.Lerp(_shake.z, 0, .0133f * Time.timeScale * _SmoothShake);
+            _shake = Vector3.Lerp(_shake, Vector3.zero, .0133f * Time.timeScale * _SmoothShake);
+            _shakeRot = Quaternion.Lerp(_shakeRot, Quaternion.identity, .0133f * Time.timeScale * _SmoothShake);
         }
 
         public void Sway(Vector2 lookInput)
@@ -155,8 +156,8 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
 
         public void Movement(Vector2 walkInput, bool isGrounded)
         {
-            //speedCurve += Time.deltaTime * (isGrounded ? (walkInput.x + walkInput.y) * _bobExaggeration : 1f) + 0.01f;
-            speedCurve += Time.deltaTime * (isGrounded ? walkInput.magnitude * _bobExaggeration : 1f) + 0.01f;
+            //speedCurve += .0133f * Time.timeScale * (isGrounded ? (walkInput.x + walkInput.y) * _bobExaggeration : 1f) + 0.01f;
+            speedCurve += .0133f * Time.timeScale * (isGrounded ? walkInput.magnitude * _bobExaggeration : 1f) + 0.01f;
 
             _bobPosition.x = (curveCos * _bobLimit.x * (isGrounded ? 1 : 0)) - (walkInput.x * _travelLimit.x);
             _bobPosition.y = (curveSin * _bobLimit.y) - ( Mathf.Abs(walkInput.y) * _travelLimit.y);
@@ -182,13 +183,13 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
                 _viewModel.transform.localPosition = Vector3.Lerp(
                     _viewModel.transform.localPosition,
                     _swayPos + _bobPosition,
-                    Time.deltaTime * _Smooth
+                    .0133f * Time.timeScale * _Smooth
                 );
 
                 _viewModel.transform.localRotation = Quaternion.Slerp(
                     _viewModel.transform.localRotation,
                     Quaternion.Euler(_swayEulerRot) * Quaternion.Euler(_bobEulerRotation),
-                    Time.deltaTime * _SmoothRot
+                    .0133f * Time.timeScale * _SmoothRot
                 );
             }
         }

@@ -1,7 +1,7 @@
 ﻿using InatesiCharacter.Movements.SourceEngine;
 using InatesiCharacter.SuperCharacter;
-using InatesiCharacter.Testing.LeoEcs3;
-using InatesiCharacter.Testing.LeoEcs3.Shared;
+using InatesiCharacter.Testing.LeoEcs;
+using InatesiCharacter.Testing.LeoEcs.Shared;
 using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
 using System.Collections;
@@ -27,13 +27,19 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
         private bool _startTimer;
         private float _SpawnedTimeSince;
         private SetupLeoEcs _SetupLeoEcs;
-        public EcsWorld ecsWorld { get => _SetupLeoEcs.World; }
+        private RaycastHit[] _hits;
+        public EcsWorld ecsWorld { get => _SetupLeoEcs.EcsWorld; }
 
 
         [Inject]
         protected void Construct(SetupLeoEcs setupLeoEcs)
         {
             _SetupLeoEcs = setupLeoEcs;
+        }
+
+        private void Start()
+        {
+            _hits = new RaycastHit[10];
         }
 
         private void Update()
@@ -86,41 +92,52 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
                     GetComponent<Renderer>().enabled = false;
                 }
 
-                var casts = Physics.SphereCastAll(
+                var casts = Physics.SphereCastNonAlloc(
                     transform.position,
                     _explosionRadius,
                     Vector3.up,
+                    _hits,
                     .2f,
                     LayerMask.NameToLayer("Everything"),
                     QueryTriggerInteraction.Ignore
                 );
 
-                foreach (var cast in casts)
+                var hit = ecsWorld.NewEntity();
+
+                var hitPool = ecsWorld.GetPool<DamageComponent>();
+                hitPool.Add(hit);
+                ref var hitComponent = ref hitPool.Get(hit);
+
+
+                foreach (var cast in _hits)
                 {
                     var directionForce = (cast.point - transform.position).normalized * _explosionForce;
-                    var damage = _damage; 
-                    var distance = Vector3.Distance(cast.transform.position, transform.position);
-                    var force = Mathf.Abs(_explosionRadius - distance);
-                    damage *= force / _explosionRadius;
+                    var damage = _damage;
 
-                    if (cast.transform.TryGetComponent(out CharacterMotionBase characterMotionBase))
+                    if (cast.transform  != null)
                     {
-                        directionForce = (characterMotionBase.Up * _UpwardsModifier) + (cast.point - transform.position).normalized * _explosionForce;
-                        directionForce = directionForce * force;
+                        var distance = Vector3.Distance(cast.transform.position, transform.position);
+                        var force = Mathf.Abs(_explosionRadius - distance);
+                        damage *= force / _explosionRadius;
+
+                        if (cast.transform.TryGetComponent(out CharacterMotionBase characterMotionBase))
+                        {
+                            directionForce = (characterMotionBase.Up * _UpwardsModifier) + (cast.point - transform.position).normalized * _explosionForce;
+                            directionForce = directionForce * force;
+                        }
                     }
 
-                    var hit = ecsWorld.NewEntity();
-
-                    var hitPool = ecsWorld.GetPool<DamageComponent>();
-                    hitPool.Add(hit);
-                    ref var hitComponent = ref hitPool.Get(hit);
-
                     hitComponent.owner = null;
-                    hitComponent.target = cast.transform.gameObject;
+                    hitComponent.target = cast.transform ? cast.transform.gameObject : null;
                     hitComponent.damage = damage;
                     hitComponent.velocity = directionForce;
                     hitComponent.weaponType = this.GetType();
+                    hitComponent.position = cast.transform ? cast.point : transform.position;
+                    hitComponent.hit = cast;
+                    hitComponent.isHit = cast.transform != null;
+                    hitComponent.ray = new Ray(transform.position, Vector3.up);
 
+                    Debug.Log(hitComponent.isHit);
 
                     if (cast.rigidbody != null)
                         cast.rigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius, _UpwardsModifier, _ForceMode);

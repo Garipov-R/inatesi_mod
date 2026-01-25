@@ -1,4 +1,4 @@
-﻿using InatesiCharacter.Testing.LeoEcs3;
+﻿using InatesiCharacter.Testing.LeoEcs;
 using InatesiCharacter.Testing.LeoEcs4.Events;
 using Leopotam.EcsLite;
 using System.Collections;

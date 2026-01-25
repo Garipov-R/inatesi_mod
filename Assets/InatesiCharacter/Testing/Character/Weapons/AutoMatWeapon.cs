@@ -89,7 +89,6 @@ namespace InatesiCharacter.Testing.Character.Weapons
             
             if (isHit)
             {
-                Debug.Log(hit.transform.name);
                 var entity = EcsWorld.NewEntity();
 
                 var hitPool = EcsWorld.GetPool<DamageComponent>();
@@ -105,18 +104,15 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 hitComponent.damage = _Damage;
                 hitComponent.velocity = velocity * _forceVelocityDamage;
                 hitComponent.position = hit.point;
-
+                hitComponent.hit = hit;
+                hitComponent.isHit = isHit;
+                hitComponent.sizeParticle = _SizeParticle;
+                hitComponent.speedParticle = _VelocityParticle;
+                hitComponent.ray = new Ray(_startRaycastPosition, _startRaycastDirection);
 
                 if (hit.rigidbody != null)
                 {
                     hit.rigidbody.AddForce(CharacterMotion.LookSource.Transform.forward * _forceVelocityDamage, _ForceMode);
-                }
-
-                if (_ShootParticle != null)
-                {
-                    var g = Instantiate(_ShootParticle, hit.point, Quaternion.identity);
-                    g.Play();
-                    Destroy(g.gameObject, 2f);
                 }
 
                 if (_ShootLight) _ShootLight.intensity = _ShootLightIntensity;
@@ -127,12 +123,6 @@ namespace InatesiCharacter.Testing.Character.Weapons
                     decal.transform.rotation = Quaternion.LookRotation(hit.normal);
                     decal.transform.position = hit.point;
                 }
-
-                LineSystem.Instance.SetLine(startLinePosition, hit.distance < 10 ? hit.point : _startRaycastPosition + _startRaycastDirection * 10f);
-            }
-            else
-            {
-                LineSystem.Instance.SetLine(startLinePosition, _startRaycastPosition + _startRaycastDirection * 10f);
             }
 
             if (_shootTimeSince > _scatterTime)
@@ -149,8 +139,6 @@ namespace InatesiCharacter.Testing.Character.Weapons
             {
                 _Animation.Play(PlayMode.StopSameLayer);
             }
-
-
 
 
             base.Shoot(1);

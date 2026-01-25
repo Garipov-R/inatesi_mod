@@ -1,14 +1,8 @@
 ﻿using InatesiCharacter.SuperCharacter;
-using InatesiCharacter.Testing.InatesiArch.Character.Abilities;
-using InatesiCharacter.Testing.LeoEcs3;
 using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
-using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
-using Zenject;
 
 namespace InatesiCharacter.Testing.Character.Bots
 {
@@ -31,14 +25,12 @@ namespace InatesiCharacter.Testing.Character.Bots
         public bool IsEnabled { get; set; }
         public EcsWorld EcsWorld { get; set; }
 
-        private Vector3 _walkPoint;
-        private bool _walkPointSet;
+        protected Vector3 _walkPoint;
+        protected bool _walkPointSet;
         private bool _lostTarget;
         private bool _playerInSightRange;
-        private bool _playerInAttackRange;
         private float _timeSinceUpdatePathfinding;
-        private float _timeSinceJump = 3;
-        private NavMeshQueryFilter meshQueryFilter = new NavMeshQueryFilter { areaMask = -1 };
+        private NavMeshQueryFilter _meshQueryFilter = new NavMeshQueryFilter { areaMask = -1 };
         private bool _attacking;
         private bool _damaged;
         private int _damagedIntData = 1;
@@ -46,45 +38,36 @@ namespace InatesiCharacter.Testing.Character.Bots
 
         public virtual void UpdateTick()
         {
-
+            Debug();
 
             if (IsEnabled)
             {
                 _timeSinceUpdatePathfinding -= Time.deltaTime;
-                if (_timeSinceUpdatePathfinding <= 0 )
+                if (_timeSinceUpdatePathfinding <= 0)
                 {
-                    Patroling();
+                    if (Target != null)
+                    {
+                        BuildPath(Transform.position, Target.transform.position, out Vector3 movePosition);
+                    }
 
                     _timeSinceUpdatePathfinding = _UpdatePathfindingTime;
+                    _timeSinceUpdatePathfinding = .1f;
                 }
             }
+        }
 
-            if (Target != null)
-            {
-                SetWalkPoint(Target.transform.position);
-            }
+        public virtual void Enabled()
+        {
 
-            Vector2 move = GetMovePath();
+        }
 
-
-            if (_attacking == false && _damaged == false)
+        private void Debug()
+        {
+            if (NavMeshPath.corners != null && NavMeshPath.corners.Length > 1)
             {
-                CharacterMotion.Move(move);
-            }
-            else
-            {
-                CharacterMotion.Move(Vector2.zero);
-            }
-
-            if (Vector3.Distance(_walkPoint, transform.position) < _stopDistance)
-            {
-                StartAttack();
-            }
-            else
-            {
-                if (_attacking == false)
+                for (int i = 0; i < NavMeshPath.corners.Length; i++)
                 {
-                    //StopAttack();
+                    //UnityEngine.Debug.DrawLine(Transform.position, NavMeshPath.corners[i], Color.red);
                 }
             }
         }
@@ -104,23 +87,24 @@ namespace InatesiCharacter.Testing.Character.Bots
         {
             if (EcsWorld == null) return;
 
-            Ray ray = new(
-                transform.position + (2 * CharacterMotion.Radius * transform.forward) + (CharacterMotion.Up * (CharacterMotion.Height /2 )), 
-                transform.forward
-            );
-            var casts = Physics.SphereCastAll(
-                ray, 
-                CharacterMotion.Radius * 1, 
+            RaycastHit[] raycastHits;
+            raycastHits = new RaycastHit[5];
+            var casts = Physics.SphereCastNonAlloc(
+                Transform.position + (CharacterMotion.Up * (CharacterMotion.Height / 2)), 
+                CharacterMotion.Radius * 2,
+                CharacterMotion.transform.forward,
+                raycastHits,
                 CharacterMotion.Radius, 
                 CharacterMotion.RaycastLayer, 
                 QueryTriggerInteraction.Ignore
             );
 
-            if (casts != null && casts.Length > 0)
+            if (casts > 0)
             {
-                foreach (var cast in casts)
+                foreach (var cast in raycastHits)
                 {
-                    if (cast.transform == transform) continue;
+                    if (cast.transform == null) continue;
+                    if (cast.transform == Transform) continue;
                     if (cast.transform != Target.transform) continue;
 
                     if (cast.transform.TryGetComponent(out CharacterMotionBase component))
@@ -142,8 +126,9 @@ namespace InatesiCharacter.Testing.Character.Bots
                         hitComponent.damage = _damage;
                         hitComponent.velocity = velocityAttack;
                         hitComponent.position = cast.point;
-
-
+                        hitComponent.isHit = true;
+                        hitComponent.hit = cast;
+                        Shared.ParticlesManager.SendParticleEvent(EcsWorld, hitComponent.hit);
                     }
                 }
             }
@@ -156,46 +141,6 @@ namespace InatesiCharacter.Testing.Character.Bots
             _attacking = false;
         }
 
-        private void LifeOfBot()
-        {
-            NavMesh.pathfindingIterationsPerFrame = 50;
-
-            _playerInSightRange = TargetIsVisibleSight();
-
-            if (!_playerInSightRange && !_playerInAttackRange && !_lostTarget)
-            {
-                _lostTarget = true;
-
-                if (Target != null)
-                {
-                    //SetWalkPoint(Target.transform.position);
-                }
-            }
-
-            //if (!_playerInSightRange && !_playerInAttackRange) Patroling();
-            if (_playerInSightRange && !_playerInAttackRange)
-            {
-                _lostTarget = false;
-
-                if (Target != null)
-                {
-                    SetWalkPoint(Target.transform.position);
-                }
-            }
-
-            _timeSinceUpdatePathfinding -= Time.deltaTime;
-            if (_timeSinceUpdatePathfinding <= 0 && _playerInSightRange == false && _lostTarget)
-            {
-                _timeSinceUpdatePathfinding = _UpdatePathfindingTime;
-                if (Target != null)
-                {
-                    if (BuildPath(Target.transform.position, Transform.position, out Vector3 movePosition))
-                    {
-                        SetWalkPoint(movePosition);
-                    }
-                } 
-            }
-        }
 
         public virtual void Damage()
         {
@@ -223,7 +168,7 @@ namespace InatesiCharacter.Testing.Character.Bots
                 _damagedIntData = random;
             }
 
-            CharacterMotion.AnimatorMonitor.SetAbilityIntDataParameter(_damagedIntData);
+            //CharacterMotion.AnimatorMonitor.SetAbilityIntDataParameter(_damagedIntData);
 
             _attacking = false;
             _damaged = true;
@@ -246,85 +191,94 @@ namespace InatesiCharacter.Testing.Character.Bots
             CharacterMotion.AnimatorMonitor.SetAbilityID((int)AnimationAbility.Die);
         }
 
-        protected void Patroling()
-        {
-            if (!_walkPointSet) RandomWalkPoint();
-
-
-            Vector3 distanceToWalkPoint = Transform.position - _walkPoint;
-
-            //Walkpoint reached
-            if (distanceToWalkPoint.magnitude < 1f)
-                _walkPointSet = false;
-        }
-
-        private void RandomWalkPoint()
-        {
-            //Calculate random point in range
-            float randomZ = Random.Range(-_walkPointRange, _walkPointRange);
-            float randomX = Random.Range(-_walkPointRange, _walkPointRange);
-
-            var point = new Vector3(Transform.position.x + randomX, Transform.position.y, Transform.position.z + randomZ);
-
-            //if (CharacterMotion.OnGrounded == true && BuildPath(point, Transform.position, out Vector3 movePosition))
-            if (CharacterMotion.OnGrounded == true)
-            {
-                SetWalkPoint(point);
-            }
-        }
-
-
         protected void SetWalkPoint(Vector3 position)
         {
             _walkPointSet = true;
             _walkPoint = position;
         }
 
-        public Vector2 PathInput(Vector3 targetPosition, Vector3 botPosition, NavMeshPath navMeshPath, float distance = 2)
+
+        #region PATH
+
+        protected bool BuildPath(Vector3 sourcePosition, Vector3 targetPosition, out Vector3 movePosition)
         {
-            return Vector2.zero;
-        }
+            movePosition = Vector3.zero;
 
-        protected bool BuildPath(Vector3 targetPosition, Vector3 botPosition, out Vector3 movePosition)
-        {
-            movePosition = botPosition;
-
-            var meshQueryFilter = new NavMeshQueryFilter
-            {
-                areaMask = -1
-            };
-
-            var buildedPath = IsPathComplete(botPosition, targetPosition);
-
-
-
+            var buildedPath = CalculatePath(sourcePosition, targetPosition);
 
             if (buildedPath == true)
             {
                 if (NavMeshPath.corners != null && NavMeshPath.corners.Length > 1)
                 {
                     movePosition = NavMeshPath.corners[1];
+                    _walkPointSet = true;
                 }
             }
             else
             {
                 SamplePosition(
                     targetPosition,
-                    Vector3.Distance(targetPosition, Transform.position),
-                    out bool playerSamplePosition,
+                    Vector3.Distance(targetPosition, Transform.position)* 0 + 10f,
+                    out bool tartgetSamplePosition,
                     out NavMeshHit playerSamplePositionHit
                 );
 
-                if (playerSamplePosition)
-                {
-                    buildedPath = IsPathComplete(botPosition, playerSamplePositionHit.position);
+                //CLoseEdge(playerSamplePositionHit.position, out bool closeEdge, out NavMeshHit closeEdgeHit);
 
-                    movePosition = playerSamplePositionHit.position;
+                if (tartgetSamplePosition)
+                {
+                    buildedPath = CalculatePath(sourcePosition, playerSamplePositionHit.position);
+
+                    if (NavMeshPath.corners != null && NavMeshPath.corners.Length > 1)
+                    {
+                        movePosition = NavMeshPath.corners[1];
+                        _walkPointSet = Vector3.Distance(targetPosition, Transform.position) < _sightRange;
+                    }
+                }
+                else
+                {
+                    _walkPointSet = false;
                 }
             }
 
+            _walkPoint = movePosition;
+
             return buildedPath;
         }
+
+        private void SamplePosition(Vector3 targetPosition, float maxDistance , out bool samplePosition, out NavMeshHit samplePositionHit)
+        {
+            samplePosition = NavMesh.SamplePosition(
+                            targetPosition,
+                            out samplePositionHit,
+                            maxDistance,
+                            _meshQueryFilter
+                        );
+        }
+
+        private void FindCloseEdge(Vector3 sourcePosition, out bool closeEdge, out NavMeshHit closeEdgeHit)
+        {
+            closeEdge = NavMesh.FindClosestEdge(
+                            sourcePosition,
+                            out closeEdgeHit,
+                            _meshQueryFilter
+                        );
+        }
+
+        private bool CalculatePath(Vector3 sourcePosition, Vector3 targetPosition)
+        {
+            var state = NavMesh.CalculatePath(
+                    sourcePosition,
+                    targetPosition,
+                    _meshQueryFilter,
+                    NavMeshPath
+                );
+
+            return NavMeshPath.status == NavMeshPathStatus.PathComplete && state;
+        }
+
+        #endregion
+
 
         protected Vector2 GetMovePath()
         {
@@ -353,49 +307,10 @@ namespace InatesiCharacter.Testing.Character.Bots
                 }
             }
 
-            if (IsEnabled == false ) move = Vector2.zero;
-           
-
-            return move;    
-        }
+            if (IsEnabled == false) move = Vector2.zero;
 
 
-
-        private void SamplePosition(Vector3 botPosition, float maxDistance , out bool samplePosition, out NavMeshHit samplePositionHit)
-        {
-             
-            samplePosition = NavMesh.SamplePosition(
-                            botPosition,
-                            out samplePositionHit,
-                            maxDistance,
-                            meshQueryFilter
-                        );
-        }
-
-        private void CLoseEdge(Vector3 position, out bool closeEdge, out NavMeshHit closeEdgeHit)
-        {
-            closeEdge = NavMesh.FindClosestEdge(
-                            position,
-                            out closeEdgeHit,
-                            meshQueryFilter
-                        );
-        }
-
-        private bool IsPathComplete(Vector3 sourcePosition, Vector3 targetPosition)
-        {
-            var meshQueryFilter = new NavMeshQueryFilter
-            {
-                areaMask = -1
-            };
-
-            var state = NavMesh.CalculatePath(
-                    sourcePosition,
-                    targetPosition,
-                    meshQueryFilter,
-                    NavMeshPath
-                );
-
-            return NavMeshPath.status == NavMeshPathStatus.PathComplete && state;
+            return move;
         }
 
         private bool TargetIsVisibleSight()
@@ -408,7 +323,7 @@ namespace InatesiCharacter.Testing.Character.Bots
             float distance = Vector3.Distance(Transform.position, Target.transform.position);
             float dot = Vector3.Dot(Transform.forward, Target.transform.position - Transform.position);
             var rot = Transform.position + Transform.rotation * Transform.forward * CharacterMotion.Radius / 2;
-            var position = (Transform.position) + CharacterMotion.Up * CharacterMotion.Height ;
+            var position = (Transform.position) + CharacterMotion.Up * CharacterMotion.Height;
             bool cast = Physics.Raycast(
                 position,
                 (Target.transform.position - Transform.position).normalized,
@@ -417,14 +332,10 @@ namespace InatesiCharacter.Testing.Character.Bots
                 CharacterMotion.RaycastLayer,
                 QueryTriggerInteraction.Ignore
             );
-            bool isPlayer = cast && hitInfo.transform.gameObject == Target;
+            bool isTarget = cast && hitInfo.transform.gameObject == Target;
 
 
-            return (distance < _sightRange && dot > 0 && isPlayer) || distance <= _stopDistance;
-        }
-
-        public virtual void Enabled()
-        {
+            return (distance < _sightRange && dot > 0 && isTarget) || distance <= _stopDistance;
         }
     }
 }

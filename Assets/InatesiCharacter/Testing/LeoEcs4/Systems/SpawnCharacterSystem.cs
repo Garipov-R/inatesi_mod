@@ -9,6 +9,8 @@ using UnityEngine.AI;
 using InatesiCharacter.Testing.Character.InteractionSystem;
 using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.Shared.Components;
+using InatesiCharacter.Testing.LeoEcs;
+using UnityEngine.UIElements;
 
 namespace InatesiCharacter.Testing.LeoEcs4.Systems
 {
@@ -58,7 +60,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
             GameObject modelCharacter = null;
 
-            prefab = spawnComponentEvent.gameObject;
+            prefab = (spawnComponentEvent.data as CharacterSO).Prefab;
             position = spawnComponentEvent.position;
             rotation = spawnComponentEvent.rotation;
             data = spawnComponentEvent.data;
@@ -147,20 +149,34 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
                 modelCharacter.transform.localScale = modelCharacter.transform.localScale * characterSO.ScaleMagnitude;
 
+                var renderer = modelCharacter.GetComponent<Renderer>();
+                var renderers = modelCharacter.GetComponents<Renderer>();
+
+                if (renderer == null)
+                {
+                    renderer = modelCharacter.GetComponentInChildren<Renderer>();
+                    renderers = modelCharacter.GetComponentsInChildren<Renderer>();
+                }
+
                 if (characterSO.Material != null)
                 {
-                    var renderer = modelCharacter.GetComponent<Renderer>();
-
-                    if (renderer == null)
-                    {
-                        renderer = modelCharacter.GetComponentInChildren<Renderer>();
-                    }
-
                     if (renderer != null)
                     {
                         renderer.material = new Material(characterSO.Material);
                     }
+
+                    if (renderers != null && renderers.Length > 0)
+                    {
+                        foreach (var item in renderers)
+                        {
+                            item.material = new Material(characterSO.Material);
+                        }
+                    }
                 }
+
+                characterComponent.Renderer = renderer;
+                characterComponent.Renderers = renderers;
+                characterComponent.Model = modelCharacter;
 
                 characterComponent.CharacterMotionBase.AnimatorMonitor.SetAvatar(avatarCharacter);
             }
@@ -198,7 +214,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                     }
                 }
             }*/
-            
+
         }
 
 

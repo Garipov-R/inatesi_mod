@@ -143,12 +143,14 @@ namespace InatesiCharacter.Movements.SourceEngine
 
             if (_AnimatorMonitor.Animator == null) return;
 
-
             _AnimatorMonitor.WithVelocity(_velocity);
             _AnimatorMonitor.WithWishVelocity(_wishVelocity);
 
+            ///_AnimatorMonitor.SetHorizontalMovementParameter(Mathf.Lerp(_wishVelocity.x, _MoveConfig.MaxSpeed, Time.deltaTime * .1f), _TimeScale);
+            //_AnimatorMonitor.SetForwardMovementParameter(Mathf.Lerp(_wishVelocity.y, _MoveConfig.MaxSpeed, Time.deltaTime * .1f), _TimeScale);
+
             _AnimatorMonitor.RotaionSpeed = _MoveRotationSpeed;
-            _AnimatorMonitor.IsGrounded = _velocity.y > _Gravity.y  ? _OnGrounded : false;
+            _AnimatorMonitor.IsGrounded = _OnGrounded;
             _AnimatorMonitor.MoveSpeed = Velocity.magnitude;
 
             _AnimatorMonitor.Animator.SetBool("turn", TurnAnim);
@@ -185,9 +187,14 @@ namespace InatesiCharacter.Movements.SourceEngine
             _externalVelocity += amount;
         }
 
+        public override void UpdateCharacter()
+        {
+            base.UpdateCharacter();
+
+            if (LookSource != null) LookSource.GameObject.GetComponent<AudioLowPassFilter>().enabled = _waterDepth > 0.9f;
+        }
 
 
-        
 
 
 
@@ -197,10 +204,9 @@ namespace InatesiCharacter.Movements.SourceEngine
             //CheckWater();
 
 
-
             if (Vector3.Angle(_Motor.GroundingStatus.OuterGroundNormal, _Motor.CharacterUp) < _Motor.MaxStableSlopeAngle)
             {
-                _OnGrounded = _Motor.GroundingStatus.IsStableOnGround;
+                _OnGrounded = _Motor.GroundingStatus.IsStableOnGround || _Motor.LastGroundingStatus.IsStableOnGround;
             }
             else
             {

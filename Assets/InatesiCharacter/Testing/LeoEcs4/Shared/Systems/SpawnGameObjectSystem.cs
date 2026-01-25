@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InatesiCharacter.Testing.Character.Data;
-using InatesiCharacter.Testing.LeoEcs3.Shared.Components;
+using InatesiCharacter.Testing.LeoEcs.Shared.Components;
 using Leopotam.EcsLite;
 using UnityEngine;
 
-namespace InatesiCharacter.Testing.LeoEcs3.Shared.Systems
+namespace InatesiCharacter.Testing.LeoEcs.Shared.Systems
 {
     public class SpawnGameObjectSystem : IEcsRunSystem, IEcsInitSystem
     {

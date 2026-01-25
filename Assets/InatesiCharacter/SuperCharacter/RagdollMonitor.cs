@@ -57,32 +57,37 @@ namespace InatesiCharacter.SuperCharacter
 
             _CharacterMotionBase = characterMotionTest;
 
-            if (_CharacterMotionBase.AnimatorMonitor.Animator.avatar == null) return;
-            if (_CharacterMotionBase.AnimatorMonitor.Animator.GetBoneTransform(HumanBodyBones.Spine) == null) return;
+            //if (_CharacterMotionBase.AnimatorMonitor.Animator.avatar == null) return;
 
-             _Rigidbodies = _CharacterMotionBase.GetComponentsInChildren<Rigidbody>();
+            if (_CharacterMotionBase.AnimatorMonitor.Animator.avatar != null && _CharacterMotionBase.AnimatorMonitor.Animator.avatar.isHuman == true)
+            {
+                if (_CharacterMotionBase.AnimatorMonitor.Animator.GetBoneTransform(HumanBodyBones.Spine) == null) return;
+
+                _Rigidbodies = _CharacterMotionBase.GetComponentsInChildren<Rigidbody>();
+
+                _HipsBone = _CharacterMotionBase.AnimatorMonitor.Animator.GetBoneTransform(HumanBodyBones.Hips);
+                _HeadBone = _CharacterMotionBase.AnimatorMonitor.Animator.GetBoneTransform(HumanBodyBones.Head);
+                _SpineBone = _CharacterMotionBase.AnimatorMonitor.Animator.GetBoneTransform(HumanBodyBones.Spine);
+                _RightHandBone = _CharacterMotionBase.AnimatorMonitor.Animator.GetBoneTransform(HumanBodyBones.RightHand);
+                _Bones = _HipsBone.GetComponentsInChildren<Transform>();
+
+                _lastBoneTransforms = new BoneTransform[_Bones.Length];
+                _ragdollBoneTransforms = new BoneTransform[_Bones.Length];
+
+                for (int boneIndex = 0; boneIndex < _Bones.Length; boneIndex++)
+                {
+                    _lastBoneTransforms[boneIndex] = new BoneTransform();
+                    _ragdollBoneTransforms[boneIndex] = new BoneTransform();
+                }
+
+                PopulateBoneTransforms(_lastBoneTransforms);
+
+                if (_Rigidbodies != null && _Rigidbodies.Length > 0)
+                {
+                    IsActive = true;
+                }
+            }
             
-            _HipsBone = _CharacterMotionBase.AnimatorMonitor.Animator.GetBoneTransform(HumanBodyBones.Hips);
-            _HeadBone = _CharacterMotionBase.AnimatorMonitor.Animator.GetBoneTransform(HumanBodyBones.Head);
-            _SpineBone = _CharacterMotionBase.AnimatorMonitor.Animator.GetBoneTransform(HumanBodyBones.Spine);
-            _RightHandBone = _CharacterMotionBase.AnimatorMonitor.Animator.GetBoneTransform(HumanBodyBones.RightHand);
-            _Bones = _HipsBone.GetComponentsInChildren<Transform>();
-
-            _lastBoneTransforms = new BoneTransform[_Bones.Length];
-            _ragdollBoneTransforms = new BoneTransform[_Bones.Length];
-
-            for (int boneIndex = 0; boneIndex < _Bones.Length; boneIndex++)
-            {
-                _lastBoneTransforms[boneIndex] = new BoneTransform();
-                _ragdollBoneTransforms[boneIndex] = new BoneTransform();
-            }
-
-            PopulateBoneTransforms(_lastBoneTransforms);
-
-            if (_Rigidbodies != null && _Rigidbodies.Length > 0)
-            {
-                IsActive = true;    
-            }
         }
 
         public void EnableRagdoll()

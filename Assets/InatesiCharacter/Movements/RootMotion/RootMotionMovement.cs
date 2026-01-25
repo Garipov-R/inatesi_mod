@@ -12,6 +12,11 @@ namespace InatesiCharacter.Movements
             base.Awake();
         }
 
+        private void OnAnimatorMove()
+        {
+            
+        }
+
         /*protected virtual void Update()
         {
             if (_UpdateViaMono == false)
@@ -48,14 +53,36 @@ namespace InatesiCharacter.Movements
             }
         }
 
+        public override bool CheckGround() 
+        {
+            if (_CharacterController == null)
+            {
+                _OnGrounded = false;
+                return false;
+            }
+
+            _OnGrounded = _CharacterController.isGrounded;
+            return _CharacterController.isGrounded; 
+        }
+
         public override void UpdateCharacter()
         {
             base.UpdateCharacter();
-
-            _OnGrounded = true;
+            CheckGround();
+            //_OnGrounded = true;
 
             //UpdateAnimator();
             //Move(new Vector2(0, 1f));
+
+            if (_OnGrounded)
+            {
+
+            }
+            else
+            {
+                _CharacterController.SimpleMove(Vector3.up * -1);
+            }
+            
 
             RotateUpdate();
         }

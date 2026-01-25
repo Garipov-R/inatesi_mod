@@ -13,10 +13,10 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
     {
         [SerializeField] private WeaponType _weaponType;
         [SerializeField] private string _name = "default";
-        [SerializeField] private int _Ammo = 30;
-        [SerializeField] private int _TotalAmmo = 60;
-        [SerializeField] private int _MagCapacity = 30;
-        [SerializeField] private int _MaxAmmo = 99999;
+        [SerializeField][Min(0)] private int _Ammo = 30;
+        [SerializeField][Min(0)] private int _TotalAmmo = 60;
+        [SerializeField][Min(0)] private int _MagCapacity = 30;
+        [SerializeField][Min(0)] private int _MaxAmmo = 99999;
 
         public int Ammo 
         { 

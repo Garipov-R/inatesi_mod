@@ -39,6 +39,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
         public override void Disable()
         {
+            LineRender(Vector2.zero, Vector2.zero, false);
             LostObject();
             CameraMotion.InputEnabled = true;
 
@@ -47,7 +48,6 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
         public override void UpdateTick()
         {
-
             if (Input.Pressed("Attack"))
             {
                 SelectObject();
@@ -147,6 +147,9 @@ namespace InatesiCharacter.Testing.Character.Weapons
             if (_SelectedRigidbody == null)
                 return;
 
+            if (_SelectedRigidbody.isKinematic == true)
+                return;
+
             var playerPos = (CharacterMotion.transform.position + CharacterMotion.Up * (CharacterMotion.Height - CharacterMotion.Radius / 2));
             var magnetposition = playerPos +  CharacterMotion.LookSource.LookDirection() * _distanceSelectedRigidbody;
             var resultPosition = (magnetposition - _SelectedRigidbody.worldCenterOfMass);
@@ -228,6 +231,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 var shootPoint = _SpawnedViewModel.transform.Find("shootPoint");
                 if (shootPoint != null)
                 {
+                    _LineRenderer.gameObject.transform.SetParent(shootPoint.transform, false);
                     startPos = shootPoint.position;
                 }
             }

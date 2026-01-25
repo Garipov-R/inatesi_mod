@@ -1,5 +1,5 @@
-﻿using InatesiCharacter.Testing.LeoEcs3.Character.Componentts;
-using InatesiCharacter.Testing.LeoEcs3.Shared;
+﻿using InatesiCharacter.Testing.LeoEcs.Character.Componentts;
+using InatesiCharacter.Testing.LeoEcs.Shared;
 using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
@@ -38,7 +38,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                 {
                     ref var characterComponent = ref _CharacterPool.Get(characterEntity);
 
-                    if (characterComponent.GameObject == damageComponent.target && characterComponent.Health > 0)
+                    if (damageComponent.isHit == true && characterComponent.GameObject == damageComponent.target && characterComponent.Health > 0)
                     {
                         //characterComponent.Health -= (int)damageComponent.damage;
 
