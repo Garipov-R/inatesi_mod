@@ -102,15 +102,19 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
                     QueryTriggerInteraction.Ignore
                 );
 
-                var hit = ecsWorld.NewEntity();
-
-                var hitPool = ecsWorld.GetPool<DamageComponent>();
-                hitPool.Add(hit);
-                ref var hitComponent = ref hitPool.Get(hit);
+                
 
 
                 foreach (var cast in _hits)
                 {
+                    var hit = ecsWorld.NewEntity();
+
+                    var hitPool = ecsWorld.GetPool<DamageComponent>();
+                    hitPool.Add(hit);
+                    ref var hitComponent = ref hitPool.Get(hit);
+
+
+
                     var directionForce = (cast.point - transform.position).normalized * _explosionForce;
                     var damage = _damage;
 
@@ -137,7 +141,6 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
                     hitComponent.isHit = cast.transform != null;
                     hitComponent.ray = new Ray(transform.position, Vector3.up);
 
-                    Debug.Log(hitComponent.isHit);
 
                     if (cast.rigidbody != null)
                         cast.rigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius, _UpwardsModifier, _ForceMode);

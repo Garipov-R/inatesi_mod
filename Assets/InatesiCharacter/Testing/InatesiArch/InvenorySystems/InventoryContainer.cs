@@ -16,7 +16,15 @@ namespace InatesiCharacter.Testing.InatesiArch.InventorySystems
         public UnityEngine.Events.UnityAction<InventoryItem, bool> OnAdded { get; set; }
         public UnityEngine.Events.UnityAction<InventoryItem> OnRemoved { get; set; }
         public UnityEngine.Events.UnityAction<InventoryItem> OnSelected { get; set; }
-        public int Size { get => _Size; set => _Size = value; }
+        public int Size 
+        { 
+            get => _Size;
+            set 
+            {
+                _Size = value;
+                Initialize();
+            }
+        }
         public int ActiveSlotIndex 
         { 
             get => _activeSlotIndex; 
@@ -45,7 +53,7 @@ namespace InatesiCharacter.Testing.InatesiArch.InventorySystems
             Initialize();
         }
 
-        private void Initialize()
+        public void Initialize()
         {
             InventoryItems = new List<InventoryItem>();
 

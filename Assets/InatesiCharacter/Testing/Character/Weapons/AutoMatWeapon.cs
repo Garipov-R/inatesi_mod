@@ -117,12 +117,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
                 if (_ShootLight) _ShootLight.intensity = _ShootLightIntensity;
 
-                if (DecalsManager.instance != null && isHit && false)
-                {
-                    var decal = DecalsManager.instance.GetDecal();
-                    decal.transform.rotation = Quaternion.LookRotation(hit.normal);
-                    decal.transform.position = hit.point;
-                }
+                Shared.ParticlesManager.SendParticleEvent(EcsWorld, hitComponent.hit);
             }
 
             if (_shootTimeSince > _scatterTime)

@@ -11,7 +11,6 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.VFX;
 
 namespace InatesiCharacter.Testing.Character.Weapons

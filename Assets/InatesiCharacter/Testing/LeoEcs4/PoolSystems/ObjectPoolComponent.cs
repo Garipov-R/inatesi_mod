@@ -14,5 +14,8 @@ namespace InatesiCharacter.Testing.LeoEcs4.PoolSystems
         public GameObject gameObject;
         public PoolType poolType;
         public int index;
+        public GameObject prefab;
+
+        public bool isTimer;
     }
 }

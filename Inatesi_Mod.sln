@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zenject-IntegrationTests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mirror.Examples", "Mirror.Examples.csproj", "{ACB07387-0361-A314-717F-3C5972E2B59F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomToolbar.Editor", "CustomToolbar.Editor.csproj", "{55D90E63-D294-FDE5-BF33-62FB9833D0D7}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.RenderPipelines.Core.Samples.Editor", "Unity.RenderPipelines.Core.Samples.Editor.csproj", "{4D77869E-278E-CDDF-22E9-267EFCE69A84}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mirror.Authenticators", "Mirror.Authenticators.csproj", "{52CA2E41-6F63-7F40-50E1-92C9934BCBD7}"
@@ -143,6 +145,10 @@ Global
 		{ACB07387-0361-A314-717F-3C5972E2B59F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACB07387-0361-A314-717F-3C5972E2B59F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACB07387-0361-A314-717F-3C5972E2B59F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55D90E63-D294-FDE5-BF33-62FB9833D0D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55D90E63-D294-FDE5-BF33-62FB9833D0D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55D90E63-D294-FDE5-BF33-62FB9833D0D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55D90E63-D294-FDE5-BF33-62FB9833D0D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D77869E-278E-CDDF-22E9-267EFCE69A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4D77869E-278E-CDDF-22E9-267EFCE69A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D77869E-278E-CDDF-22E9-267EFCE69A84}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,5 +1,6 @@
 ﻿using InatesiCharacter.Testing.LeoEcs;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
@@ -17,8 +18,12 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         [SerializeField] private UnityEvent _OnAnyEvent;
         [SerializeField] private UnityEvent _OnDamage;
         [SerializeField] private UnityEvent _OnUse;
+        [SerializeField] private bool _IsOneObjectEntered = false;
 
         protected SetupLeoEcs _SetupLeoEcs;
+        private bool _Entered;
+        private GameObject _firstObjectEntered;
+        private List<GameObject> _Objects = new List<GameObject>();
 
 
 
@@ -49,12 +54,38 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
         private void OnTriggerEnter(Collider other)
         {
+            _Objects.Add(other.gameObject);
+            ClearEmptyObjects();
+
+            if (_IsOneObjectEntered == true && _Entered == true)
+            {
+                return;
+            }
+
+            _Entered = true;
+
             _OnTriggerEnter?.Invoke();
             _OnAnyEvent?.Invoke();
         }
 
         private void OnTriggerExit(Collider other)
         {
+            _Objects.Remove(other.gameObject); 
+            ClearEmptyObjects();
+
+            if (_IsOneObjectEntered == true && _Objects.Count > 0)
+            {
+                foreach (var item in _Objects)
+                {
+                    if (item != null)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            _Entered = false;
+
             _OnTriggerExit?.Invoke();
             _OnAnyEvent?.Invoke();
         }
@@ -74,6 +105,22 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         public void Use()
         {
             _OnUse?.Invoke();
+        }
+
+
+        private void ClearEmptyObjects()
+        {
+            int index = 0;
+            foreach (var item in _Objects)
+            {
+                if (item == null)
+                {
+                    _Objects.RemoveAt(index);
+
+                }
+
+                index++;
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Unity.VisualScripting;
+﻿#if UNITY_EDITOR
+
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -65,3 +67,5 @@ namespace InatesiCharacter.Testing.SurfaceManagers.Editors
         }
     }
 }
+
+#endif

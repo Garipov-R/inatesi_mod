@@ -17,6 +17,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
         [SerializeField] private float _RecoilShooting = 16f;
         [SerializeField] private float _projectileMoveSpeed = 10f;
         [SerializeField] private GameObject _Projectile;
+        [SerializeField] protected AudioClip[] _ShootAudioClips;
 
 
         public override void UpdateTick()
@@ -60,7 +61,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             _SwayBob.Shake(_ForceShake);
 
-            CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClip, _VolumeShoot);
+            CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClips[Random.Range(0, _ShootAudioClips.Length - 1)], _VolumeShoot);
 
             SpawnBulletProjectile();
 
@@ -82,9 +83,14 @@ namespace InatesiCharacter.Testing.Character.Weapons
             bulletComponent.moveSpeed = _projectileMoveSpeed;
             bulletComponent.moveDirection = (_CharacterMotionBase.LookSource.LookDirection());
             var startPosition = 
-                _CharacterMotionBase.transform.position +
-                _CharacterMotionBase.transform.forward * _CharacterMotionBase.Radius * 2
-                + (_CharacterMotionBase.Height - _CharacterMotionBase.Radius / 2) * _CharacterMotionBase.Up;
+                (_CharacterMotionBase.transform.forward * _CharacterMotionBase.Radius * 2
+                + (_CharacterMotionBase.Height - _CharacterMotionBase.Radius / 2) * _CharacterMotionBase.Up)  + _CharacterMotionBase.transform.position;
+
+            if (FPC)
+            {
+                startPosition = _CharacterMotionBase.LookSource.LookPosition() + (_CharacterMotionBase.LookSource.LookDirection() * _CharacterMotionBase.Radius * 2);
+            }
+
             bulletComponent.transform.position = startPosition;
             bulletComponent.isTriggerOnDestroy = true;
             bulletComponent.lifetimeAfterDestroy = 0f;

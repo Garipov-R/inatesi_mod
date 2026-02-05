@@ -64,7 +64,28 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
                 try 
                 {
-                    var obj = SpawnObject(objectPoolEventComponent.objectToSpawn, objectPoolEventComponent.position, objectPoolEventComponent.rotation, objectPoolEventComponent.poolType);
+                    GameObject obj = null;
+                    if (objectPoolEventComponent.parent == null)
+                    {
+                        obj = SpawnObject(
+                            objectPoolEventComponent.objectToSpawn, 
+                            objectPoolEventComponent.position, 
+                            objectPoolEventComponent.rotation, 
+                            objectPoolEventComponent.poolType
+                        );
+                    }
+                    else
+                    {
+                        obj = SpawnObject(
+                            objectPoolEventComponent.objectToSpawn,
+                            objectPoolEventComponent.position,
+                            objectPoolEventComponent.rotation,
+                            objectPoolEventComponent.parent,
+                            objectPoolEventComponent.poolType
+                        );
+
+                    }
+
 
                     if (obj.GetComponent<VisualEffect>())
                     {
@@ -79,23 +100,62 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                             if (damageCom.isHit == false) continue;
 
                             var decal = obj.GetComponent<MeshDecal>();
-                            //decal.transform.position = particleEventComponent.hit.point - decal.transform.forward * (decal.transform.localScale.magnitude / 2);
-                            var hits = Physics.RaycastAll(damageCom.hit.point, Vector3.down, 10f, Configs.Config.s_DefaultLayerMask, QueryTriggerInteraction.Ignore);
-                            foreach (var hit in hits)
+
+                            var direction = Vector3.zero;
+                            var lookRotation = Vector3.zero;
+                            var characterLayer = LayerMask.LayerToName(damageCom.target.layer);
+                            //Debug.Log(characterLayer);
+                            if ("Character" == characterLayer || "Player" == characterLayer || "CharacterHitCollider" == characterLayer)
                             {
-                                if (hit.transform != damageCom.target.transform && hit.transform != decal.transform)
-                                {
-                                    Debug.Log(hit.transform.name);
-                                    decal.targetMesh = hit.transform;
-                                    //decal.transform.rotation = Quaternion.LookRotation(-damageCom.hit.normal);
-                                    decal.transform.eulerAngles = new Vector3(decal.transform.eulerAngles.x, Random.Range(0, 360f), decal.transform.eulerAngles.z);
-                                }
+                                direction = Vector3.down;
+                                lookRotation = Vector3.down;
                             }
-                            //decal.material = material;
-                            decal.Recalculate();
-                        }
+                            else
+                            {
+                                direction = damageCom.ray.direction;
+                                lookRotation = -damageCom.hit.normal;
+                            }
+
+                            var sphereCast = Physics.SphereCast(
+                                objectPoolEventComponent.position, 
+                                .001f, 
+                                direction, 
+                                out RaycastHit hitInfo, 
+                                1f, 
+                                Configs.Config.s_DefaultLayerMask, 
+                                QueryTriggerInteraction.Ignore
+                            );
+
+                            Debug.DrawRay(objectPoolEventComponent.position, direction, Color.red, 2, true);
+
+                            if (sphereCast == true)
+                            {
+                                decal.material = objectPoolEventComponent.data != null ? objectPoolEventComponent.data as Material : decal.material;
+
+                                decal.targetMesh = hitInfo.transform;
+                                decal.transform.rotation = Quaternion.LookRotation(lookRotation);
+                                decal.transform.localEulerAngles = new Vector3(decal.transform.eulerAngles.x, decal.transform.eulerAngles.y, Random.Range(0, 360f));
+                                decal.Recalculate();
+                            }
+
+                            var hits = Physics.RaycastAll(
+                                objectPoolEventComponent.position, 
+                                damageCom.ray.direction,  
+                                10f, 
+                                Configs.Config.s_DefaultLayerMask, 
+                                QueryTriggerInteraction.Ignore
+                            );
 
                             
+                        }
+                    }
+                    else if (obj.TryGetComponent(out AudioSource audioSource))
+                    {
+                        if (objectPoolEventComponent.data != null)
+                        {
+                            audioSource.clip = (AudioClip)objectPoolEventComponent.data;
+                            audioSource.Play(); 
+                        }
                     }
 
                     foreach (var objectPoolEntity in _ObjectPoolComponentFilter)
@@ -114,46 +174,37 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                 }
             }
 
+
             foreach (var entity in _ObjectPoolComponentFilter)
             {
                 ref var objectPoolComponent = ref _ObjectPoolComponentPool.Get(entity);
 
-                ref var objectPoolManagerComponent = ref _ObjectPoolManagerPool.Get(1);
 
-                if (objectPoolComponent.poolType == PoolType.Particle)
+                foreach (var poolManagerEntity in _ObjectPoolManagerFilter)
                 {
-                    foreach (var item in objectPoolManagerComponent.objectsPool.Values)
+                    ref var objectPoolManagerComponent = ref _ObjectPoolManagerPool.Get(poolManagerEntity);
+
+
+                    if (objectPoolManagerComponent.objectsPool.TryGetValue(objectPoolComponent.prefab, out var objectPool))
                     {
-                        if (item.CountActive > 5)
+                        if (objectPool.CountActive > 100)
                         {
-                            //Debug.Log($"{item.CountAll} {item.CountActive} {objectPoolComponent.index} {entity} {_ObjectPoolComponentFilter.GetEntitiesCount()}");
-                            if (objectPoolComponent.gameObject.activeSelf == true)
+                            if (objectPoolComponent.lifeTime > 0)
                             {
-                                //Debug.Log($"rett {objectPoolComponent.lifeTime} {objectPoolComponent.gameObject.activeSelf}");
-                                //ReturnObjectToPool(objectPoolComponent.gameObject, objectPoolComponent.poolType);
+                                objectPoolComponent.lifeTime -= Time.deltaTime;
                             }
-                            //ReturnObjectToPool(objectPoolComponent.gameObject, objectPoolComponent.poolType);
+
+                            if (objectPoolComponent.gameObject != null)
+                            {
+                                if (objectPoolComponent.lifeTime <= 0 && objectPoolComponent.gameObject.activeSelf == true)
+                                {
+                                    ReturnObjectToPool(objectPoolComponent.gameObject, objectPoolComponent.poolType);
+                                }
+                            }
                         }
                     }
                 }
-                else if (objectPoolComponent.poolType == PoolType.Particle)
-                {
-
-                }
                 
-
-                if (objectPoolComponent.lifeTime >= 0)
-                {
-                    objectPoolComponent.lifeTime -= Time.deltaTime;
-
-                    continue;
-                }
-
-                if (objectPoolComponent.lifeTime < 0 && objectPoolComponent.gameObject.activeSelf == true)
-                {
-                    //Debug.Log($"rett {objectPoolComponent.lifeTime} {objectPoolComponent.gameObject.activeSelf}");
-                    ReturnObjectToPool(objectPoolComponent.gameObject, objectPoolComponent.poolType);
-                }
             }
         }
 
@@ -176,10 +227,10 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
             }
         }
 
-        private void CreatePool(GameObject prefab, Vector3 pos, Quaternion rot, PoolType poolType = PoolType.GameObject)
+        private void CreatePool(GameObject prefab, Vector3 pos, Quaternion rot, Transform parent, PoolType poolType = PoolType.GameObject)
         {
             ObjectPool<GameObject> pool = new ObjectPool<GameObject>(
-                () => CreateObject(prefab, pos, rot, poolType),
+                () => CreateObject(prefab, pos, rot, parent, poolType),
                 OnGetObject,
                 OnReleaseObject,
                 OnDestroyObject
@@ -188,17 +239,29 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
             GetPoolManagerComponent().objectsPool.Add(prefab, pool);
         }
 
-        private GameObject CreateObject(GameObject prefab, Vector3 pos, Quaternion rot, PoolType poolType = PoolType.GameObject)
+        private GameObject CreateObject(GameObject prefab, Vector3 pos, Quaternion rot, Transform parent, PoolType poolType = PoolType.GameObject)
         {
             prefab.SetActive(false);
 
-            GameObject obj = GameObject.Instantiate(prefab, pos, rot);
+            GameObject obj = null;
 
-            prefab .SetActive(true);
+            prefab.SetActive(true);
 
-            GameObject parentObject = SetParentObject(poolType);
-            obj.transform.SetParent (parentObject.transform);
+            if (parent != null)
+            {
+                obj = GameObject.Instantiate(prefab, parent); 
+                //obj.transform.localPosition = pos;
+                //obj.transform.localRotation = rot;
+                //obj.transform.localScale = Vector3.one;
+            }
+            else
+            {
+                obj = GameObject.Instantiate(prefab, pos, rot);
+                GameObject parentObject = SetParentObject(poolType);
+                obj.transform.SetParent(parentObject.transform);
+            }
 
+            obj.gameObject.name += $"_{Random.Range(0, 999)}";
 
             int newEntity = _EcsWorld.NewEntity();
             ref var objectPoolComponent = ref _ObjectPoolComponentPool.Add(newEntity);
@@ -206,6 +269,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
             objectPoolComponent.gameObject = obj;
             objectPoolComponent.poolType = poolType;
             objectPoolComponent.index = newEntity;
+            objectPoolComponent.prefab = prefab;
 
             return obj;
         }
@@ -228,13 +292,13 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
             }
         }
 
-        private T SpawnObject<T> (GameObject objectToSpawn, Vector3 spawnPos, Quaternion spawnRot, PoolType poolType = PoolType.GameObject) where T : Object
+        private T SpawnObject<T> (GameObject objectToSpawn, Vector3 spawnPos, Quaternion spawnRot, Transform parent, PoolType poolType = PoolType.GameObject) where T : Object
         {
             if (objectToSpawn == null) return null;
 
             if (!GetPoolManagerComponent().objectsPool.ContainsKey(objectToSpawn))
             {
-                CreatePool(objectToSpawn, spawnPos, spawnRot, poolType);
+                CreatePool(objectToSpawn, spawnPos, spawnRot, parent, poolType);
             }
 
             GameObject obj = GetPoolManagerComponent().objectsPool[objectToSpawn].Get();
@@ -246,8 +310,18 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                     GetPoolManagerComponent().clonePrefabMap.Add(obj, objectToSpawn);
                 }
 
-                obj.transform.position = spawnPos;
-                obj.transform.rotation = spawnRot;
+                if (parent != null)
+                {
+                    obj.transform.position = spawnPos;
+                    obj.transform.rotation = spawnRot;
+                    obj.transform.SetParent(parent, true);
+                }
+                else
+                {
+                    obj.transform.position = spawnPos;
+                    obj.transform.rotation = spawnRot;
+                }
+
                 obj.SetActive(true);
 
                 if (typeof(T) == typeof(GameObject))
@@ -269,12 +343,23 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
         private T SpawnObject<T>(T typePrefab, Vector3 spawnPos, Quaternion spawnRot, PoolType poolType = PoolType.GameObject) where T : Component
         {
-            return SpawnObject<T>(typePrefab.gameObject, spawnPos, spawnRot, poolType);
+            return SpawnObject<T>(typePrefab.gameObject, spawnPos, spawnRot, null, poolType);
+        }
+
+        private T SpawnObject<T>(T typePrefab, Vector3 spawnPos, Quaternion spawnRot, Transform parent, PoolType poolType = PoolType.GameObject) where T : Component
+        {
+            return SpawnObject<T>(typePrefab.gameObject, spawnPos, spawnRot, parent, poolType);
         }
 
         private GameObject SpawnObject(GameObject objectToSpawn, Vector3 spawnPos, Quaternion spawnRot, PoolType poolType = PoolType.GameObject)
         {
-            return SpawnObject<GameObject>(objectToSpawn, spawnPos, spawnRot, poolType);
+            return SpawnObject<GameObject>(objectToSpawn, spawnPos, spawnRot, null, poolType);
+        }
+        
+
+        private GameObject SpawnObject(GameObject objectToSpawn, Vector3 pos, Quaternion spawnRot, Transform parent, PoolType poolType = PoolType.GameObject)
+        {
+            return SpawnObject<GameObject>(objectToSpawn, pos, spawnRot, parent, poolType);
         }
 
         private void ReturnObjectToPool(GameObject gameObject, PoolType poolType = PoolType.GameObject)

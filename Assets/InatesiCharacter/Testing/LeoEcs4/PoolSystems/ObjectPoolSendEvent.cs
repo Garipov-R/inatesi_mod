@@ -14,5 +14,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.PoolSystems
         public Vector3 position;
         public Quaternion rotation;
         public PoolType poolType;
+        public object data;
+        public Transform parent;
     }
 }

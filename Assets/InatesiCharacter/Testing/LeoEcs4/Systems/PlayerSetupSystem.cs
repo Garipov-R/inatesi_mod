@@ -74,12 +74,14 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
 
 
                     characterComponent.InventoryInteraction2 = new Character.InteractionSystem.InventoryInteraction2(characterComponent.CharacterMotionBase);
+                    characterComponent.InventoryInteraction2.InventoryContainer.Size = characterComponent.CharacterSO.StartWeaponSO.Weapons.Count;
                     characterComponent.InventoryInteraction2.CharacterMotionBase = characterComponent.CharacterMotionBase;
 
                     if (characterComponent.CharacterSO.StartWeaponSO.Weapons != null)
                     {
                         foreach (var item in characterComponent.CharacterSO.StartWeaponSO.Weapons)
                         {
+                            Debug.Log($"{item.InventoryItem.Name}");
                             characterComponent.InventoryInteraction2.AddItem(item);
                         }
                     }

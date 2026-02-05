@@ -1,5 +1,7 @@
 ﻿using InatesiCharacter.Testing.Effects;
 using InatesiCharacter.Testing.InatesiArch.WeaponsTest;
+using InatesiCharacter.Testing.LeoEcs4.Components;
+using InatesiCharacter.Testing.LeoEcs4.PoolSystems;
 using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
 using UnityEngine;
@@ -78,8 +80,15 @@ namespace InatesiCharacter.Testing.Character.Weapons
                     hit.rigidbody.AddForce(CharacterMotion.LookSource.Transform.forward * _AttackForce, _ForceMode);
                 }
                 Shared.ParticlesManager.SendParticleEvent(EcsWorld, hitComponent.hit);
-            }
 
+                /*SendEventObjectPool.Send(
+                    EcsWorld,
+                    damageParticle.gameObject,
+                    characterComponent.CharacterMotionBase.transform.position + characterComponent.CharacterMotionBase.Up * (characterComponent.CharacterMotionBase.Height / 2),
+                    Quaternion.identity,
+                    Pooling.PoolType.Particle
+                );*/
+            }
             _SwayBob.Shake(_ForceShake);
 
             CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClip, _VolumeShoot);
