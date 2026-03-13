@@ -6,7 +6,6 @@ using InatesiCharacter.Testing.LeoEcs;
 using InatesiCharacter.Testing.LeoEcs4.Events;
 using InatesiCharacter.Testing.Decals;
 using InatesiCharacter.Testing.LeoEcs4.Components;
-using UnityEngine.ProBuilder;
 
 namespace InatesiCharacter.Testing.LeoEcs4.Systems
 {

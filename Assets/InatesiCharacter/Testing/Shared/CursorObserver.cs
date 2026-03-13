@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.ProBuilder.Shapes;
 
 namespace InatesiCharacter.Testing.Shared
 {

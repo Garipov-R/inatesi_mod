@@ -19,7 +19,6 @@ namespace InatesiCharacter.Camera
 
         [Header("Input")]
         [SerializeField] private bool _InputEnabled = true;
-        [SerializeField] private bool _MouseInput = true;
         [SerializeField] private bool _NewInputSystem = true;
         [SerializeField] private string _InputName = "Look";
         [SerializeField] private string _ScrollInputName = "Scroll";
@@ -55,12 +54,12 @@ namespace InatesiCharacter.Camera
             get => _ZoomAmount;
             set
             {
-                _ZoomAmount = _ZoomAmount = Mathf.Clamp(value, _ZoomRange.x, _ZoomRange.y);
+                _ZoomAmount -= value * _ZoomChangeValue;
+                _ZoomAmount = Mathf.Clamp(_ZoomAmount, _ZoomRange.x, _ZoomRange.y);
             }
         }
         public CursorLockMode CursorLockMode { get => _CursorLockMode; set => _CursorLockMode = value; }
         public bool CursorVisible { get => _CursorVisible; set => _CursorVisible = value; }
-        public bool MouseInput { get => _MouseInput; set => _MouseInput = value; }
         public Vector2 LookInputVector { get => _LookInputVector; set => _LookInputVector = value; }
         public float StartZoom { get => _StartZoom; set => _StartZoom = value; }
         public bool InputEnabled { get => _InputEnabled; set => _InputEnabled = value; }
@@ -78,11 +77,11 @@ namespace InatesiCharacter.Camera
         {
             if (_IsEditor)
             {
-                //Cursor.lockState = _CursorLockMode;
-                //Cursor.visible = _CursorVisible;
+                Cursor.lockState = _CursorLockMode;
+                Cursor.visible = _CursorVisible;
             }
 #if UNITY_STANDALONE || UNITY_EDITOR
-            MouseInput = true;
+            //MouseInput = true;
 
 #elif UNITY_ANDROID
            _NewInputSystem = true;
@@ -138,60 +137,48 @@ namespace InatesiCharacter.Camera
             //_LookInputVector = Inatesi.Inputs.Input.GetVector(_InputName) * 10f;
 
 
-            if (_MouseInput == true)
+            if (_NewInputSystem)
             {
-                if (_NewInputSystem)
-                {
-                    var delta = new Vector2(
-                        Inatesi.Inputs.Input.GetVector(_InputName).x, 
-                        Inatesi.Inputs.Input.GetVector(_InputName).y
+                var delta = new Vector2(
+                    Inatesi.Inputs.Input.GetVector(_InputName).x, 
+                    Inatesi.Inputs.Input.GetVector(_InputName).y
+                );
+                delta *= 0.5f; // Account for scaling applied directly in Windows code by old input system.
+                delta *= 0.1f; // Account for sensitivity setting on old Mouse X and Y axes.
+                _LookInputVector = delta;
+                //_LookInputVector = UnityEngine.InputSystem.Mouse.current.delta.ReadValue() * _SpeedLook.x;
+
+                _LookInputVector = Vector2.Lerp(
+                        _LookInputVector,
+                            new Vector2(
+                                Inatesi.Inputs.Input.GetVector(_InputName).x,
+                                Inatesi.Inputs.Input.GetVector(_InputName).y),
+                            Time.deltaTime * 60
                     );
-                    delta *= 0.5f; // Account for scaling applied directly in Windows code by old input system.
-                    delta *= 0.1f; // Account for sensitivity setting on old Mouse X and Y axes.
-                    _LookInputVector = delta;
-                    //_LookInputVector = UnityEngine.InputSystem.Mouse.current.delta.ReadValue() * _SpeedLook.x;
-
-                    _LookInputVector = Vector2.Lerp(
-                            _LookInputVector,
-                                new Vector2(
-                                    Inatesi.Inputs.Input.GetVector(_InputName).x,
-                                    Inatesi.Inputs.Input.GetVector(_InputName).y),
-                                Time.deltaTime * 60
-                        );
-                }
-                else
-                {
-                    try
-                    {
-                        /*_LookInputVector = new Vector2(
-                            UnityEngine.Input.GetAxis(_HorizontalInputName) * _SpeedLook.x,
-                            UnityEngine.Input.GetAxis(_VerticalInputName) * _SpeedLook.y
-                        );*/
-
-                        _LookInputVector = Vector2.Lerp(
-                            _LookInputVector,
-                                new Vector2(
-                                    UnityEngine.Input.GetAxis(_HorizontalInputName),
-                                    UnityEngine.Input.GetAxis(_VerticalInputName)),
-                                Time.deltaTime * 60
-                        );
-                    }
-                    catch
-                    {
-
-                    }
-                }
             }
             else
             {
-                _LookInputVector = Vector2.Lerp(
-                            _LookInputVector,
-                                new Vector2(
-                                    UnityEngine.Input.GetAxis(_HorizontalInputName),
-                                    UnityEngine.Input.GetAxis(_VerticalInputName)),
-                                Time.deltaTime * 60
-                        );
+                try
+                {
+                    /*_LookInputVector = new Vector2(
+                        UnityEngine.Input.GetAxis(_HorizontalInputName) * _SpeedLook.x,
+                        UnityEngine.Input.GetAxis(_VerticalInputName) * _SpeedLook.y
+                    );*/
+
+                    _LookInputVector = Vector2.Lerp(
+                        _LookInputVector,
+                            new Vector2(
+                                UnityEngine.Input.GetAxis(_HorizontalInputName),
+                                UnityEngine.Input.GetAxis(_VerticalInputName)),
+                            Time.deltaTime * 60
+                    );
+                }
+                catch
+                {
+
+                }
             }
+            
 
             _LookRotationEuler += GameSettings.GameSettingsValue.MouseSens  * new Vector3(_LookInputVector.y, _LookInputVector.x, 0) + _ShakeRotation;
             //_LookRotationEuler += GameSettings.GameSettingsValue.MouseSens * _SpeedLook.x * new Vector3(_LookInputVector.y, _LookInputVector.x, 0) + _ShakeRotation;
@@ -209,8 +196,8 @@ namespace InatesiCharacter.Camera
 
             if (Mathf.Abs(Inatesi.Inputs.Input.GetVector(_ScrollInputName).y) > 0)
             {
-                _ZoomAmount -= Inatesi.Inputs.Input.GetVector(_ScrollInputName).y * _ZoomChangeValue;
-                _ZoomAmount = Mathf.Clamp(_ZoomAmount, _ZoomRange.x, _ZoomRange.y);
+                //_ZoomAmount -= Inatesi.Inputs.Input.GetVector(_ScrollInputName).y * _ZoomChangeValue;
+                //_ZoomAmount = Mathf.Clamp(_ZoomAmount, _ZoomRange.x, _ZoomRange.y);
             }
         }
         
@@ -225,7 +212,7 @@ namespace InatesiCharacter.Camera
                 {
                     transform.SetPositionAndRotation(
                         _Follow.forward * _CameraOffset.z + followPosition,
-                        Quaternion.Euler(new Vector3(_LookRotationEuler.x * -1, _LookRotationEuler.y, 0) + _ShakeRotation)
+                        Quaternion.Euler(new Vector3(_LookRotationEuler.x * -1, _LookRotationEuler.y * 1, 0) + _ShakeRotation)
                     );
                 }
             }

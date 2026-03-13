@@ -5,7 +5,6 @@ using InatesiCharacter.Testing.LeoEcs;
 using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.Shared;
 using Leopotam.EcsLite;
-using RootMotion.FinalIK;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;

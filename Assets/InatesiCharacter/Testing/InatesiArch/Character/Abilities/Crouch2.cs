@@ -6,7 +6,6 @@ using System.Collections;
 using UnityEngine;
 using Input = Inatesi.Inputs.Input;
 using System.Threading.Tasks;
-using RootMotion.FinalIK;
 
 
 namespace InatesiCharacter.Testing.InatesiArch.Character.Abilities

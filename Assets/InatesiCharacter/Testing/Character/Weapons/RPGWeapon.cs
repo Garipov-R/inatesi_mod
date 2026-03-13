@@ -1,8 +1,6 @@
 ﻿using InatesiCharacter.Camera;
 using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.InatesiArch.WeaponsTest;
-using Mirror.Examples.Common;
-using Mirror.Examples.Tanks;
 using System.Collections;
 using UnityEngine;
 using Input = Inatesi.Inputs.Input;

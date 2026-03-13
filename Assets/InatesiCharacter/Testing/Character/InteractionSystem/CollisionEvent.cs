@@ -1,9 +1,11 @@
 ﻿using InatesiCharacter.Testing.LeoEcs;
+using InatesiCharacter.Testing.LeoEcs5;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
+using static UnityEditor.VersionControl.Asset;
 
 namespace InatesiCharacter.Testing.Character.InteractionSystem
 {
@@ -27,10 +29,11 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
 
 
+
         [Inject]
-        protected virtual void Construct(SetupLeoEcs setupLeoEcs)
+        protected virtual void Construct(StartEcs startEcs)
         {
-            _SetupLeoEcs = setupLeoEcs;
+            Debug.Log(startEcs.gameObject.name);
         }
 
         private void OnCollisionEnter(Collision collision)

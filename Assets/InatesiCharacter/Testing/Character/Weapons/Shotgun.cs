@@ -23,6 +23,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             if ((Input.Pressed("Attack") || Input.Pressed("Secondary Attack")) && _TimeSinceAttack >= _delayShootTime && _reloading == false)
             {
+                SendDamageComponent();
                 Shoot();
                 _TimeSinceAttack = 0;
 
@@ -33,7 +34,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 }
             }
 
-            if (_secondaryShootTimeSince > 0.05f && _secondaryShooting == true)
+            if (_secondaryShootTimeSince > 0.1f && _secondaryShooting == true)
             {
                 Shoot();
                 _secondaryShooting = false;
@@ -49,74 +50,77 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 Reload();
                 return;
             }
-            if (EcsWorld == null) return;
 
 
-            int size = 4;
-            RaycastHit hit;
-            _rigidbodies = new Rigidbody[size];
-            var startLinePosition =
-                FPC ?
-                _ShootPoint.position :
-                _CharacterMotionBase.transform.position + _CharacterMotionBase.transform.up * (_CharacterMotionBase.Height - _CharacterMotionBase.Radius);
-            Vector2[] scatters = 
+            if (EcsWorld != null)
             {
+                int size = 4;
+                RaycastHit hit;
+                _rigidbodies = new Rigidbody[size];
+                var startLinePosition =
+                    FPC ?
+                    _ShootPoint.position :
+                    _CharacterMotionBase.transform.position + _CharacterMotionBase.transform.up * (_CharacterMotionBase.Height - _CharacterMotionBase.Radius);
+                Vector2[] scatters =
+                {
                 new Vector2(1, 1),
                 new Vector2(1, -1),
                 new Vector2(-1, -1),
                 new Vector2(-1, 1)
             };
 
-            for (int i = 0; i < size; i++)
-            {
-                var isHit = Raycast(
-                    out hit,
-                    scatters[i] * Random.Range(.01f,_scatter)
-                );
-
-                if (isHit)
+                for (int i = 0; i < size; i++)
                 {
-                    var entity = EcsWorld.NewEntity();
+                    var isHit = Raycast(
+                        out hit,
+                        scatters[i] * Random.Range(.01f, _scatter)
+                    );
 
-                    var hitPool = EcsWorld.GetPool<DamageComponent>();
-                    hitPool.Add(entity);
-                    ref var hitComponent = ref hitPool.Get(entity);
-
-                    var velocity = (hit.point - _startRaycastPosition).normalized;
-                    velocity.y = 0;
-                    //hitComponent.first = transform.root.gameObject;
-                    //hitComponent.other = cast.transform.gameObject;
-                    hitComponent.owner = CharacterMotion.gameObject;
-                    hitComponent.target = hit.transform.root.gameObject;
-                    hitComponent.damage = _Damage;
-                    /*hitComponent.velocity =
-                        velocity * (_forceVelocityDamage) +
-                        new Vector3(0,Random.Range(2,2f),0);*/
-                    hitComponent.position = hit.point;
-                    hitComponent.isHit = isHit;
-                    hitComponent.hit = hit;
-                    hitComponent.sizeParticle = _SizeParticle;
-                    hitComponent.speedParticle = _VelocityParticle;
-                    hitComponent.ray = new Ray(_startRaycastPosition, _startRaycastDirection);
-
-
-                    if (hit.rigidbody != null)
+                    if (isHit)
                     {
-                        hit.rigidbody.AddForce(CharacterMotion.LookSource.Transform.forward * (_forceVelocityDamage), _ForceMode);
-                    }
+                        var entity = EcsWorld.NewEntity();
 
-                    Shared.ParticlesManager.SendParticleEvent(EcsWorld, hitComponent.hit);
+                        var hitPool = EcsWorld.GetPool<DamageComponent>();
+                        hitPool.Add(entity);
+                        ref var hitComponent = ref hitPool.Get(entity);
+
+                        var velocity = (hit.point - _startRaycastPosition).normalized;
+                        velocity.y = 0;
+                        //hitComponent.first = transform.root.gameObject;
+                        //hitComponent.other = cast.transform.gameObject;
+                        hitComponent.owner = CharacterMotion.gameObject;
+                        hitComponent.target = hit.transform.root.gameObject;
+                        hitComponent.damage = _Damage;
+                        /*hitComponent.velocity =
+                            velocity * (_forceVelocityDamage) +
+                            new Vector3(0,Random.Range(2,2f),0);*/
+                        hitComponent.position = hit.point;
+                        hitComponent.isHit = isHit;
+                        hitComponent.hit = hit;
+                        hitComponent.sizeParticle = _SizeParticle;
+                        hitComponent.speedParticle = _VelocityParticle;
+                        hitComponent.ray = new Ray(_startRaycastPosition, _startRaycastDirection);
+
+
+                        if (hit.rigidbody != null)
+                        {
+                            hit.rigidbody.AddForce(CharacterMotion.LookSource.Transform.forward * (_forceVelocityDamage), _ForceMode);
+                        }
+
+                        Shared.ParticlesManager.SendParticleEvent(EcsWorld, hitComponent.hit);
+                    }
+                }
+
+
+
+
+                for (int i = 0; i < _rigidbodies.Length; i++)
+                {
+                    if (_rigidbodies[i] == null) continue;
+                    _rigidbodies[i].AddForce(CharacterMotion.LookSource.Transform.forward * (_forceVelocityDamage), _ForceMode);
                 }
             }
-
             
-
-
-            for (int i = 0; i < _rigidbodies.Length; i++)
-            {
-                if (_rigidbodies[i] == null) continue;
-                _rigidbodies[i].AddForce(CharacterMotion.LookSource.Transform.forward * (_forceVelocityDamage), _ForceMode);
-            }
 
 
 

@@ -191,7 +191,11 @@ namespace InatesiCharacter.Movements.SourceEngine
         {
             base.UpdateCharacter();
 
-            if (LookSource != null) LookSource.GameObject.GetComponent<AudioLowPassFilter>().enabled = _waterDepth > 0.9f;
+            if (LookSource != null) 
+            {
+                /*if (LookSource.GameObject.TryGetComponent(out AudioLowPassFilter audioLowPassFilter))
+                    audioLowPassFilter.enabled = _waterDepth > 0.9f;*/
+            } 
         }
 
 

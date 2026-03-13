@@ -8,7 +8,7 @@ namespace InatesiCharacter.Testing.InatesiArch.InventorySystems
     [CreateAssetMenu(fileName = "item name", menuName = "Inventory items/Basic", order = 1)]
     public class ItemScriptableObject : ScriptableObject
     {
-        [SerializeField] private InventoryItem inventoryItem;
+        private InventoryItem inventoryItem;
         [Space(10)]
 
         [SerializeField] private string _name;
@@ -16,7 +16,7 @@ namespace InatesiCharacter.Testing.InatesiArch.InventorySystems
         [SerializeField] private Sprite _sprite;
         private GameObject _prefab;
         [SerializeField] private GameObject _modelPrefab;
-        protected TypeItem _itemType;
+        [SerializeField] protected TypeItem _itemType;
 
         public string Name { get => _name; set => _name = value; }
         public GameObject Prefab { get => _prefab; set => _prefab = value; }

@@ -27,7 +27,7 @@ namespace InatesiCharacter.Testing.Decals
             var texture = textureList[Random.Range(0, textureList.Count - 1)];
             if(texture == null) return null;
             var decalInstance = GameObject.Instantiate(_DecalInstance);
-            decalInstance.Setup(texture);
+            //decalInstance.Setup(texture);
 
             return decalInstance;
         }

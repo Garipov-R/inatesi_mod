@@ -1,15 +1,15 @@
 ﻿using InatesiCharacter.Camera;
 using InatesiCharacter.SuperCharacter;
+using InatesiCharacter.Testing.Character.Bots;
 using InatesiCharacter.Testing.Character.InteractionSystem;
 using InatesiCharacter.Testing.InatesiArch.WeaponsTest;
 using InatesiCharacter.Testing.LeoEcs;
-using InatesiCharacter.Testing.LeoEcs.Shared;
-using InatesiCharacter.Testing.LeoEcs4.Events;
-using InatesiCharacter.Testing.Shared.Components;
+using InatesiCharacter.Testing.LeoEcs4.Components;
+using InatesiCharacter.Testing.LeoEcs5;
+using InatesiCharacter.Testing.LeoEcs5.Components;
 using Leopotam.EcsLite;
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -68,6 +68,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
         protected int _CurrentAmmo = 0;
         protected bool _scatterEnabled = true;
         protected Transform _ShootPoint;
+        protected StartEcs _StartEcs;
 
         protected EcsWorld EcsWorld 
         {
@@ -96,10 +97,10 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
 
         [Zenject.Inject]
-        protected void Construct(SetupLeoEcs setupLeoEcs)
+        protected void Construct(StartEcs startEcs)
         {
+            _StartEcs = startEcs;
             Debug.Log("weapon inject");
-            _SetupLeoEcs = setupLeoEcs;
         }
 
         public virtual void Init()
@@ -515,6 +516,29 @@ namespace InatesiCharacter.Testing.Character.Weapons
         public bool IsEmptyMagazine()
         {
             return _carriableObjectData.TotalAmmo < 1;
+        }
+
+        public void SendDamageComponent()
+        {
+            if (_StartEcs.EcsWorld == null) return;
+
+            var ecsWorld = _StartEcs.EcsWorld;
+
+            var newDamageEntity = ecsWorld.NewEntity();
+            ref var damageComponent = ref ecsWorld.GetPool<DamageComponent>().Add(newDamageEntity);
+
+            var origin = _CharacterMotionBase.LookSource.LookPosition();
+            var direction = _CharacterMotionBase.LookSource.LookDirection();
+            var ray = new Ray(origin, direction);
+            var cast = Physics.Raycast(ray, out RaycastHit hitInfo, 120f, Configs.Config.s_DamageLayerMask, QueryTriggerInteraction.Ignore);
+            if (cast)
+            {
+                damageComponent.owner = _CharacterMotionBase.gameObject;
+                damageComponent.target = hitInfo.transform.gameObject;
+                damageComponent.ray = ray;
+                damageComponent.hit = hitInfo;
+                damageComponent.damage = _Damage;
+            }
         }
     }
 }

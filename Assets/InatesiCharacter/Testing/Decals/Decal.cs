@@ -6,7 +6,7 @@ namespace InatesiCharacter.Testing.Decals
 {
     public class Decal : MonoBehaviour
     {
-        [SerializeField] private DecalProjector _DecalProjector;
+        /*[SerializeField] private DecalProjector _DecalProjector;
 
 
         public void Setup(Texture texture)
@@ -15,6 +15,6 @@ namespace InatesiCharacter.Testing.Decals
 
             //_DecalProjector.size = new Vector3(texture.width, _DecalProjector.size.y, texture.height);
             _DecalProjector.material.SetTexture("Base_Map", texture);
-        }
+        }*/
     }
 }

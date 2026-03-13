@@ -178,7 +178,6 @@ namespace InatesiCharacter.Testing.InatesiArch
 
 #if UNITY_EDITOR || UNITY_STANDALONE
             cameraMotion.CursorLockMode = CursorLockMode.Locked;
-            cameraMotion.MouseInput = true;
             cameraMotion.CursorVisible = false;
 #elif UNITY_ANDROID
             cameraMotion.CursorLockMode = CursorLockMode.None;

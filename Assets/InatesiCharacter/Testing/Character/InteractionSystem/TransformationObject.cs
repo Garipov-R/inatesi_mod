@@ -24,7 +24,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         private void Start()
         {
             _startRotation = transform.rotation;
-            _startPosition = transform.position;
+            _startPosition = transform.localPosition;
         }
 
         private void Update()
@@ -43,7 +43,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             if (_translate)
             {
                 Vector3 targetTranslate = _translated == false ? _startPosition : _ToTranslate;
-                transform.position = Vector3.MoveTowards(transform.position, targetTranslate, Time.deltaTime * _SpeedTranslate);
+                transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetTranslate, Time.deltaTime * _SpeedTranslate);
 
                 if (Vector3.Distance(transform.position, targetTranslate) <= 0)
                 {

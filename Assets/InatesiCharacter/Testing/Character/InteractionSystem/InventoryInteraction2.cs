@@ -74,7 +74,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             GameObject viewModel = null;
             WeaponBase weaponBase = null;
 
-            if (weaponSO.ViewModel != null && _FirstPersonHelper != null)
+            if (weaponSO.ViewModel != null) /* && _FirstPersonHelper != null*/
             {
                 viewModel = GameObject.Instantiate(weaponSO.ViewModel);
             }
@@ -174,7 +174,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
                         _CurrentWeaponBase.Enable();
                     }
 
-                    break;
+                break;
             }
         }
 
