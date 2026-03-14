@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace InatesiCharacter.Testing.LeoEcs5.Systems
 {
@@ -19,8 +20,10 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
         private EcsFilter _PlayerCharacterFilter;
         private EcsFilter _PlayerFilter;
         private EcsFilter _BotFilter;
+        private EcsFilter _DamageFilter;
         private EcsPool<CharacterComponent> _CharacterPool;
         private EcsPool<PlayerComponent> _PlayerPool;
+        private EcsPool<DamageComponent> _DamagePool;
 
 
         public void Init(IEcsSystems systems)
@@ -31,9 +34,11 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
             _BotFilter = systems.GetWorld().Filter<BotComponent>().End();
             _CharacterPool = systems.GetWorld().GetPool<CharacterComponent>();
             _PlayerPool = systems.GetWorld().GetPool<PlayerComponent>();
+            _DamageFilter = systems.GetWorld().Filter<DamageComponent>().End();
+            _DamagePool = systems.GetWorld().GetPool<DamageComponent>();
 
             var sharedData = systems.GetShared<SharedData>();
-            if (sharedData.CharacterMotionBase != null )
+            if (sharedData.StartPlayerCharacterMotionBase != null )
             {
                 var newCharacterEntity = systems.GetWorld().NewEntity();
                 ref var characterComponent = ref _CharacterPool.Add(newCharacterEntity);
@@ -47,10 +52,13 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                 playerComponent.fpc = true;
                 playerComponent.inputEnabled = true;
+                playerComponent.uiDocument = sharedData.PlayerUIDocument;
 
                 characterComponent.CharacterSO = sharedData.CharacterSO;
-                characterComponent.characterMotion = sharedData.CharacterMotionBase;
+                characterComponent.characterMotion = sharedData.StartPlayerCharacterMotionBase;
                 characterComponent.characterMotion.LookSource = camera;
+                characterComponent.transform = sharedData.StartPlayerCharacterMotionBase.transform;
+                characterComponent.gameObject = sharedData.StartPlayerCharacterMotionBase.gameObject;
 
 
                 // inventory
@@ -137,17 +145,44 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
 
 
+                if (Inatesi.Inputs.Input.AnyKeyDown())
+                {
+                    string ammoText = string.Empty;
 
+                    if (characterComponent.InventoryInteraction2.CurrentWeaponBase.CarriableObjectData.WeaponType != Character.Weapons.WeaponType.None)
+                    {
+                        ammoText =
+                            $"{characterComponent.InventoryInteraction2.CurrentWeaponBase.CarriableObjectData.Ammo} /" +
+                            $"{characterComponent.InventoryInteraction2.CurrentWeaponBase.CarriableObjectData.TotalAmmo} ";
+                    }
+                    else
+                    {
+                        ammoText = "hell";
+                    }
 
+                    playerComponent.uiDocument.rootVisualElement.Q<Label>("ammo").text = ammoText;
+                }
 
+                foreach (var entityDamage in _DamageFilter)
+                {
+                    ref var damageComponent = ref _DamagePool.Get(entityDamage);
 
-
+                    if (damageComponent.target == characterComponent.gameObject)
+                    {
+                        characterComponent.characterMotion.AddForce(damageComponent.velocity);
+                        var clips = systems.GetShared<SharedData>().CharacterSO.AudioCharacter.HurtClips;
+                        characterComponent.characterMotion.AudioSource.PlayOneShot(
+                            clips[UnityEngine.Random.Range(0, clips.Length - 1)]
+                        );
+                    }
+                }
 
 
 
 
                 characterComponent.characterMotion.UpdateCharacter();
                 characterComponent.characterMotion.UpdateAnimator();
+                characterComponent.characterMotion.UpdateFootstep();
             }
         }
     }

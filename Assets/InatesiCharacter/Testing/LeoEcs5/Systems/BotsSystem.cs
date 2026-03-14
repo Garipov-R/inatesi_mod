@@ -1,7 +1,7 @@
 ﻿using InatesiCharacter.Testing.Character.Bots;
 using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
 using Leopotam.EcsLite;
-using System.Collections;
 using UnityEngine;
 
 namespace InatesiCharacter.Testing.LeoEcs5.Systems
@@ -28,7 +28,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 ref var botComponent = ref systems.GetWorld().GetPool<BotComponent>().Add(newBotEntity);
                 botComponent.botTest = bot;
                 botComponent.gameObject = bot.gameObject;
-                botComponent.health = 2;
+                botComponent.health = (int)bot.Health;
             }
         }
 
@@ -44,6 +44,14 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                     if (damageComponent.target != botComponent.gameObject)
                         continue;
+
+                    SendEventObjectPool.Send(
+                            systems.GetWorld(),
+                            botComponent.botTest.DamageVisualEffect.gameObject,
+                            damageComponent.hit.point,
+                            Quaternion.LookRotation(-damageComponent.ray.direction),
+                            Pooling.PoolType.Particle
+                    );
 
                     if (botComponent.health <= 0) 
                     {

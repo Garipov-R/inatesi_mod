@@ -23,7 +23,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             if ((Input.Pressed("Attack") || Input.Pressed("Secondary Attack")) && _TimeSinceAttack >= _delayShootTime && _reloading == false)
             {
-                SendDamageComponent();
+                
                 Shoot();
                 _TimeSinceAttack = 0;
 
@@ -51,6 +51,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 return;
             }
 
+            SendDamageComponent();
 
             if (EcsWorld != null)
             {

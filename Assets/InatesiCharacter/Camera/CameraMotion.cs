@@ -1,4 +1,5 @@
-﻿using InatesiCharacter.Testing.Shared;
+﻿using DG.Tweening;
+using InatesiCharacter.Testing.Shared;
 using System.Collections;
 using UnityEngine;
 
@@ -178,7 +179,6 @@ namespace InatesiCharacter.Camera
 
                 }
             }
-            
 
             _LookRotationEuler += GameSettings.GameSettingsValue.MouseSens  * new Vector3(_LookInputVector.y, _LookInputVector.x, 0) + _ShakeRotation;
             //_LookRotationEuler += GameSettings.GameSettingsValue.MouseSens * _SpeedLook.x * new Vector3(_LookInputVector.y, _LookInputVector.x, 0) + _ShakeRotation;

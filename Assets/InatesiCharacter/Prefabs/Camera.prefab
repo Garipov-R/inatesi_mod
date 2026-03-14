@@ -247,14 +247,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4211311127049771354}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 0
   m_Color: {r: 1, g: 0.92441374, b: 0.6933962, a: 1}
   m_Intensity: 3
   m_Range: 10
   m_SpotAngle: 40.326923
   m_InnerSpotAngle: 33.27644
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 0
     m_Resolution: -1
@@ -429,7 +429,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 100
+  far clip plane: 10
   field of view: 60
   orthographic: 0
   orthographic size: 5

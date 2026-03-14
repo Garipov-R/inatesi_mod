@@ -4,9 +4,11 @@ using InatesiCharacter.Testing.Character.Bots;
 using InatesiCharacter.Testing.Character.InteractionSystem;
 using InatesiCharacter.Testing.InatesiArch.WeaponsTest;
 using InatesiCharacter.Testing.LeoEcs;
+using InatesiCharacter.Testing.LeoEcs.Shared;
 using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.LeoEcs5;
 using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
 using Leopotam.EcsLite;
 using System;
 using System.Collections;
@@ -522,11 +524,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
         {
             if (_StartEcs.EcsWorld == null) return;
 
-            var ecsWorld = _StartEcs.EcsWorld;
-
-            var newDamageEntity = ecsWorld.NewEntity();
-            ref var damageComponent = ref ecsWorld.GetPool<DamageComponent>().Add(newDamageEntity);
-
+            ref var damageComponent = ref SendDamageEvent.Send(_StartEcs.EcsWorld);
+            
             var origin = _CharacterMotionBase.LookSource.LookPosition();
             var direction = _CharacterMotionBase.LookSource.LookDirection();
             var ray = new Ray(origin, direction);
@@ -539,6 +538,10 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 damageComponent.hit = hitInfo;
                 damageComponent.damage = _Damage;
             }
+
+            damageComponent.isHit = cast;
+
+            Shared.ParticlesManager.SendParticleEvent(_StartEcs.EcsWorld, damageComponent.hit);
         }
     }
 }

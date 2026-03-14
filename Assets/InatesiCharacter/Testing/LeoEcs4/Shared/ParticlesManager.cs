@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Leopotam.EcsLite;
-using Zenject;
+﻿using Leopotam.EcsLite;
 using UnityEngine;
-using InatesiCharacter.Testing.LeoEcs;
-using InatesiCharacter.Testing.LeoEcs4.Events;
 using UnityEngine.VFX;
+using InatesiCharacter.Testing.LeoEcs5.Components;
 
 namespace InatesiCharacter.Testing.Shared
 {

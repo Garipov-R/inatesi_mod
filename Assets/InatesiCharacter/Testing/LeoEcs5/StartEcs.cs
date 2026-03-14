@@ -1,8 +1,7 @@
-﻿using InatesiCharacter.Testing.LeoEcs;
-using InatesiCharacter.Testing.LeoEcs5.Components;
+﻿using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
 using InatesiCharacter.Testing.LeoEcs5.Systems;
 using Leopotam.EcsLite;
-using Leopotam.EcsLite.Di;
 using Leopotam.EcsLite.ExtendedSystems;
 using System.Collections;
 using UnityEngine;
@@ -39,8 +38,12 @@ namespace InatesiCharacter.Testing.LeoEcs5
                 .Add(new PlayerWeaponActionsSystem())
                 .Add(new PlayerSystem())
                 .Add(new BotsSystem())
+                .Add(new HitEffectsSystem())
+                .Add(new ObjectPoolManagerSystem())
 
                 .DelHere<DamageComponent>()
+                .DelHere<ParticleEvent>()
+                .DelHere<ObjectPoolSendEvent>()
             ;
 
             _FixedUpdateSystems

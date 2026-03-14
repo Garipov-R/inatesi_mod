@@ -1,7 +1,10 @@
-﻿using InatesiCharacter.Testing.LeoEcs5;
+﻿using InatesiCharacter.SuperCharacter;
+using InatesiCharacter.Testing.LeoEcs5;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VFX;
 
 namespace InatesiCharacter.Testing.Character.Bots
 {
@@ -17,6 +20,7 @@ namespace InatesiCharacter.Testing.Character.Bots
         public float detectionRange = 15f;
         public float attackRange = 3f;
         public float attackCooldown = 2f;
+        public float attackForce = 5f;
         public float chaseSpeed = 3.5f;
         public float idleSpeed = 0f; 
         public float wanderRadius = 10f;
@@ -26,6 +30,11 @@ namespace InatesiCharacter.Testing.Character.Bots
         [Header("Attack Settings")]
         public int attackDamage = 10;
         public float attackDelay = 0.3f; // Time before damage is applied
+
+        [Header("Settings")]
+        [SerializeField] private float _health = 2f;
+        [Header("Effects")]
+        [SerializeField] private VisualEffect _DamageVisualEffect;
 
         private EnemyState currentState;
         private float lastAttackTime;
@@ -37,9 +46,12 @@ namespace InatesiCharacter.Testing.Character.Bots
         private float wanderTimer;
         private float damageTimer;
         private bool died;
+        [Zenject.Inject] private StartEcs _StartEcs;
 
         public bool TargetIsVisible { get => _targetIsVisible; set => _targetIsVisible = value; }
         public Vector3 TargetPosition { get => _targetIsVisible ? _target.position : _lastTargetPosition; }
+        public VisualEffect DamageVisualEffect { get => _DamageVisualEffect; set => _DamageVisualEffect = value; }
+        public float Health { get => _health; set => _health = value; }
 
         private enum EnemyState
         {
@@ -251,9 +263,38 @@ namespace InatesiCharacter.Testing.Character.Bots
                 }*/
 
                 //Debug.Log("Enemy attacked player!");
+
+                Attack();
             }
 
             isAttacking = false;
+        }
+
+        private void Attack()
+        {
+            if (_StartEcs == null) return;
+
+            ref var damageComponent = ref SendDamageEvent.Send(_StartEcs.EcsWorld);
+
+            Ray ray = new(transform.position + transform.up * 1, transform.forward);
+            var cast = Physics.Raycast(
+                ray, 
+                out RaycastHit hitInfo, 
+                attackRange, 
+                Configs.Config.s_DamageCharacterLayerMask, 
+                QueryTriggerInteraction.Ignore
+            );
+
+            if (cast)
+            {
+                damageComponent.damage = 2;
+                damageComponent.hit = hitInfo;
+                damageComponent.isHit = true;
+                damageComponent.ray = ray;
+                damageComponent.target = hitInfo.transform.gameObject;
+                damageComponent.owner = transform.gameObject;
+                damageComponent.velocity = transform.forward * attackForce;
+            }
         }
 
         void UpdateAnimations()
@@ -337,7 +378,7 @@ namespace InatesiCharacter.Testing.Character.Bots
 
             currentState = EnemyState.Died;
             agent.speed = 0;
-            GetComponent<Collider>().enabled = false;
+            //GetComponent<Collider>();
             died = true;
         }
 
