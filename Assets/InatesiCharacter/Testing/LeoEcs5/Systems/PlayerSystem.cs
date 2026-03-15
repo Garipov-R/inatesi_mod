@@ -183,6 +183,8 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         );
 
                         characterComponent.health -= damageComponent.damage;
+
+                        systems.GetShared<SharedData>().SimplePlayerUI.ScreenEffect(true);
                     }
                 }
 
@@ -202,8 +204,10 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 ref var characterComponent = ref _CharacterPool.Get(characterEntity);
                 ref var playerComponent = ref _PlayerPool.Get(characterEntity);
 
+                Debug.Log(characterComponent.characterMotion.Velocity.y);
                 if (characterComponent.characterMotion.Velocity.y <= characterComponent.CharacterSO.MoveConfig.FallDamageVelocity)
                 {
+
                     ref var damageComponent = ref SendDamageEvent.Send(_ecsWorld);
                     damageComponent.damage = 10;
                     damageComponent.velocity = Vector3.up;

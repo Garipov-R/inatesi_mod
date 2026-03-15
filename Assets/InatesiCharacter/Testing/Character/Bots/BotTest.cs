@@ -266,10 +266,7 @@ namespace InatesiCharacter.Testing.Character.Bots
             lastAttackTime = Time.time;
 
             // Trigger attack animation
-            if (animator != null)
-            {
-                animator.SetTrigger("attack");
-            }
+            
 
             // Wait for attack delay
             yield return new WaitForSeconds(attackDelay);
@@ -287,26 +284,27 @@ namespace InatesiCharacter.Testing.Character.Bots
 
                 //Debug.Log("Enemy attacked player!");
 
-                Attack();
+
+                StartAttack();
             }
 
             isAttacking = false;
         }
 
-        private void Attack()
+        public void Attack()
         {
-            PlayAudio(_OnAttackAudio);
-
             if (_StartEcs == null) return;
 
             ref var damageComponent = ref SendDamageEvent.Send(_StartEcs.EcsWorld);
 
             Ray ray = new(transform.position + transform.up * 1, transform.forward);
-            var cast = Physics.Raycast(
-                ray, 
-                out RaycastHit hitInfo, 
-                attackRange, 
-                Configs.Config.s_DamageCharacterLayerMask, 
+            var cast = Physics.SphereCast(
+                ray.origin,
+                1f,
+                ray.direction,
+                out RaycastHit hitInfo,
+                attackRange,
+                Configs.Config.s_DamageCharacterLayerMask,
                 QueryTriggerInteraction.Ignore
             );
 
@@ -319,6 +317,15 @@ namespace InatesiCharacter.Testing.Character.Bots
                 damageComponent.target = hitInfo.transform.gameObject;
                 damageComponent.owner = transform.gameObject;
                 damageComponent.velocity = transform.forward * attackForce;
+            }
+        }
+
+        private void StartAttack()
+        {
+            PlayAudio(_OnAttackAudio);
+            if (animator != null)
+            {
+                animator.SetTrigger("attack");
             }
         }
 

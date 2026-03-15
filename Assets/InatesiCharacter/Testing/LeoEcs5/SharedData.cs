@@ -1,5 +1,6 @@
 ﻿using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.Character.Data;
+using InatesiCharacter.Testing.Character.UI;
 using InatesiCharacter.Testing.Shared;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,12 @@ namespace InatesiCharacter.Testing.LeoEcs5
         [SerializeField] private CharacterMotionBase _StartPlayerCharacterMotionBase;
         [SerializeField] private ParticleSettingsSO _ParticleSettingsSO;
         [SerializeField] private UIDocument _PlayerUIDocument;
+        [SerializeField] private SimplePlayerUI _SimplePlayerUI;
 
         public CharacterSO CharacterSO { get => _CharacterSO; set => _CharacterSO = value; }
         public CharacterMotionBase StartPlayerCharacterMotionBase { get => _StartPlayerCharacterMotionBase; set => _StartPlayerCharacterMotionBase = value; }
         public ParticleSettingsSO ParticleSettingsSO { get => _ParticleSettingsSO; set => _ParticleSettingsSO = value; }
         public UIDocument PlayerUIDocument { get => _PlayerUIDocument; set => _PlayerUIDocument = value; }
+        public SimplePlayerUI SimplePlayerUI { get => _SimplePlayerUI; set => _SimplePlayerUI = value; }
     }
 }
