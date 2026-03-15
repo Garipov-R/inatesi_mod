@@ -67,6 +67,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     }
                     else 
                     {
+                        Debug.Log(123132);
                         botComponent.botTest.Damage();
                     }
                 }

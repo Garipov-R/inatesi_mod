@@ -14,6 +14,7 @@ namespace InatesiCharacter.Testing.Character.Bots
         [Header("References")]
         private NavMeshAgent agent;
         private Animator animator;
+        [SerializeField] private AudioSource _AudioSource;
         [SerializeField] private Transform _target;
 
         [Header("AI Settings")]
@@ -35,6 +36,11 @@ namespace InatesiCharacter.Testing.Character.Bots
         [SerializeField] private float _health = 2f;
         [Header("Effects")]
         [SerializeField] private VisualEffect _DamageVisualEffect;
+        [Header("Audio")]
+        [SerializeField] private AudioClip _OnAwakeAudio;
+        [SerializeField] private AudioClip _OnAttackAudio;
+        [SerializeField] private AudioClip _OnDamageAudio;
+        [SerializeField] private AudioClip _OnDeadAudio;
 
         private EnemyState currentState;
         private float lastAttackTime;
@@ -86,8 +92,9 @@ namespace InatesiCharacter.Testing.Character.Bots
 
             if (damageTimer > 0)
             {
-                currentState = EnemyState.Idle;
+                //currentState = EnemyState.Idle;
                 damageTimer -= Time.deltaTime;
+                return;
             }
 
             if (died == true)
@@ -138,6 +145,7 @@ namespace InatesiCharacter.Testing.Character.Bots
 
             if (_targetIsVisible == true)
             {
+                PlayAudio(_OnAwakeAudio);
                 currentState = EnemyState.Chase;
             }
             else
@@ -167,6 +175,7 @@ namespace InatesiCharacter.Testing.Character.Bots
             // Check if player left detection range
             else if (distanceToPlayer > detectionRange && _targetIsVisible == false)
             {
+                PlayAudio(_OnAwakeAudio);
                 currentState = EnemyState.Idle;
             }
 
@@ -177,6 +186,19 @@ namespace InatesiCharacter.Testing.Character.Bots
                     currentState = EnemyState.Idle;
                 }
             }
+        }
+
+        private void PlayAudio(AudioClip audioClip)
+        {
+            if (_AudioSource == null)
+                return;
+
+            if (audioClip == null)
+                return;
+
+            _AudioSource.clip = audioClip;
+            _AudioSource.PlayDelayed(.5f);
+            //_AudioSource.PlayOneShot(audioClip);
         }
 
         void UpdateAttackState(float distanceToPlayer)
@@ -220,6 +242,7 @@ namespace InatesiCharacter.Testing.Character.Bots
             agent.speed = chaseSpeed;
             if (_targetIsVisible)
             {
+                PlayAudio(_OnAwakeAudio);
                 currentState = EnemyState.Chase;
             }
 
@@ -272,6 +295,8 @@ namespace InatesiCharacter.Testing.Character.Bots
 
         private void Attack()
         {
+            PlayAudio(_OnAttackAudio);
+
             if (_StartEcs == null) return;
 
             ref var damageComponent = ref SendDamageEvent.Send(_StartEcs.EcsWorld);
@@ -366,7 +391,9 @@ namespace InatesiCharacter.Testing.Character.Bots
         {
             if (animator == null) return;
 
+            PlayAudio(_OnDamageAudio);
             animator.SetTrigger("damage");
+            agent.speed = 0;
             damageTimer = damageTime;
         }
 
@@ -376,6 +403,7 @@ namespace InatesiCharacter.Testing.Character.Bots
 
             animator.SetTrigger("die");
 
+            PlayAudio(_OnDeadAudio);
             currentState = EnemyState.Died;
             agent.speed = 0;
             //GetComponent<Collider>();

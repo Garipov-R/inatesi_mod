@@ -3,6 +3,7 @@ using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.Character.Bots;
 using InatesiCharacter.Testing.Character.InteractionSystem;
 using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
 using Leopotam.EcsLite;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.UIElements;
 
 namespace InatesiCharacter.Testing.LeoEcs5.Systems
@@ -25,9 +27,12 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
         private EcsPool<PlayerComponent> _PlayerPool;
         private EcsPool<DamageComponent> _DamagePool;
 
+        private EcsWorld _ecsWorld;
+
 
         public void Init(IEcsSystems systems)
         {
+            _ecsWorld = systems.GetWorld();
             _CharacterFilter = systems.GetWorld().Filter<CharacterComponent>().End();
             _PlayerCharacterFilter = systems.GetWorld().Filter<CharacterComponent>().Inc<PlayerComponent>().End();
             _PlayerFilter = systems.GetWorld().Filter<PlayerComponent>().End();
@@ -59,7 +64,8 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 characterComponent.characterMotion.LookSource = camera;
                 characterComponent.transform = sharedData.StartPlayerCharacterMotionBase.transform;
                 characterComponent.gameObject = sharedData.StartPlayerCharacterMotionBase.gameObject;
-
+                characterComponent.health = 30;
+                characterComponent.characterMotion.OnLanded.AddListener( OnLanded);
 
                 // inventory
                 characterComponent.InventoryInteraction2 = new Character.InteractionSystem.InventoryInteraction2(characterComponent.characterMotion);
@@ -109,6 +115,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                 if (wishJump == true && characterComponent.characterMotion.OnGrounded == true)
                 {
+                    characterComponent.characterMotion.AudioSource.PlayOneShot(characterComponent.CharacterSO.AudioCharacter.OnJumpClip);
                     characterComponent.characterMotion.AddForce(Vector3.up * characterComponent.characterMotion.MoveConfig.JumpForce);
                 }
 
@@ -132,7 +139,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                             collisionEvent.Use();
                         }
                     }
-                    characterComponent.InventoryInteraction2.SetActiveInventoryItem(0);
                 }
 
                 if (Inatesi.Inputs.Input.GetKeyDown(UnityEngine.InputSystem.Key.Digit1)) characterComponent.InventoryInteraction2.SetActiveInventoryItem(0);
@@ -163,6 +169,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     playerComponent.uiDocument.rootVisualElement.Q<Label>("ammo").text = ammoText;
                 }
 
+
                 foreach (var entityDamage in _DamageFilter)
                 {
                     ref var damageComponent = ref _DamagePool.Get(entityDamage);
@@ -174,16 +181,38 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         characterComponent.characterMotion.AudioSource.PlayOneShot(
                             clips[UnityEngine.Random.Range(0, clips.Length - 1)]
                         );
+
+                        characterComponent.health -= damageComponent.damage;
                     }
                 }
 
-
+                
 
 
                 characterComponent.characterMotion.UpdateCharacter();
                 characterComponent.characterMotion.UpdateAnimator();
                 characterComponent.characterMotion.UpdateFootstep();
             }
+        }
+
+        private void OnLanded()
+        {
+            foreach (var characterEntity in _PlayerCharacterFilter)
+            {
+                ref var characterComponent = ref _CharacterPool.Get(characterEntity);
+                ref var playerComponent = ref _PlayerPool.Get(characterEntity);
+
+                if (characterComponent.characterMotion.Velocity.y <= characterComponent.CharacterSO.MoveConfig.FallDamageVelocity)
+                {
+                    ref var damageComponent = ref SendDamageEvent.Send(_ecsWorld);
+                    damageComponent.damage = 10;
+                    damageComponent.velocity = Vector3.up;
+                    damageComponent.target = characterComponent.gameObject;
+
+                    characterComponent.characterMotion.AudioSource.PlayOneShot(characterComponent.CharacterSO.AudioCharacter.OnLandedClip);
+                }
+            }
+                
         }
     }
 }

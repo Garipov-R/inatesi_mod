@@ -13,5 +13,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Components
         public InventoryInteraction2 InventoryInteraction2;
         public CharacterSO CharacterSO;
         public bool isDead;
+        public float health;
     }
 }

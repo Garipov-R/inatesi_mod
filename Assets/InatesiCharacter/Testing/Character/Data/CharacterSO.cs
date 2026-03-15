@@ -58,11 +58,15 @@ namespace InatesiCharacter.Testing.Character.Data
     {
         [SerializeField] private AudioClip[] _HurtClips;
         [SerializeField] private AudioClip _RebornClip;
+        [SerializeField] private AudioClip _OnJumpClip;
+        [SerializeField] private AudioClip _OnLandedClip;
         [SerializeField] private float _VolumeHeart = 1;
 
         public AudioClip[] HurtClips { get => _HurtClips; set => _HurtClips = value; }
         public AudioClip RebornClip { get => _RebornClip; set => _RebornClip = value; }
         public float VolumeHurt { get => _VolumeHeart; set => _VolumeHeart = value; }
+        public AudioClip OnJumpClip { get => _OnJumpClip; set => _OnJumpClip = value; }
+        public AudioClip OnLandedClip { get => _OnLandedClip; set => _OnLandedClip = value; }
     }
 
     
