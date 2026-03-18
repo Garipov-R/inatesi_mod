@@ -14,7 +14,9 @@ namespace InatesiCharacter.Testing.Character.UI
         private Label _ammoLabel;
         private VisualElement _screenEffect;
 
-        private void Start()
+        public Label HealthLabel { get => _healthLabel; set => _healthLabel = value; }
+
+        private void Awake()
         {
             _rootVisualElement = _document.rootVisualElement;
             _healthLabel = _rootVisualElement.Q<Label>("health");
@@ -35,7 +37,15 @@ namespace InatesiCharacter.Testing.Character.UI
 
         public void ScreenEffect(bool enable)
         {
-            _screenEffect.ToggleInClassList("enable");
+            //_screenEffect.EnableInClassList("enable", enable);
+            _screenEffect.EnableInClassList("disable", false);
+            StartCoroutine(PerformEffect());
+        }
+
+        private IEnumerator PerformEffect()
+        {
+            yield return new WaitForSeconds(.2f);
+            _screenEffect.EnableInClassList("disable", true);
         }
 
         public T GetVisualElement<T>(string name) where T : VisualElement

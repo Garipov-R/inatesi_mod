@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 929511420191774435}
   - component: {fileID: 7792495176373239812}
   - component: {fileID: 4372295336583639109}
+  - component: {fileID: 8569037277425961149}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -123,7 +124,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -178,7 +179,7 @@ MonoBehaviour:
   _LimitXRotation: {x: -80, y: 80}
   _SmoothTime: 1
   _IsSmooth: 0
-  _IsEditor: 1
+  _IsEditor: 0
   _CursorVisible: 0
   _CursorLockMode: 1
 --- !u!114 &7792495176373239812
@@ -206,6 +207,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.Character.FPS_Utility.FirstPersonCameraHelper
   _RightHandTransform: {fileID: 4756233365668897046}
+--- !u!114 &8569037277425961149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3466619533801513265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 925b927c39ddd5f4ba00088c59e77d7f, type: 2}
 --- !u!1 &4211311127049771354
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,14 +265,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4211311127049771354}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 11
   m_Type: 0
-  m_Color: {r: 1, g: 0.92441374, b: 0.6933962, a: 1}
-  m_Intensity: 3
-  m_Range: 10
-  m_SpotAngle: 40.326923
-  m_InnerSpotAngle: 33.27644
-  m_CookieSize2D: {x: 10, y: 10}
+  m_Color: {r: 1, g: 0.91221577, b: 0.6396227, a: 1}
+  m_Intensity: 2.64
+  m_Range: 11.35
+  m_SpotAngle: 74.3517
+  m_InnerSpotAngle: 43.631794
+  m_CookieSize: 10
   m_Shadows:
     m_Type: 0
     m_Resolution: -1
@@ -471,7 +489,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0

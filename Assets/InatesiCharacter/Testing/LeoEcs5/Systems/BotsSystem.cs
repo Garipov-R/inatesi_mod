@@ -1,4 +1,5 @@
-﻿using InatesiCharacter.Testing.Character.Bots;
+﻿using InatesiCharacter.Testing.Character.Bot2;
+using InatesiCharacter.Testing.Character.Bots;
 using InatesiCharacter.Testing.LeoEcs5.Components;
 using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
 using Leopotam.EcsLite;
@@ -63,6 +64,14 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                     if (botComponent.health <= 0)
                     {
+                        if (systems.GetShared<SharedData>().BotsEvents != null)
+                        {
+                            foreach(var botEvent in systems.GetShared<SharedData>().BotsEvents)
+                            {
+                                botEvent.DeathBot(botComponent.gameObject);
+                            }
+                        }
+                        
                         botComponent.botTest.Die();
                     }
                     else 

@@ -320,7 +320,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             if (raycastHit.transform != null)
             {
-                if (raycastHit.transform.TryGetComponent(out CollisionEvent component))
+                if (raycastHit.transform.TryGetComponent(out InteractionSystem.CollisionEvent component))
                 {
                     component.Damage();
                 }

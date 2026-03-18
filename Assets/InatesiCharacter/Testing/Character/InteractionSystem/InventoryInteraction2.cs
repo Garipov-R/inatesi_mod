@@ -182,13 +182,14 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         {
             var item = CreateInventoryItem(itemScriptableObject);
             _InventoryContainer.Add(item);
+            InitializeItem(item);
             return item;
         }
 
-        public bool AddItem(CarriableObject carriableObject)
+        public bool AddItem(CarriableObject carriableObject, bool setActive = false)
         {
             var item = CreateInventoryItem(carriableObject);
-            var canAdd = _InventoryContainer.Add(item);
+            var canAdd = _InventoryContainer.Add(item, setActive);
             InitializeItem(item);
             return canAdd;
         }

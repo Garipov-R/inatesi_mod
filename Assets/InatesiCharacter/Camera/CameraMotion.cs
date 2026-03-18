@@ -215,6 +215,13 @@ namespace InatesiCharacter.Camera
                         Quaternion.Euler(new Vector3(_LookRotationEuler.x * -1, _LookRotationEuler.y * 1, 0) + _ShakeRotation)
                     );
                 }
+                else
+                {
+                    transform.SetPositionAndRotation(
+                        transform.forward * _CameraOffset.z + transform.position,
+                        Quaternion.Euler(new Vector3(_LookRotationEuler.x * -1, _LookRotationEuler.y * 1, 0) + _ShakeRotation)
+                    );
+                }
             }
             else
             {   

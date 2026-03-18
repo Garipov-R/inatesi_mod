@@ -27,6 +27,7 @@ namespace InatesiCharacter.Testing.Character.Bots
         public float wanderRadius = 10f;
         public float transitionToPatrolTime = 2f;
         public float damageTime = 1f;
+        public float _rotateSpeed = 10f;
 
         [Header("Attack Settings")]
         public int attackDamage = 10;
@@ -213,8 +214,14 @@ namespace InatesiCharacter.Testing.Character.Bots
                 transform.rotation = Quaternion.Slerp(
                     transform.rotation,
                     Quaternion.LookRotation(direction),
-                    Time.deltaTime * 5f
+                    Time.deltaTime * _rotateSpeed
                 );
+            }
+
+
+            if (Time.time < lastAttackTime + attackCooldown)
+            {
+                return;
             }
 
             if (distanceToPlayer <= attackRange && !isAttacking)
@@ -225,11 +232,6 @@ namespace InatesiCharacter.Testing.Character.Bots
                 }
             }
 
-            if (Time.time < lastAttackTime + attackCooldown)
-            {
-                return;
-            }
-            
             // If player moves out of attack range
             if (distanceToPlayer > attackRange || _targetIsVisible == false)
             {
@@ -300,7 +302,7 @@ namespace InatesiCharacter.Testing.Character.Bots
             Ray ray = new(transform.position + transform.up * 1, transform.forward);
             var cast = Physics.SphereCast(
                 ray.origin,
-                1f,
+                .5f,
                 ray.direction,
                 out RaycastHit hitInfo,
                 attackRange,
@@ -310,7 +312,7 @@ namespace InatesiCharacter.Testing.Character.Bots
 
             if (cast)
             {
-                damageComponent.damage = 2;
+                damageComponent.damage = attackDamage;
                 damageComponent.hit = hitInfo;
                 damageComponent.isHit = true;
                 damageComponent.ray = ray;

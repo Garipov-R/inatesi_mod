@@ -1,7 +1,12 @@
-﻿using InatesiCharacter.Testing.LeoEcs;
+﻿using GameToolkit.Localization;
+using InatesiCharacter.Testing.LeoEcs;
 using InatesiCharacter.Testing.LeoEcs5;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
@@ -11,6 +16,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 {
     public class CollisionEvent : MonoBehaviour
     {
+        [SerializeField] private InteractionConditionBase _InteractionConditionBase;
         [SerializeField] private UnityEvent _OnCollisionEnter;
         [SerializeField] private UnityEvent _OnCollisionExit;
         [SerializeField] private UnityEvent _OnCollisionStay;
@@ -20,13 +26,16 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         [SerializeField] private UnityEvent _OnAnyEvent;
         [SerializeField] private UnityEvent _OnDamage;
         [SerializeField] private UnityEvent _OnUse;
+        [SerializeField] private UnityEvent _OnSuccess;
+        [SerializeField] private UnityEvent _OnError;
         [SerializeField] private bool _IsOneObjectEntered = false;
+        [SerializeField] private LayerMask _EnterLayer;
 
         protected SetupLeoEcs _SetupLeoEcs;
         private bool _Entered;
         private GameObject _firstObjectEntered;
         private List<GameObject> _Objects = new List<GameObject>();
-
+        [Inject] private StartEcs _StartEcs;
 
 
 
@@ -55,8 +64,18 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         }
 
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
+            if (IsIncludeLayer(other) == false) return;
+            if (CheckInteractionCondition() == false) 
+            { 
+                return; 
+            }
+            else
+            {
+
+            }
+
             _Objects.Add(other.gameObject);
             ClearEmptyObjects();
 
@@ -69,6 +88,13 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
             _OnTriggerEnter?.Invoke();
             _OnAnyEvent?.Invoke();
+
+            if (_StartEcs)
+            {
+                ref var collisionEvent = ref ECSHelper.Create<InatesiCharacter.Testing.LeoEcs5.Components.CollisionComponentEvent>(_StartEcs.EcsWorld);
+                collisionEvent.collideGameObject = other.gameObject;
+                collisionEvent.gameObject = gameObject;
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -108,6 +134,45 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         public void Use()
         {
             _OnUse?.Invoke();
+        }
+
+        private bool IsIncludeLayer(Collider other)
+        {
+            if ((_EnterLayer.value & (1 << other.gameObject.layer)) != 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool CheckInteractionCondition()
+        {
+            if (_InteractionConditionBase == null)
+            {
+                _OnSuccess?.Invoke();
+                return true;
+            }
+
+            if (_InteractionConditionBase != null)
+            {
+                if (_InteractionConditionBase.Check() == false)
+                {
+                    _OnError?.Invoke();
+                    return false;
+                }
+                else
+                {
+                    _OnSuccess?.Invoke();
+                    return true;
+                }
+            }
+            
+            
+
+            return true;
         }
 
 

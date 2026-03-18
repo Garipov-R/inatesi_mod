@@ -1,9 +1,7 @@
-﻿using InatesiCharacter.Camera;
-using InatesiCharacter.SuperCharacter;
-using InatesiCharacter.Testing.Character.Bots;
-using InatesiCharacter.Testing.Character.InteractionSystem;
+﻿using InatesiCharacter.Testing.Character.InteractionSystem;
 using InatesiCharacter.Testing.LeoEcs5.Components;
 using InatesiCharacter.Testing.LeoEcs5.Utility;
+using InatesiCharacter.Testing.Shared;
 using Leopotam.EcsLite;
 using System;
 using System.Collections.Generic;
@@ -11,8 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.UIElements;
+using Zenject.SpaceFighter;
 
 namespace InatesiCharacter.Testing.LeoEcs5.Systems
 {
@@ -21,81 +19,58 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
         private EcsFilter _CharacterFilter;
         private EcsFilter _PlayerCharacterFilter;
         private EcsFilter _PlayerFilter;
-        private EcsFilter _BotFilter;
         private EcsFilter _DamageFilter;
         private EcsPool<CharacterComponent> _CharacterPool;
         private EcsPool<PlayerComponent> _PlayerPool;
-        private EcsPool<DamageComponent> _DamagePool;
+        private EcsPool<DamageComponent> _DamagePool; 
+        private EcsFilter _PlayerInitFilter;
+        private EcsFilter _CollisionEventFilter;
+        private EcsPool<CollisionComponentEvent> _CollisionEventPool;
 
         private EcsWorld _ecsWorld;
+        private SharedData _sharedData;
 
 
         public void Init(IEcsSystems systems)
         {
-            _ecsWorld = systems.GetWorld();
+            _ecsWorld = systems.GetWorld(); 
+            _sharedData = systems.GetShared<SharedData>();
             _CharacterFilter = systems.GetWorld().Filter<CharacterComponent>().End();
             _PlayerCharacterFilter = systems.GetWorld().Filter<CharacterComponent>().Inc<PlayerComponent>().End();
             _PlayerFilter = systems.GetWorld().Filter<PlayerComponent>().End();
-            _BotFilter = systems.GetWorld().Filter<BotComponent>().End();
             _CharacterPool = systems.GetWorld().GetPool<CharacterComponent>();
             _PlayerPool = systems.GetWorld().GetPool<PlayerComponent>();
             _DamageFilter = systems.GetWorld().Filter<DamageComponent>().End();
             _DamagePool = systems.GetWorld().GetPool<DamageComponent>();
-
-            var sharedData = systems.GetShared<SharedData>();
-            if (sharedData.StartPlayerCharacterMotionBase != null )
-            {
-                var newCharacterEntity = systems.GetWorld().NewEntity();
-                ref var characterComponent = ref _CharacterPool.Add(newCharacterEntity);
-
-                var camera = GameObject.FindAnyObjectByType<LookSource>();
+            _PlayerInitFilter = systems.GetWorld().Filter<PlayerInitEvent>().End();
+            _CollisionEventFilter = systems.GetWorld().Filter<CollisionComponentEvent>().End();
+            _CollisionEventPool = systems.GetWorld().GetPool<CollisionComponentEvent>();
 
 
 
-                ref var playerComponent = ref _PlayerPool.Add(newCharacterEntity);
-                playerComponent.cameraMotion = camera.GetComponent<CameraMotion>();
-
-                playerComponent.fpc = true;
-                playerComponent.inputEnabled = true;
-                playerComponent.uiDocument = sharedData.PlayerUIDocument;
-
-                characterComponent.CharacterSO = sharedData.CharacterSO;
-                characterComponent.characterMotion = sharedData.StartPlayerCharacterMotionBase;
-                characterComponent.characterMotion.LookSource = camera;
-                characterComponent.transform = sharedData.StartPlayerCharacterMotionBase.transform;
-                characterComponent.gameObject = sharedData.StartPlayerCharacterMotionBase.gameObject;
-                characterComponent.health = 30;
-                characterComponent.characterMotion.OnLanded.AddListener( OnLanded);
-
-                // inventory
-                characterComponent.InventoryInteraction2 = new Character.InteractionSystem.InventoryInteraction2(characterComponent.characterMotion);
-                characterComponent.InventoryInteraction2.InventoryContainer.Size = characterComponent.CharacterSO.StartWeaponSO.Weapons.Count;
-                characterComponent.InventoryInteraction2.CharacterMotionBase = characterComponent.characterMotion;
-
-                if (characterComponent.CharacterSO.StartWeaponSO.Weapons != null)
-                {
-                    foreach (var item in characterComponent.CharacterSO.StartWeaponSO.Weapons)
-                    {
-                        characterComponent.InventoryInteraction2.AddItem(item);
-                    }
-                }
-
-                characterComponent.InventoryInteraction2.InitializeWeapons();
-                characterComponent.InventoryInteraction2.SetActiveInventoryItem(0);
-
-                if (characterComponent.InventoryInteraction2.CurrentWeaponBase) characterComponent.InventoryInteraction2.CurrentWeaponBase.FPC = playerComponent.fpc;
-            }
-
-
-
+            UpdateUI();
         }
 
         public void Run(IEcsSystems systems)
         {
+            if (G.IsPause) return;
+
+
             foreach (var characterEntity in _PlayerCharacterFilter)
             {
                 ref var characterComponent = ref _CharacterPool.Get(characterEntity);
                 ref var playerComponent = ref _PlayerPool.Get(characterEntity);
+
+
+                foreach (var playerInitEntity in _PlayerInitFilter)
+                {
+                    characterComponent.characterMotion.OnLanded.RemoveAllListeners();
+                    characterComponent.characterMotion.OnLanded.AddListener(OnLanded);
+                }
+
+
+                if (playerComponent.inputEnabled == false)
+                    continue;
 
                 var input = Inatesi.Inputs.Input.GetVector("Move");
                 var wishJump = Inatesi.Inputs.Input.Pressed("Jump");
@@ -127,14 +102,14 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         startPoint, 
                         characterComponent.characterMotion.LookSource.LookDirection(), 
                         out RaycastHit hitInfo, 
-                        2f, 
+                        3f, 
                         LayerMask.NameToLayer("Everything"), 
                         QueryTriggerInteraction.Collide
                     );
 
                     if (cast)
                     {
-                        if (hitInfo.transform.TryGetComponent(out CollisionEvent collisionEvent))
+                        if (hitInfo.transform.TryGetComponent(out InatesiCharacter.Testing.Character.InteractionSystem.CollisionEvent collisionEvent))
                         {
                             collisionEvent.Use();
                         }
@@ -151,25 +126,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
 
 
-                if (Inatesi.Inputs.Input.AnyKeyDown())
-                {
-                    string ammoText = string.Empty;
-
-                    if (characterComponent.InventoryInteraction2.CurrentWeaponBase.CarriableObjectData.WeaponType != Character.Weapons.WeaponType.None)
-                    {
-                        ammoText =
-                            $"{characterComponent.InventoryInteraction2.CurrentWeaponBase.CarriableObjectData.Ammo} /" +
-                            $"{characterComponent.InventoryInteraction2.CurrentWeaponBase.CarriableObjectData.TotalAmmo} ";
-                    }
-                    else
-                    {
-                        ammoText = "hell";
-                    }
-
-                    playerComponent.uiDocument.rootVisualElement.Q<Label>("ammo").text = ammoText;
-                }
-
-
                 foreach (var entityDamage in _DamageFilter)
                 {
                     ref var damageComponent = ref _DamagePool.Get(entityDamage);
@@ -184,12 +140,47 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                         characterComponent.health -= damageComponent.damage;
 
-                        systems.GetShared<SharedData>().SimplePlayerUI.ScreenEffect(true);
+                        if (characterComponent.health <= 0)
+                        {
+                            //playerComponent.cameraMotion.InputEnabled = false;
+                            playerComponent.cameraMotion.Follow = null;
+                            playerComponent.cameraMotion.transform.position = characterComponent.transform.position + characterComponent.transform.up * .5f;
+                            playerComponent.inputEnabled = false;
+                            characterComponent.characterMotion.Velocity = Vector3.zero;
+                            characterComponent.characterMotion.InputVector = Vector3.zero;
+                            characterComponent.characterMotion.InputDirection = Vector3.zero;
+                            characterComponent.InventoryInteraction2.DisableCurrentWeapon();
+                        }
+
+                        UpdateUI();
                     }
                 }
 
-                
+                foreach (var collicionEventEntity in _CollisionEventFilter)
+                {
+                    ref var collisionEvent = ref _CollisionEventPool.Get(collicionEventEntity);
+                    
 
+                    if (collisionEvent.collideGameObject == playerComponent.gameObject)
+                    {
+                        _sharedData.GameLogic.OnPlayerCollision(collisionEvent);
+
+                        if (collisionEvent.gameObject.TryGetComponent(out CarriableObject item))
+                        {
+                            var i= characterComponent.InventoryInteraction2.AddItem(item.ItemScriptableObject);
+                            characterComponent.InventoryInteraction2.SetActiveInventoryItem(i.SlotIndex);
+                        }
+                    }
+
+                    
+                }
+
+
+
+                if (Inatesi.Inputs.Input.AnyKeyDown())
+                {
+                    UpdateUI();
+                }
 
                 characterComponent.characterMotion.UpdateCharacter();
                 characterComponent.characterMotion.UpdateAnimator();
@@ -202,14 +193,12 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
             foreach (var characterEntity in _PlayerCharacterFilter)
             {
                 ref var characterComponent = ref _CharacterPool.Get(characterEntity);
-                ref var playerComponent = ref _PlayerPool.Get(characterEntity);
 
-                Debug.Log(characterComponent.characterMotion.Velocity.y);
                 if (characterComponent.characterMotion.Velocity.y <= characterComponent.CharacterSO.MoveConfig.FallDamageVelocity)
                 {
 
                     ref var damageComponent = ref SendDamageEvent.Send(_ecsWorld);
-                    damageComponent.damage = 10;
+                    damageComponent.damage = Mathf.Abs( characterComponent.characterMotion.Velocity.y);
                     damageComponent.velocity = Vector3.up;
                     damageComponent.target = characterComponent.gameObject;
 
@@ -217,6 +206,50 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 }
             }
                 
+        }
+
+        private void UpdateUI()
+        {
+            foreach (var characterEntity in _PlayerCharacterFilter)
+            {
+                ref var characterComponent = ref _CharacterPool.Get(characterEntity);
+                ref var playerComponent = ref _PlayerPool.Get(characterEntity);
+
+                if (characterComponent.InventoryInteraction2.CurrentWeaponBase != null)
+                {
+                    string ammoText = string.Empty;
+                    if (characterComponent.InventoryInteraction2.CurrentWeaponBase.CarriableObjectData.WeaponType != Character.Weapons.WeaponType.None)
+                    {
+                        ammoText =
+                            $"{characterComponent.InventoryInteraction2.CurrentWeaponBase.CarriableObjectData.Ammo} /" +
+                            $"{characterComponent.InventoryInteraction2.CurrentWeaponBase.CarriableObjectData.TotalAmmo} ";
+                    }
+                    else
+                    {
+                        ammoText = "hell";
+                    }
+
+                    playerComponent.uiDocument.rootVisualElement.Q<Label>("ammo").text = ammoText;
+
+                }
+
+
+
+
+
+                foreach (var entityDamage in _DamageFilter)
+                {
+                    ref var damageComponent = ref _DamagePool.Get(entityDamage);
+
+                    if (damageComponent.target == characterComponent.gameObject)
+                    {
+                        _sharedData.SimplePlayerUI.ScreenEffect(false);
+                    }
+                }
+
+
+                _sharedData.SimplePlayerUI.HealthLabel.text = characterComponent.health > 0 ? characterComponent.health.ToString("00") : "defunct";
+            }
         }
     }
 }

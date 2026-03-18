@@ -231,7 +231,7 @@ namespace InatesiCharacter.Movements.SourceEngine
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
         {
-
+            
         }
 
         public void OnGroundHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
@@ -241,6 +241,16 @@ namespace InatesiCharacter.Movements.SourceEngine
 
         public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
         {
+            //    Debug.Log($"" +
+            //        $"{hitPoint} " +
+            //        $"{transform.position} " +
+            //        $"{Vector3.Distance(new Vector3(hitPoint.x, 0, hitPoint.z), new Vector3(transform.position.x, 0, transform.position.z))} " +
+            //        $"{Radius/2}");
+
+            //if (hitStabilityReport.SteppedCollider != null)
+            //    Debug.Log(hitStabilityReport.SteppedCollider.name);
+            //Debug.Log($"{Radius / 2} {Vector3.Distance(hitPoint, transform.position)}");
+            //Debug.Log((hitPoint - transform.position).normalized );
             
         }
 
@@ -259,7 +269,20 @@ namespace InatesiCharacter.Movements.SourceEngine
 
         public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport)
         {
+            //Debug.Log($"" +
+            //        $"{hitPoint} " +
+            //        $"{hitNormal} " +
+            //        $"{transform.position} " +
+            //        $"{atCharacterPosition} " 
+            //    );
 
+            //Collider.bounds.IntersectRay(new Ray(hitPoint, hitNormal), out float dist);
+            //Debug.Log(dist);
+
+            //if (Mathf.Abs(dist) > Radius / 2)
+            //{
+            //    Debug.Log(12321);
+            //}
         }
 
         public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)

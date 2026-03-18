@@ -43,7 +43,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 }
 
                 
-                if (characterComponent.isDead == true) continue;
+                if (characterComponent.health <= 0) continue;
                 if (playerComponent.inputEnabled == false) continue;
 
                 if (characterComponent.InventoryInteraction2 != null)

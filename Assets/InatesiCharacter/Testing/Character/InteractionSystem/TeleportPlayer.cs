@@ -17,7 +17,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             {
                 component.Velocity = Vector3.zero;
                 component.SetPositionAndRotation(_TeleportPoint.position, _TeleportPoint.rotation);
-                
+                //component.LookSource.CameraMotion.
             }
         }
     }
