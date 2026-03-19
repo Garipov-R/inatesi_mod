@@ -138,6 +138,11 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                             clips[UnityEngine.Random.Range(0, clips.Length - 1)]
                         );
 
+                        if (damageComponent.damage > 999)
+                        {
+                            characterComponent.characterMotion.AudioSource.PlayOneShot(characterComponent.CharacterSO.AudioCharacter.OnLandedClip);
+                        }
+
                         characterComponent.health -= damageComponent.damage;
 
                         if (characterComponent.health <= 0)
