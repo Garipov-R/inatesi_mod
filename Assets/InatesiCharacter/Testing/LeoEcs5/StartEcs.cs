@@ -53,6 +53,7 @@ namespace InatesiCharacter.Testing.LeoEcs5
             ;
 
             _FixedUpdateSystems
+                .Add(new BulletProjectileSystem())
                 .Add(new PlayerFixedUpdateSystem())
             ;
             _InitSystems.Init();

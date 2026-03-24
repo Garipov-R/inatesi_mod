@@ -34,7 +34,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
             _PlayerInitEventFilter = systems.GetWorld().Filter<PlayerInitEvent>().End();
             _BotFilter = systems.GetWorld().Filter<BotComponent>().End();
 
-            _gameLogic.StartGame();
+            //_gameLogic.StartGame();
         }
 
         public void Run(IEcsSystems systems)
@@ -64,7 +64,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
             foreach (var playerInitEntity in _PlayerInitEventFilter)
             {
-                _gameLogic.StartGame();
+                _gameLogic.OnPlayerSpawn();
             }
         }
     }

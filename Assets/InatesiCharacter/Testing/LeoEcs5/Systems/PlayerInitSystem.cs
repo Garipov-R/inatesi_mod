@@ -54,14 +54,14 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     characterComponent.characterMotion.LookSource = camera;
                     characterComponent.transform = sharedData.StartPlayerCharacterMotionBase.transform;
                     characterComponent.gameObject = sharedData.StartPlayerCharacterMotionBase.gameObject;
-                    characterComponent.health = 30;
+                    characterComponent.health = 100;
                     //characterComponent.characterMotion.OnLanded.AddListener(OnLanded);
                     playerComponent.cameraMotion.Follow = characterComponent.transform;
                     playerComponent.gameObject = characterComponent.characterMotion.gameObject;
 
                     // inventory
                     characterComponent.InventoryInteraction2 = new Character.InteractionSystem.InventoryInteraction2(characterComponent.characterMotion);
-                    characterComponent.InventoryInteraction2.InventoryContainer.Size = 3;
+                    characterComponent.InventoryInteraction2.InventoryContainer.Size = 4;
                     characterComponent.InventoryInteraction2.CharacterMotionBase = characterComponent.characterMotion;
 
                     if (characterComponent.CharacterSO.StartWeaponSO.Weapons != null)
@@ -72,7 +72,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         }
                     }
 
-                    characterComponent.InventoryInteraction2.InitializeWeapons();
+                    //characterComponent.InventoryInteraction2.InitializeWeapons();
                     characterComponent.InventoryInteraction2.SetActiveInventoryItem(0);
                     characterComponent.InventoryInteraction2.EnableCurrentWeapon();
 

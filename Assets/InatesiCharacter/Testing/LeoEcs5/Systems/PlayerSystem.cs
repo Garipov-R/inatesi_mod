@@ -140,7 +140,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                         if (damageComponent.damage > 999)
                         {
-                            characterComponent.characterMotion.AudioSource.PlayOneShot(characterComponent.CharacterSO.AudioCharacter.OnLandedClip);
+                            characterComponent.characterMotion.AudioSource.PlayOneShot(characterComponent.CharacterSO.AudioCharacter.OnLandedClip );
                         }
 
                         characterComponent.health -= damageComponent.damage;
@@ -174,6 +174,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         {
                             var i= characterComponent.InventoryInteraction2.AddItem(item.ItemScriptableObject);
                             characterComponent.InventoryInteraction2.SetActiveInventoryItem(i.SlotIndex);
+                            if (item.AudioClip) characterComponent.characterMotion.AudioSource.PlayOneShot(item.AudioClip);
                         }
                     }
 
@@ -203,7 +204,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 {
 
                     ref var damageComponent = ref SendDamageEvent.Send(_ecsWorld);
-                    damageComponent.damage = Mathf.Abs( characterComponent.characterMotion.Velocity.y);
+                    damageComponent.damage = Mathf.Abs( characterComponent.characterMotion.Velocity.y) / 2;
                     damageComponent.velocity = Vector3.up;
                     damageComponent.target = characterComponent.gameObject;
 

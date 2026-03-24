@@ -26,6 +26,11 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
         {
         }
 
+        public virtual void OnPlayerSpawn()
+        {
+
+        }
+
         public virtual void Pause()
         {
         }

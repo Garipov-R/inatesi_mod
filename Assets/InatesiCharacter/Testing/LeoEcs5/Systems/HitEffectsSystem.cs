@@ -13,7 +13,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
         public void Init(IEcsSystems systems)
         {
             _ParticleEventPool = systems.GetWorld().GetPool<ParticleEvent>();
-            Debug.Log(12312);
             _ParticleEventFilter = systems.GetWorld().Filter<ParticleEvent>().End();
         }
 

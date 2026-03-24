@@ -10,7 +10,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
-using static UnityEditor.VersionControl.Asset;
 
 namespace InatesiCharacter.Testing.Character.InteractionSystem
 {
@@ -38,12 +37,6 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         [Inject] private StartEcs _StartEcs;
 
 
-
-        [Inject]
-        protected virtual void Construct(StartEcs startEcs)
-        {
-            Debug.Log(startEcs.gameObject.name);
-        }
 
         private void OnCollisionEnter(Collision collision)
         {

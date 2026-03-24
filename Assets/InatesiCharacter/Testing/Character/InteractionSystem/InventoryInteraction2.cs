@@ -40,18 +40,23 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             var item = _InventoryContainer.GetSlot(id);
             var currentItem = _InventoryContainer.ActiveItem;
 
-            _InventoryContainer.ActiveSlotIndex = id;
 
             if (item == currentItem)
                 return;
 
-            InitializeSelectedItemType(null);
-
-            item = _InventoryContainer.GetSlot(_InventoryContainer.ActiveSlotIndex);
+            item = _InventoryContainer.GetSlot(id);
 
             if (item == null)
                 return;
 
+            InitializeSelectedItemType(null);
+
+            
+
+            if (item == null)
+                return;
+
+            _InventoryContainer.ActiveSlotIndex = id;
             InitializeSelectedItemType(item);
         }
 
@@ -68,6 +73,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
         public void InitializeItem(InventoryItem item)
         {
+
             if (item == null) return;
 
             WeaponItemScriptableObject weaponSO = item.ItemScriptableObject as WeaponItemScriptableObject;

@@ -36,5 +36,10 @@ namespace InatesiCharacter.Testing.Character.Bot2
                 _OnAllDeathBot?.Invoke();
             }
         }
+
+        public void InvokeAllDeathBot()
+        {
+            _OnAllDeathBot?.Invoke();
+        }
     }
 }

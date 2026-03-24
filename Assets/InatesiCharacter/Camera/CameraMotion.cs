@@ -65,6 +65,7 @@ namespace InatesiCharacter.Camera
         public float StartZoom { get => _StartZoom; set => _StartZoom = value; }
         public bool InputEnabled { get => _InputEnabled; set => _InputEnabled = value; }
         public UnityEngine.Camera Camera { get => _camera; private set => _camera = value; }
+        public Vector3 LookRotationEuler { get => _LookRotationEuler; set => _LookRotationEuler = value; }
 
 
         #region Unity

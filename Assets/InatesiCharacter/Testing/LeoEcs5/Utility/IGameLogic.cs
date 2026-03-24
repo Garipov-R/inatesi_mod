@@ -21,6 +21,8 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
 
         public void OnPlayerDead();
 
+        public void OnPlayerSpawn();
+
         public void OnPlayerCollision(CollisionComponentEvent collisionEvent);
 
         public void UpdateUI();

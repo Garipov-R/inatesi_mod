@@ -18,6 +18,9 @@ namespace InatesiCharacter.Testing.Utility
         {
             _transform = this.transform;
 
+            Mover = GetComponent<PhysicsMover>();
+            _TranslateObject = GetComponent<TranlsateObject>();
+
             Mover.MoverController = this;
         }
 

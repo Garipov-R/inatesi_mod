@@ -69,12 +69,6 @@ namespace InatesiCharacter.Testing.Character.Bots
             Died
         }
 
-        [Zenject.Inject]
-        public void Construct(StartEcs startEcs)
-        {
-            Debug.Log(startEcs.gameObject.name);
-        }
-
         void Start()
         {
             agent = GetComponent<NavMeshAgent>();

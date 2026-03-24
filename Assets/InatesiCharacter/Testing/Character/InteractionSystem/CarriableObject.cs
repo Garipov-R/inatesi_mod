@@ -9,9 +9,11 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         [SerializeField] private string _NameItem = "Weapon Name"; 
         [SerializeField] private ItemScriptableObject _itemScriptableObject;
         [SerializeField] private CarriableObjectData _CarriableObjectData;
+        [SerializeField] private AudioClip _AudioClip;
 
         public string NameItem { get => _NameItem; set => _NameItem = value; }
         public ItemScriptableObject ItemScriptableObject { get => _itemScriptableObject; set => _itemScriptableObject = value; }
         public CarriableObjectData CarriableObjectData { get => _CarriableObjectData; set => _CarriableObjectData = value; }
+        public AudioClip AudioClip { get => _AudioClip; set => _AudioClip = value; }
     }
 }

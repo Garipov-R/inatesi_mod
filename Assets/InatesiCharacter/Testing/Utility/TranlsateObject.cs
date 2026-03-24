@@ -1,16 +1,24 @@
-﻿using System.Collections;
+﻿using KinematicCharacterController;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace InatesiCharacter.Testing.Utility
 {
+    [RequireComponent(typeof(PhysicsMover))]
+    [RequireComponent(typeof(MyMovingPlatform))]
     public class TranlsateObject : MonoBehaviour
     {
         [SerializeField] private Transform[] _MovePoints;
         [SerializeField] private float _MoveSpeed = 1f;
         [SerializeField] private int _startIndex = 0;
         [SerializeField] private bool _loop = false;
+        [SerializeField] private float _nextPointTime = .5f;
+        [SerializeField] private UnityEvent _OnFinishPoint;
+        [SerializeField] private UnityEvent _OnStartPoint;
 
         private int _moveIndex;
+        private float _nextPointTimer = 0;
 
 
         private void Awake()
@@ -33,15 +41,31 @@ namespace InatesiCharacter.Testing.Utility
 
                     if (Vector3.Distance(transform.position, _MovePoints[_moveIndex].position) <= 0)
                     {
-                        _moveIndex++;
+                        if (_nextPointTimer > 0)
+                        {
+                            if (_nextPointTimer == _nextPointTime)
+                            {
+                                _OnFinishPoint?.Invoke();
+                            }
 
-                        if (_moveIndex >= _MovePoints.Length)
-                        {
-                            _moveIndex = 0;
+                            _nextPointTimer -= deltaTime;
                         }
-                        else if (_moveIndex < 0)
+                        else
                         {
-                            _moveIndex = _MovePoints.Length - 1;
+                            _moveIndex++;
+
+                            if (_moveIndex >= _MovePoints.Length)
+                            {
+                                _moveIndex = 0;
+                            }
+                            else if (_moveIndex < 0)
+                            {
+                                _moveIndex = _MovePoints.Length - 1;
+                            }
+
+                            _nextPointTimer = _nextPointTime;
+
+                            _OnStartPoint?.Invoke();
                         }
                     }
                 }
@@ -56,6 +80,19 @@ namespace InatesiCharacter.Testing.Utility
                     return;
 
                 transform.position = Vector3.MoveTowards(transform.position, _MovePoints[_moveIndex].position, deltaTime * _MoveSpeed);
+
+                if (Vector3.Distance(transform.position, _MovePoints[_moveIndex].position) <= 0)
+                {
+                    if (_nextPointTimer == 0)
+                    {
+                        _OnFinishPoint?.Invoke();
+                        _nextPointTimer = deltaTime;
+                    }
+                }
+                else
+                {
+                    _nextPointTimer = 0;
+                }
             }
         }
 

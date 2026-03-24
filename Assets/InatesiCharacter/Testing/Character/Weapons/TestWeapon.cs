@@ -1,7 +1,7 @@
 ﻿using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.Effects;
 using InatesiCharacter.Testing.InatesiArch.WeaponsTest;
-using InatesiCharacter.Testing.LeoEcs4.Components;
+using InatesiCharacter.Testing.LeoEcs5.Components;
 using InatesiCharacter.Testing.Shared;
 using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
@@ -49,8 +49,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 return;
             }
             if (IsEmpty()) return;
-            if (EcsWorld == null) return;
-
+            //if (EcsWorld == null) return;
+            if (_StartEcs == null && _StartEcs.EcsWorld == null) return;
 
             RaycastHit hit;
             var isHit = Raycast(
@@ -70,13 +70,14 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
         private void SpawnBulletProjectile()
         {
-            var entity = EcsWorld.NewEntity();
-            var bulletPool = EcsWorld.GetPool<BulletProjectileComponent>();
+            var entity = _StartEcs.EcsWorld.NewEntity();
+            var bulletPool = _StartEcs.EcsWorld.GetPool<BulletProjectileComponent>();
             bulletPool.Add(entity);
             ref var bulletComponent = ref bulletPool.Get(entity);
 
             var projectile = Instantiate(_Projectile);
 
+            bulletComponent.ignoreLayer = _CharacterMotionBase.gameObject.layer;
             bulletComponent.gameObject = projectile;
             bulletComponent.transform = projectile.transform;
             bulletComponent.remainLifeTime = 10f;
