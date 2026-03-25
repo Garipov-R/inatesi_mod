@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c5192a7d3643d34b81aaa8e2f8ac291, type: 3}
+  m_Name: truba
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.InatesiArch.InventorySystems.WeaponItemScriptableObject
+  _name: truba
+  _localizedText: {fileID: 0}
+  _sprite: {fileID: 0}
+  _modelPrefab: {fileID: 0}
+  _itemType: 1
+  _ViewModel: {fileID: 683228669086809630, guid: 1450c71536aff8d49ad1cc2a7636321f,
+    type: 3}
+  _SwayBobItemSO: {fileID: 11400000, guid: 35f4ea4bca33f364f923f1cd75b46fb7, type: 2}
+  _weaponBase: {fileID: 1312034864684178042, guid: fcb613ec332627c428ea69f77fdbfb0e,
+    type: 3}
+  _carriableObjectData:
+    _weaponType: 4
+    _name: default
+    _Ammo: 99999
+    _TotalAmmo: 99999
+    _MagCapacity: 99999
+    _MaxAmmo: 99999

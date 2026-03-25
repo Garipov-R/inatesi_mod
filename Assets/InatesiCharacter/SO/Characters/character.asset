@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40714f0394a07c148b99f51c4925c7fc, type: 3}
+  m_Name: character
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.Character.Data.CharacterSO
+  _Prefab: {fileID: 0}
+  _Model: {fileID: 0}
+  _moveConfig:
+    _stopSpeed: 0.4
+    _airStopSpeed: 0.4
+    _friction: 8
+    _acceleration: 5
+    _airAcceleration: 1
+    _Speed: 6
+    _RunSpeed: 10
+    _JumpForce: 5
+    _CrouchingSpeed: 1
+    _CrouchHeight: 0.5
+    _AutoBhop: 1
+    _noClipSpeed: 20
+    _underwaterFriction: 1
+    _airClampLength: 1
+    _maxSpeed: 6
+    _FallDamageMultiply: 1
+    _FallDamage: 3
+    _FallDamageVelocity: -19.5
+    _Gravity: -9.81
+  _audioCharacter:
+    _HurtClips:
+    - {fileID: 8300000, guid: 56e09c36bcb9e414a8192a0c8a4395b2, type: 3}
+    - {fileID: 8300000, guid: 598c11620ae84a14b873a9609f04ea19, type: 3}
+    - {fileID: 8300000, guid: 3e344c0e8d34c0346bb93819c0fa1632, type: 3}
+    - {fileID: 8300000, guid: f2cb368e5c1c70148bcfa1a9adc46b85, type: 3}
+    _RebornClip: {fileID: 0}
+    _OnJumpClip: {fileID: 8300000, guid: 55baa167fcf684f4481077548f62230e, type: 3}
+    _OnLandedClip: {fileID: 8300000, guid: 88a034c2a66fb324bbc9b6adf3cbf28d, type: 3}
+    _VolumeHeart: 1
+  _startWeaponSO: {fileID: 11400000, guid: e2cdd051adc2e2f40b3538a12600cb8f, type: 2}
+  _characterConfig:
+    _startHealth: 100
+    _TimeAfterDeath: 3
+  _ScaleMagnitude: 1
+  _Material: {fileID: 0}
+  _RootMotion: 0
+  _AnimatorController: {fileID: 0}
+  _DissolveMaterial: {fileID: 0}
+  _DamageVisualEffect: {fileID: 0}
+  _DamageVisualEffectAsset: {fileID: 0}
+  _BloodMeshDecal: {fileID: 0}
+  _botConfig:
+    _BotComponent: {fileID: 0}

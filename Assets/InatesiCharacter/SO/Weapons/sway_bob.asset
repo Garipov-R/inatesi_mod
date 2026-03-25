@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8ffb04b970e7448a9feb3b370f3761, type: 3}
+  m_Name: sway_bob
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.InatesiArch.WeaponsTest.SwayBobItemSO
+  _swayBob:
+    _Smooth: 7
+    _SmoothRot: 7
+    _PickPosition: {x: 0.32, y: -1, z: 0.45}
+    _PickRotation: {x: 0, y: 0, z: 0}
+    _Position: {x: 0.32, y: -0.45, z: 0.45}
+    _Rotation: {x: 0, y: 0, z: 0}
+    _step: 0.01
+    _maxXStepDistance: 1.93
+    _maxYStepDistance: 1.35
+    _stepRotation: 2
+    _maxStepDistanceRotation: 10
+    _bobExaggeration: 10
+    _travelLimit: {x: 0.1, y: 0.04, z: 0.02}
+    _bobLimit: {x: 0.05, y: 0, z: 0}
+    _multiplier: {x: 0, y: 0, z: 0}
+    _SmoothShake: 19.03
+    _ForceShake: {x: 0.3, y: 0.3, z: 0.3}
+    _ForceRotateShake: {x: 30, y: 0, z: 3}
+    _MaxLimeitShake: {x: 0.3, y: 0.3, z: 0.3}
+    _OffsetRotation: {x: 40, y: 0, z: 0}
+    _OffsetPoosition: {x: 0, y: 0.3, z: -0.1}

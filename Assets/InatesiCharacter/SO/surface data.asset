@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f393c782d33c324eba161aba0966613, type: 3}
+  m_Name: surface data
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.SurfaceManagers.SurfaceDataSO
+  _texture: {fileID: 0}
+  _audioClip: {fileID: 0}
+  _visualEffect: {fileID: 0}
+  _definedSurfaces:
+  - name: concrete
+    audioClips:
+    - {fileID: 8300000, guid: 886d673f16987184fb20686701780f19, type: 3}
+    - {fileID: 8300000, guid: 903c2bbd362911244be9e4bc588fb4cd, type: 3}
+    - {fileID: 8300000, guid: 0d3e6569913af4f40a37f80ce283e34e, type: 3}
+    - {fileID: 8300000, guid: c992ca7ffaf58424b870cb1d25a02323, type: 3}
+    hitAudioClips:
+    - {fileID: 8300000, guid: a3f0311e51034394889d886a9dc917b4, type: 3}
+    - {fileID: 8300000, guid: fccf66619dd9c08438d916129da50c52, type: 3}
+    - {fileID: 8300000, guid: f69da1ebc3aede64e9886a1256ef399b, type: 3}
+    - {fileID: 8300000, guid: 2e1251cf65dc5724eb2d135075bed275, type: 3}
+    visualEffects:
+    - {fileID: 3762926137363791596, guid: d85042df7b13a364fa15adb50da521dd, type: 3}
+    decalMaterials:
+    - {fileID: 2100000, guid: 7d4f41058dfa9344f9d20a8dceaa351f, type: 2}
+  _registeredTextures: []

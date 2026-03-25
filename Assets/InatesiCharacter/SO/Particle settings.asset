@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7655a0483efbf054abcc6556b95a3e06, type: 3}
+  m_Name: Particle settings
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.Shared.ParticleSettingsSO
+  _Particle: {fileID: 0}
+  _AudioSource: {fileID: 1339561057182548330, guid: 9ee2cc801a454df41a47eb0c0253db04,
+    type: 3}
+  _MeshDecalPrefab: {fileID: 7728069149917594684, guid: f60294275f2e6b049ac9d99d92ed3a96,
+    type: 3}
+  _VisualEffectList: []
+  _DefaultCapacity: 10
+  _MaxSize: 10000
+  _CollectionCheck: 1
