@@ -13,6 +13,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
     {
         public static ref T Create<T>(EcsWorld ecsWorld) where T : struct
         {
+            Debug.Log(ecsWorld == null);
             var newDamageEntity = ecsWorld.NewEntity();
             ref var component = ref ecsWorld.GetPool<T>().Add(newDamageEntity);
 

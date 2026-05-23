@@ -346,7 +346,6 @@ namespace InatesiCharacter.Movements.SourceEngine
                         _rigidbodyPushForce,
                         1f,
                         _StepOffset, //_surfer.moveData.stepOffset, 
-                        null, //_surfer
                         true
                     );
             }
@@ -375,7 +374,6 @@ namespace InatesiCharacter.Movements.SourceEngine
                         _rigidbodyPushForce,
                         amountThisLoop / initialVel,
                         _StepOffset, //_surfer.moveData.stepOffset, 
-                        null, //_surfer
                         true
                     );
 

@@ -1,5 +1,4 @@
-﻿using Fragsurf.Movement;
-using InatesiCharacter.Movements.SourceEngine.TraceUtility;
+﻿using InatesiCharacter.Movements.SourceEngine.TraceUtility;
 using System.Collections;
 using UnityEngine;
 
@@ -40,7 +39,6 @@ namespace InatesiCharacter.Movements.SourceEngine
             float rigidbodyPushForce, 
             float velocityMultiplier = 1f, 
             float stepOffset = 0f, 
-            ISurfControllable surfer = null,
             bool useStepOffset = false)
         {
 
@@ -98,7 +96,6 @@ namespace InatesiCharacter.Movements.SourceEngine
                             direction,
                             distance,
                             forwardVelocity,
-                            surfer,
                             45f
                         ))
                         {
@@ -133,7 +130,6 @@ namespace InatesiCharacter.Movements.SourceEngine
             Vector3 direction,
             float distance,
             Vector3 forwardVelocity,
-            ISurfControllable surfer,
             float slopeLimit = 0f
         )
         {
@@ -243,7 +239,6 @@ namespace InatesiCharacter.Movements.SourceEngine
             Vector3 direction,
             float distance,
             Vector3 forwardVelocity,
-            ISurfControllable surfer,
             float slopeLimit = 0f
         )
         {
