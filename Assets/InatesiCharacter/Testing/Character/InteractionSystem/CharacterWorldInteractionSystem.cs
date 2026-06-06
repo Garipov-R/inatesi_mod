@@ -23,6 +23,15 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
         public bool SetRightHandObject(GameObject gameObj) 
         {
+            if (gameObj == null)
+            {
+                DestroyRightHandObject();
+
+                return false;
+            }
+
+            DestroyRightHandObject();
+
             if (_RightHand == null) 
             {
                 gameObj.transform.SetParent(transform);
@@ -38,11 +47,11 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             gameObj.transform.localEulerAngles = Vector3.zero;
             gameObj.transform.localPosition = Vector3.zero;
             gameObj.transform.localScale = Vector3.one;
-            gameObj.layer = LayerMask.NameToLayer("Player");
+            gameObj.layer = gameObject.layer;
 
             foreach (var child in gameObj.GetComponentsInChildren<Transform>())
             {
-                child.gameObject.layer = LayerMask.NameToLayer("Player");
+                child.gameObject.layer = gameObject.layer;
             }
 
             return true;

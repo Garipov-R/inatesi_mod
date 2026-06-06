@@ -1,4 +1,5 @@
-﻿using InatesiCharacter.Testing.Character.Bots;
+﻿using InatesiCharacter.Testing.Character.Bot3;
+using InatesiCharacter.Testing.Character.Bots;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Components
         public bool died;
 
         public BotTest botTest;
+        public BotBehaviourBase botBehaviourBase;
     }
 }

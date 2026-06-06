@@ -1,5 +1,4 @@
-﻿using InatesiCharacter.Testing.Pooling;
-using Leopotam.EcsLite;
+﻿using Leopotam.EcsLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;

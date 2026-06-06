@@ -59,7 +59,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                         hitVisualEffectParticle.gameObject,
                         ray.origin,
                         Quaternion.LookRotation(-ray.direction),
-                        Pooling.PoolType.Particle
+                        PoolType.Particle
                     );
                 }
 
@@ -71,7 +71,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                         ray.origin,
                         Quaternion.LookRotation(-ray.direction),
                         hitAudio,
-                        Pooling.PoolType.Particle
+                        PoolType.Particle
                     );
                 }
 
@@ -84,7 +84,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                         Quaternion.LookRotation(-ray.direction),
                         hitDecalMaterial,
                         particleEventComponent.hit.transform,
-                        Pooling.PoolType.Particle
+                        PoolType.Particle
                     );
                 }
             }

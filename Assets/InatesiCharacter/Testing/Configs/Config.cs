@@ -23,6 +23,7 @@ namespace InatesiCharacter.Testing.Configs
 
 
         public static LayerMask s_DamageLayerMask = LayerMask.GetMask( "Default", "CharacterHitCollider", "Player", "Character", "Platform");
+        public static LayerMask s_DamageLayerMask2 = LayerMask.GetMask( "Default", "CharacterHitCollider");
         public static LayerMask s_DamageCharacterLayerMask = LayerMask.GetMask( "CharacterHitCollider", "Player", "Character");
         public static LayerMask s_DefaultLayerMask = LayerMask.GetMask("Default");
     }

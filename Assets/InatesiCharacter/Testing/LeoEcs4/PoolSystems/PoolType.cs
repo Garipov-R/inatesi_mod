@@ -1,4 +1,4 @@
-﻿namespace InatesiCharacter.Testing.Pooling
+﻿namespace InatesiCharacter.Testing.LeoEcs4.PoolSystems
 {
     public enum PoolType
     {

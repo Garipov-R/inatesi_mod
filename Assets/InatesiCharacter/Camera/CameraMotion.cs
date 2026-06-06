@@ -55,8 +55,8 @@ namespace InatesiCharacter.Camera
             get => _ZoomAmount;
             set
             {
-                _ZoomAmount -= value * _ZoomChangeValue;
-                _ZoomAmount = Mathf.Clamp(_ZoomAmount, _ZoomRange.x, _ZoomRange.y);
+                //_ZoomAmount -= value * _ZoomChangeValue;
+                _ZoomAmount = Mathf.Clamp(Mathf.Abs(value), _ZoomRange.x, _ZoomRange.y);
             }
         }
         public CursorLockMode CursorLockMode { get => _CursorLockMode; set => _CursorLockMode = value; }
@@ -66,6 +66,7 @@ namespace InatesiCharacter.Camera
         public bool InputEnabled { get => _InputEnabled; set => _InputEnabled = value; }
         public UnityEngine.Camera Camera { get => _camera; private set => _camera = value; }
         public Vector3 LookRotationEuler { get => _LookRotationEuler; set => _LookRotationEuler = value; }
+        public bool NewInputSystem { get => _NewInputSystem; set => _NewInputSystem = value; }
 
 
         #region Unity

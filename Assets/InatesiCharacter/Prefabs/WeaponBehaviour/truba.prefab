@@ -67,7 +67,7 @@ MonoBehaviour:
   _RaycastDistance: 100
   _HitLM:
     serializedVersion: 2
-    m_Bits: 17
+    m_Bits: 529
   _carriableObjectData:
     _weaponType: 0
     _name: default
@@ -90,7 +90,7 @@ MonoBehaviour:
   _SizeParticle: 0.4
   _RecoilShooting: 0
   _projectileMoveSpeed: 59.7
-  _Projectile: {fileID: 3134870081729225523, guid: f35baf3845359cb47bcbdf5131657336,
+  _Projectile: {fileID: 3134870081729225523, guid: 3b83e9b0caaaf42499d2f804f458b85c,
     type: 3}
   _ShootAudioClips:
   - {fileID: 8300000, guid: 82cde416193136f4ca518f7c2fbf7d73, type: 3}

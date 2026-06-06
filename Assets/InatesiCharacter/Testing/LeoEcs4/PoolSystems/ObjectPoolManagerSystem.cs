@@ -7,7 +7,6 @@ using InatesiCharacter.Testing.Decals;
 using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.LeoEcs4.Events;
 using InatesiCharacter.Testing.LeoEcs4.PoolSystems;
-using InatesiCharacter.Testing.Pooling;
 using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
 using UnityEngine;

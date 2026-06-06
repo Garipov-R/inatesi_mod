@@ -3,6 +3,9 @@ using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.Character.FPS_Utility;
 using InatesiCharacter.Testing.Character.Weapons;
 using InatesiCharacter.Testing.InatesiArch.InventorySystems;
+using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
+using Leopotam.EcsLite;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,11 +22,13 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         private Dictionary<WeaponBase, GameObject> _WeaponsDictionary = new();
         private Dictionary<int, WeaponBase> _WeaponsDictionary2 = new();
         private CharacterMotionBase _characterMotionBase;
+        private CharacterWorldInteractionSystem _characterWorldInteractionSystem;
+        private EcsWorld _EcsWorld;
 
         public InventoryContainer InventoryContainer { get => _InventoryContainer; set => _InventoryContainer = value; }
         public CharacterMotionBase CharacterMotionBase { get => _characterMotionBase; set => _characterMotionBase = value; }
         public WeaponBase CurrentWeaponBase { get => _CurrentWeaponBase; set => _CurrentWeaponBase = value; }
-
+        public EcsWorld EcsWorld { get => _EcsWorld; set => _EcsWorld = value; }
 
         public InventoryInteraction2(CharacterMotionBase characterMotionBase)
         {
@@ -33,6 +38,11 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             if (characterMotionBase.LookSource != null)
                 if (characterMotionBase.LookSource.GameObject.TryGetComponent(out FirstPersonCameraHelper fps))
                     _FirstPersonHelper = fps;
+
+            if (characterMotionBase.TryGetComponent(out CharacterWorldInteractionSystem characterWorldInteractionSystem))
+            {
+                _characterWorldInteractionSystem = characterWorldInteractionSystem;
+            }
         }
 
         public void SetActiveInventoryItem(int id)
@@ -73,7 +83,6 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
         public void InitializeItem(InventoryItem item)
         {
-
             if (item == null) return;
 
             WeaponItemScriptableObject weaponSO = item.ItemScriptableObject as WeaponItemScriptableObject;
@@ -112,6 +121,9 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
             _WeaponsDictionary.Add(weaponBase, viewModel);
             _WeaponsDictionary2.TryAdd(item.SlotIndex, weaponBase);
+
+            ref var itemPickupEvent = ref ECSHelper.Create<ItemPickupEvent>(_EcsWorld);
+            itemPickupEvent.itemScriptableObject = weaponSO;
         }
 
         private void InitializeSelectedItemType(InventoryItem inventoryItem)
@@ -178,7 +190,25 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
                         _CurrentWeaponBase = weaponBase;
                         _CurrentWeaponBase.SwayBob.Init(weaponBase.SpawnedViewModel);
                         _CurrentWeaponBase.Enable();
+
+                        if (_characterWorldInteractionSystem)
+                        {
+                            if (weaponSO.WeaponThirdPersonMonoPrefab != null)
+                            {
+                                var weaponThirdPersonMonoPrefab = GameObject.Instantiate(weaponSO.WeaponThirdPersonMonoPrefab);
+                                _characterWorldInteractionSystem.SetRightHandObject(weaponThirdPersonMonoPrefab.gameObject);
+
+                                weaponBase.WeaponThirdPersonMono = weaponThirdPersonMonoPrefab;
+                            }
+                            else
+                            {
+                                _characterWorldInteractionSystem.SetRightHandObject(null);
+                            }
+                        }
                     }
+
+                    ref var selectedItemEvent = ref ECSHelper.Create<SelectedItemEvent>(_EcsWorld);
+                    selectedItemEvent.itemScriptableObject = weaponSO;
 
                 break;
             }
@@ -192,6 +222,14 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             return item;
         }
 
+
+        
+        /// <summary>
+        /// старье, не совсем корректно работает
+        /// </summary>
+        /// <param name="carriableObject"></param>
+        /// <param name="setActive"></param>
+        /// <returns></returns>
         public bool AddItem(CarriableObject carriableObject, bool setActive = false)
         {
             var item = CreateInventoryItem(carriableObject);
@@ -247,9 +285,9 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             {
                 if (_InventoryContainer.TryGetActiveItem(out var item) == true)
                 {
-                    if (item.ItemScriptableObject.ModelPrefab != null)
+                    if (item.ItemScriptableObject.EntityPrefab != null)
                     {
-                        var modelPrefab = UnityEngine.Object.Instantiate(item.ItemScriptableObject.ModelPrefab);
+                        var modelPrefab = UnityEngine.Object.Instantiate(item.ItemScriptableObject.EntityPrefab);
 
                         modelPrefab.transform.SetPositionAndRotation(
                             _characterMotionBase.transform.position + (_characterMotionBase.transform.forward * (_characterMotionBase.Radius + 1f)) + _characterMotionBase.Up * (_characterMotionBase.Height - _characterMotionBase.Radius),

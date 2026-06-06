@@ -10,9 +10,21 @@ namespace InatesiCharacter.Testing.Utility.ShakeSmooth
         [SerializeField] private float _rotateDuration = 2f;
         [SerializeField] private Vector3 _Move = new Vector3(0,0,1);
         [SerializeField] private float _moveDuration = 2f;
+        private Vector3 _startPosition;
+
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            transform.DOKill(); 
+            transform.DOMove(transform.position + _Move, _moveDuration).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).Play();
+            transform.DORotate(_Rotate, _rotateDuration, RotateMode.WorldAxisAdd).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).Play();
+        }
+#endif
 
         private void Start()
-        {   
+        {
+            _startPosition = transform.position;
             transform.DOMove(transform.position + _Move, _moveDuration).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).Play();
             transform.DORotate(_Rotate, _rotateDuration, RotateMode.WorldAxisAdd).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).Play();
         }

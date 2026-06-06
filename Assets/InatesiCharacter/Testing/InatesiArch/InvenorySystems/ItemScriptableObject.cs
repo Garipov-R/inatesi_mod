@@ -1,5 +1,7 @@
 ﻿using GameToolkit.Localization;
+using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.Character.InteractionSystem;
+using InatesiCharacter.Testing.Character.Weapons;
 using System.Collections;
 using UnityEngine;
 
@@ -15,15 +17,19 @@ namespace InatesiCharacter.Testing.InatesiArch.InventorySystems
         [SerializeField] private GameToolkit.Localization.LocalizedText _localizedText;
         [SerializeField] private Sprite _sprite;
         private GameObject _prefab;
-        [SerializeField] private GameObject _modelPrefab;
+        [SerializeField] private GameObject _entityPrefab;
+        [SerializeField] private WeaponThirdPersonMono _WeaponThirdPersonMonoPrefab;
         [SerializeField] protected TypeItem _itemType;
+        [SerializeField] private WeaponTypeAnimation _weaponTypeAnimation;
 
         public string Name { get => _name; set => _name = value; }
         public GameObject Prefab { get => _prefab; set => _prefab = value; }
         public TypeItem ItemType { get => _itemType; set => _itemType = value; }
         public Sprite Sprite { get => _sprite; set => _sprite = value; }
         public InventoryItem InventoryItem { get => inventoryItem; set => inventoryItem = value; }
-        public GameObject ModelPrefab { get => _modelPrefab; set => _modelPrefab = value; }
+        public GameObject EntityPrefab { get => _entityPrefab; set => _entityPrefab = value; }
         public LocalizedText LocalizedText { get => _localizedText; set => _localizedText = value; }
+        public WeaponThirdPersonMono WeaponThirdPersonMonoPrefab { get => _WeaponThirdPersonMonoPrefab; set => _WeaponThirdPersonMonoPrefab = value; }
+        public WeaponTypeAnimation WeaponTypeAnimation { get => _weaponTypeAnimation; set => _weaponTypeAnimation = value; }
     }
 }

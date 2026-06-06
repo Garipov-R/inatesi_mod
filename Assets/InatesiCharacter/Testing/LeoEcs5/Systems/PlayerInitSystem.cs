@@ -1,5 +1,6 @@
 ﻿using InatesiCharacter.Camera;
 using InatesiCharacter.SuperCharacter;
+using InatesiCharacter.Testing.AnimationRiging;
 using InatesiCharacter.Testing.LeoEcs5.Components;
 using Leopotam.EcsLite;
 using System;
@@ -32,18 +33,25 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
         {
             foreach (var playerInitEntity in _PlayerInitFilter)
             {
+                ref var playerInitEventComponent = ref systems.GetWorld().GetPool<PlayerInitEvent>().Get(playerInitEntity);
                 var sharedData = systems.GetShared<SharedData>();
                 if (sharedData.StartPlayerCharacterMotionBase != null)
                 {
                     var newCharacterEntity = systems.GetWorld().NewEntity();
                     ref var characterComponent = ref _CharacterPool.Add(newCharacterEntity);
-
+                    playerInitEventComponent.entity = newCharacterEntity;
                     var camera = GameObject.FindAnyObjectByType<LookSource>();
 
 
 
                     ref var playerComponent = ref _PlayerPool.Add(newCharacterEntity);
                     playerComponent.cameraMotion = camera.GetComponent<CameraMotion>();
+
+#if UNITY_ANDROID
+
+                    playerComponent.cameraMotion.NewInputSystem = true;
+
+#endif
 
                     playerComponent.fpc = true;
                     playerComponent.inputEnabled = true;
@@ -63,6 +71,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     characterComponent.InventoryInteraction2 = new Character.InteractionSystem.InventoryInteraction2(characterComponent.characterMotion);
                     characterComponent.InventoryInteraction2.InventoryContainer.Size = 4;
                     characterComponent.InventoryInteraction2.CharacterMotionBase = characterComponent.characterMotion;
+                    characterComponent.InventoryInteraction2.EcsWorld = systems.GetWorld();
 
                     if (characterComponent.CharacterSO.StartWeaponSO.Weapons != null)
                     {
@@ -78,6 +87,20 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                     if (characterComponent.InventoryInteraction2.CurrentWeaponBase) characterComponent.InventoryInteraction2.CurrentWeaponBase.FPC = playerComponent.fpc;
 
+
+
+
+
+                    // FIX
+                    if (characterComponent.gameObject.GetComponentInChildren<Animator>())
+                    {
+
+                        Debug.Log(characterComponent.gameObject.transform.GetChild(0).gameObject.name);
+                        characterComponent.characterMotion.AnimatorMonitor.Initialize(characterComponent.gameObject.transform.GetChild(0).gameObject);
+                        characterComponent.characterMotion.AnimatorMonitor.SetAvatar(characterComponent.gameObject.transform.GetChild(0).GetComponentInChildren<Animator>().avatar);
+                    }
+
+                    playerComponent.riggingTest = characterComponent.gameObject.GetComponent<RiggingTest>();
                 }
             }
         }

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using InatesiCharacter.Testing.Decals;
 using InatesiCharacter.Testing.LeoEcs5.Components;
 using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
+using InatesiCharacter.Testing.Shared;
 using Leopotam.EcsLite;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.UIElements;
 using UnityEngine.VFX;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -82,7 +84,34 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
 
                     if (obj.GetComponent<VisualEffect>())
                     {
+                        Color pixelColor = Color.gray;
+
+                        // Check what type of object was hit
+                        RaycastHit hit = (RaycastHit)objectPoolEventComponent.data;
+                        string hitLayer = hit.transform != null ? LayerMask.LayerToName(hit.transform.gameObject.layer) : "fuck you";
+                        var position = hit.transform != null ? hit.point : Vector3.zero;
+
+
+                        if (hitLayer == LayerMask.LayerToName(0)) // default
+                        {
+                            if (hit.collider is TerrainCollider)
+                            {
+                                pixelColor = TerrainTextureReader.GetColorAtWorldPosition(hit.point, hit.transform);
+                            }
+                            else if (hit.collider.GetComponent<SkinnedMeshRenderer>() != null)
+                            {
+                                pixelColor = SkinnedMeshTextureReader.GetColorAtWorldPosition(position, hit.transform);
+                            }
+                            else
+                            {
+                                pixelColor = MeshTextureReader.GetColorAtWorldPosition(hit.point, hit);
+                            }
+
+                            if (obj.GetComponent<VisualEffect>().HasVector4("Color"))
+                                obj.GetComponent<VisualEffect>().SetVector4("Color", new Vector4(pixelColor.r, pixelColor.g, pixelColor.b, 1));
+                        }
                         obj.GetComponent<VisualEffect>().Play();
+
                     }
                     else if (obj.GetComponent<MeshDecal>())
                     {
@@ -131,13 +160,13 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
                                 decal.Recalculate();
                             }
 
-                            var hits = Physics.RaycastAll(
+                            /*var hits = Physics.RaycastAll(
                                 objectPoolEventComponent.position, 
                                 damageCom.ray.direction,  
                                 10f, 
                                 Configs.Config.s_DefaultLayerMask, 
                                 QueryTriggerInteraction.Ignore
-                            );
+                            );*/
 
                             
                         }

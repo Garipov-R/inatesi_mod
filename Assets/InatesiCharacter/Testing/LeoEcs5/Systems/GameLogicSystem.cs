@@ -21,6 +21,12 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
         private EcsFilter _DamageFilter;
         private EcsFilter _PlayerInitEventFilter;
         private EcsFilter _BotFilter;
+        private EcsFilter _UseItemEvent;
+        private EcsPool<UseItemEvent> _UseItemEventPool;
+        private EcsPool<ItemPickupEvent> _ItemPickupEventPool;
+        private EcsFilter _ItemPickupFilter;
+        private EcsPool<SelectedItemEvent> _SelectedItemEventPool;
+        private EcsFilter _SelectedItemEventFilter;
 
         public void Init(IEcsSystems systems)
         {
@@ -33,7 +39,12 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
             _DamageFilter = systems.GetWorld().Filter<DamageComponent>().End();
             _PlayerInitEventFilter = systems.GetWorld().Filter<PlayerInitEvent>().End();
             _BotFilter = systems.GetWorld().Filter<BotComponent>().End();
-
+            _UseItemEvent = systems.GetWorld().Filter<UseItemEvent>().End();
+            _UseItemEventPool = systems.GetWorld().GetPool<UseItemEvent>();
+            _ItemPickupFilter = systems.GetWorld().Filter<ItemPickupEvent>().End();
+            _ItemPickupEventPool = systems.GetWorld().GetPool<ItemPickupEvent>();
+            _SelectedItemEventFilter = systems.GetWorld().Filter<SelectedItemEvent>().End();
+            _SelectedItemEventPool = systems.GetWorld().GetPool<SelectedItemEvent>();
             //_gameLogic.StartGame();
         }
 
@@ -64,7 +75,28 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
             foreach (var playerInitEntity in _PlayerInitEventFilter)
             {
+                ref var playerInitComponent = ref systems.GetWorld().GetPool<PlayerInitEvent>().Get(playerInitEntity);
+                ref var playerComponent = ref systems.GetWorld().GetPool<PlayerComponent>().Get(playerInitComponent.entity);
                 _gameLogic.OnPlayerSpawn();
+                _gameLogic.Player = playerComponent.gameObject;
+            }
+
+            foreach (var eventEntity in _UseItemEvent)
+            {
+                ref var useItemComponent = ref _UseItemEventPool.Get(eventEntity);
+                _gameLogic.OnPlayerUseItem(useItemComponent.target != null);
+            }
+
+            foreach (var eventEntity in _ItemPickupFilter)
+            {
+                ref var itemPickupEvent = ref _ItemPickupEventPool.Get(eventEntity);
+                _gameLogic.OnPlayerPickupItem(itemPickupEvent.itemScriptableObject);
+            }
+
+            foreach (var eventEntity in _SelectedItemEventFilter)
+            {
+                ref var selectedItemEvent = ref _SelectedItemEventPool.Get(eventEntity);
+                _gameLogic.OnPlayerSelectItem(selectedItemEvent.itemScriptableObject);
             }
         }
     }

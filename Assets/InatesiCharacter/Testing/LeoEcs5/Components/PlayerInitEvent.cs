@@ -8,5 +8,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Components
 {
     public struct PlayerInitEvent
     {
+        public int entity;
     }
 }

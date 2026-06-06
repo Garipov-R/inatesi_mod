@@ -84,9 +84,9 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
                      }*/
 
 
-                    if (item.ItemScriptableObject.ModelPrefab != null)
+                    if (item.ItemScriptableObject.EntityPrefab != null)
                     {
-                        var modelPrefab = UnityEngine.Object.Instantiate(item.ItemScriptableObject.ModelPrefab);
+                        var modelPrefab = UnityEngine.Object.Instantiate(item.ItemScriptableObject.EntityPrefab);
 
                         if (modelPrefab != null)
                         {
@@ -142,9 +142,9 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             {
                 if (item == null) continue;
 
-                if (item.ItemScriptableObject.ModelPrefab != null)
+                if (item.ItemScriptableObject.EntityPrefab != null)
                 {
-                    var modelPrefab = UnityEngine.Object.Instantiate(item.ItemScriptableObject.ModelPrefab);
+                    var modelPrefab = UnityEngine.Object.Instantiate(item.ItemScriptableObject.EntityPrefab);
 
                     if (modelPrefab != null)
                     {

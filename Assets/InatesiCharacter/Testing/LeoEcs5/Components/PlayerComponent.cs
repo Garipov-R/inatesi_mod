@@ -1,4 +1,5 @@
 ﻿using InatesiCharacter.Camera;
+using InatesiCharacter.Testing.AnimationRiging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Components
         public bool fpc;
         public bool inputEnabled;
         public UnityEngine.UIElements.UIDocument uiDocument;
+        public RiggingTest riggingTest;
     }
 }

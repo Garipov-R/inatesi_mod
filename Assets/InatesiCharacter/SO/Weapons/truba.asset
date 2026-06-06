@@ -15,12 +15,15 @@ MonoBehaviour:
   _name: truba
   _localizedText: {fileID: 0}
   _sprite: {fileID: 0}
-  _modelPrefab: {fileID: 0}
+  _entityPrefab: {fileID: 0}
+  _WeaponThirdPersonMonoPrefab: {fileID: -6405749228122395040, guid: 29d303f53c0aaf146bf209d0894dcf1e,
+    type: 3}
   _itemType: 1
+  _weaponTypeAnimation: 2
   _ViewModel: {fileID: 683228669086809630, guid: 1450c71536aff8d49ad1cc2a7636321f,
     type: 3}
   _SwayBobItemSO: {fileID: 11400000, guid: 35f4ea4bca33f364f923f1cd75b46fb7, type: 2}
-  _weaponBase: {fileID: 1312034864684178042, guid: fcb613ec332627c428ea69f77fdbfb0e,
+  _weaponBase: {fileID: 1312034864684178042, guid: c8c6a012f243757428541711e32c0347,
     type: 3}
   _carriableObjectData:
     _weaponType: 4

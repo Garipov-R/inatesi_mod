@@ -44,7 +44,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     bulletProjectileComponent.moveDirection,
                     _results,
                     .2f + maxDistance,
-                    Configs.Config.s_DamageLayerMask,
+                    Configs.Config.s_DamageLayerMask2,
                     QueryTriggerInteraction.Ignore
                 );
 

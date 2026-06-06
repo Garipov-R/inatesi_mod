@@ -235,7 +235,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                                         damageParticle.gameObject,
                                         characterComponent.CharacterMotionBase.transform.position + characterComponent.CharacterMotionBase.Up * (characterComponent.CharacterMotionBase.Height / 2),
                                         Quaternion.identity,
-                                        Pooling.PoolType.Particle
+                                        PoolType.Particle
                                     );
                                 }
                                
@@ -246,7 +246,7 @@ namespace InatesiCharacter.Testing.LeoEcs4.Systems
                                         characterComponent.CharacterSO.BloodMeshDecal,
                                         characterComponent.CharacterMotionBase.transform.position,
                                         Quaternion.LookRotation(-characterComponent.CharacterMotionBase.Up),
-                                        Pooling.PoolType.Particle
+                                        PoolType.Particle
                                     );
                                 }
                             }

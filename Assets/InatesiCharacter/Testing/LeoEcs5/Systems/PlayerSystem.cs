@@ -1,4 +1,5 @@
-﻿using InatesiCharacter.Testing.Character.InteractionSystem;
+﻿using InatesiCharacter.SuperCharacter;
+using InatesiCharacter.Testing.Character.InteractionSystem;
 using InatesiCharacter.Testing.LeoEcs5.Components;
 using InatesiCharacter.Testing.LeoEcs5.Utility;
 using InatesiCharacter.Testing.Shared;
@@ -61,6 +62,8 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 ref var characterComponent = ref _CharacterPool.Get(characterEntity);
                 ref var playerComponent = ref _PlayerPool.Get(characterEntity);
 
+                characterComponent.characterMotion.UpdateCharacter();
+                characterComponent.characterMotion.UpdateAnimator();
 
                 foreach (var playerInitEntity in _PlayerInitFilter)
                 {
@@ -92,6 +95,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 {
                     characterComponent.characterMotion.AudioSource.PlayOneShot(characterComponent.CharacterSO.AudioCharacter.OnJumpClip);
                     characterComponent.characterMotion.AddForce(Vector3.up * characterComponent.characterMotion.MoveConfig.JumpForce);
+                    characterComponent.characterMotion.AnimatorMonitor.SetAbilityID((int)TransitionAnimationState.Jump);
                 }
 
                 if (wishUse)
@@ -111,14 +115,20 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     {
                         if (hitInfo.transform.TryGetComponent(out InatesiCharacter.Testing.Character.InteractionSystem.CollisionEvent collisionEvent))
                         {
-                            collisionEvent.Use();
+                            collisionEvent.Use(); 
                         }
+
+
+                        var newEntity = systems.GetWorld().NewEntity();
+                        ref var useItemEvent = ref systems.GetWorld().GetPool<UseItemEvent>().Add(newEntity);
+                        useItemEvent.target = collisionEvent ?  collisionEvent.gameObject : null;
                     }
                 }
 
-                if (Inatesi.Inputs.Input.GetKeyDown(UnityEngine.InputSystem.Key.Digit1)) characterComponent.InventoryInteraction2.SetActiveInventoryItem(0);
-                if (Inatesi.Inputs.Input.GetKeyDown(UnityEngine.InputSystem.Key.Digit2)) characterComponent.InventoryInteraction2.SetActiveInventoryItem(1);
-                if (Inatesi.Inputs.Input.GetKeyDown(UnityEngine.InputSystem.Key.Digit3)) characterComponent.InventoryInteraction2.SetActiveInventoryItem(2);
+                if (Inatesi.Inputs.Input.Pressed("1")) characterComponent.InventoryInteraction2.SetActiveInventoryItem(0);
+                if (Inatesi.Inputs.Input.Pressed("2")) characterComponent.InventoryInteraction2.SetActiveInventoryItem(1);
+                if (Inatesi.Inputs.Input.Pressed("3")) characterComponent.InventoryInteraction2.SetActiveInventoryItem(2);
+                if (Inatesi.Inputs.Input.Pressed("4")) characterComponent.InventoryInteraction2.SetActiveInventoryItem(3);
 
                 if (characterComponent.InventoryInteraction2.CurrentWeaponBase)
                     characterComponent.InventoryInteraction2.CurrentWeaponBase.FPC = playerComponent.fpc;
@@ -210,6 +220,8 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                     characterComponent.characterMotion.AudioSource.PlayOneShot(characterComponent.CharacterSO.AudioCharacter.OnLandedClip);
                 }
+
+                characterComponent.characterMotion.AnimatorMonitor.SetAbilityID((int)TransitionAnimationState.Idle);
             }
                 
         }
@@ -220,6 +232,9 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
             {
                 ref var characterComponent = ref _CharacterPool.Get(characterEntity);
                 ref var playerComponent = ref _PlayerPool.Get(characterEntity);
+
+                if (playerComponent.uiDocument == null)
+                    continue;
 
                 if (characterComponent.InventoryInteraction2.CurrentWeaponBase != null)
                 {

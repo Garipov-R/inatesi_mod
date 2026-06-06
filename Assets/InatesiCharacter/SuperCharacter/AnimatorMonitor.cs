@@ -47,10 +47,19 @@ namespace InatesiCharacter.SuperCharacter
 
         public void Initialize(GameObject gameObject)
         {
-            if (gameObject.TryGetComponent(out Animator Animator)) _Animator = Animator;
-            else if (gameObject.GetComponentInChildren<Animator>()) _Animator = gameObject.GetComponentInChildren<Animator>();
+            if (gameObject.TryGetComponent(out Animator Animator))
+            {
+                _Animator = Animator;
+            }
+            else if (gameObject.GetComponentInChildren<Animator>()) 
+            {
+                _Animator = gameObject.GetComponentInChildren<Animator>();
+            } 
+
             _GameObject = gameObject;
             _Transform = gameObject.transform;
+
+            Debug.Log(gameObject.name);
         }
 
         public void SetHorizontalMovementParameter(float value, float timeScale)

@@ -1,15 +1,21 @@
-﻿using InatesiCharacter.Testing.LeoEcs5.Components;
+﻿using InatesiCharacter.Camera;
+using InatesiCharacter.Testing.InatesiArch.InventorySystems;
+using InatesiCharacter.Testing.LeoEcs5.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace InatesiCharacter.Testing.LeoEcs5.Utility
 {
     public interface IGameLogic
     {
         public bool PlayerAlive { get; set; }
+        public bool FPS { get; }
+        public CameraMotion CameraMotion { get; }
+        public GameObject Player {  get; set; }
 
         public void StartGame();
 
@@ -26,5 +32,11 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
         public void OnPlayerCollision(CollisionComponentEvent collisionEvent);
 
         public void UpdateUI();
+
+        public void OnPlayerUseItem(bool use);
+
+        public void OnPlayerPickupItem(ItemScriptableObject itemScriptableObject);
+
+        public void OnPlayerSelectItem(ItemScriptableObject itemScriptableObject);
     }
 }

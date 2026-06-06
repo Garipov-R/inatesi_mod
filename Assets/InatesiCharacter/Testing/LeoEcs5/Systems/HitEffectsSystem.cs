@@ -55,7 +55,8 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         hitVisualEffectParticle.gameObject,
                         ray.origin,
                         Quaternion.LookRotation(-ray.direction),
-                        Pooling.PoolType.Particle
+                        particleEventComponent.hit,
+                        PoolType.Particle
                     );
                 }
 

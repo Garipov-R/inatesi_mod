@@ -53,6 +53,11 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             SendDamageComponent();
 
+            _SwayBob.Shake(_ForceShake);
+
+            CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClip, _VolumeShoot);
+
+
             if (EcsWorld != null)
             {
                 int size = 4;
@@ -62,13 +67,14 @@ namespace InatesiCharacter.Testing.Character.Weapons
                     FPC ?
                     _ShootPoint.position :
                     _CharacterMotionBase.transform.position + _CharacterMotionBase.transform.up * (_CharacterMotionBase.Height - _CharacterMotionBase.Radius);
+                
                 Vector2[] scatters =
                 {
-                new Vector2(1, 1),
-                new Vector2(1, -1),
-                new Vector2(-1, -1),
-                new Vector2(-1, 1)
-            };
+                    new Vector2(1, 1),
+                    new Vector2(1, -1),
+                    new Vector2(-1, -1),
+                    new Vector2(-1, 1)
+                };
 
                 for (int i = 0; i < size; i++)
                 {
@@ -121,15 +127,12 @@ namespace InatesiCharacter.Testing.Character.Weapons
                     _rigidbodies[i].AddForce(CharacterMotion.LookSource.Transform.forward * (_forceVelocityDamage), _ForceMode);
                 }
             }
-            
 
 
 
-            _SwayBob.Shake(_ForceShake);
-
-            CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClip, _VolumeShoot);
 
             base.Shoot();
+
         }
     }
 }

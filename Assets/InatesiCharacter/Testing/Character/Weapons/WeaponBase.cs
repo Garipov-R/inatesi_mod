@@ -71,6 +71,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
         protected bool _scatterEnabled = true;
         protected Transform _ShootPoint;
         protected StartEcs _StartEcs;
+        protected WeaponThirdPersonMono _weaponThirdPersonMono;
 
         protected EcsWorld EcsWorld 
         {
@@ -96,6 +97,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 _Fpc = value;
             }
         }
+        public WeaponThirdPersonMono WeaponThirdPersonMono { get => _weaponThirdPersonMono; set => _weaponThirdPersonMono = value; }
 
 
         [Zenject.Inject]
@@ -492,6 +494,11 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 //_TrailVisualEffect.Play(VFXEventAttribute )
             }
 
+            if (_weaponThirdPersonMono != null)
+            {
+                _weaponThirdPersonMono.Shoot();
+            }
+
             //Shared.ParticlesManager.SendParticleEvent(EcsWorld, _RaycastHit, .67f, 30);
         }
         public virtual void Shoot()
@@ -529,15 +536,21 @@ namespace InatesiCharacter.Testing.Character.Weapons
             var origin = _CharacterMotionBase.LookSource.LookPosition();
             var direction = _CharacterMotionBase.LookSource.LookDirection();
             var ray = new Ray(origin, direction);
-            var cast = Physics.Raycast(ray, out RaycastHit hitInfo, 120f, Configs.Config.s_DamageLayerMask, QueryTriggerInteraction.Ignore);
+            var cast = Physics.Raycast(ray, out RaycastHit hitInfo, 120f, Configs.Config.s_DamageLayerMask2, QueryTriggerInteraction.Ignore);
             if (cast)
             {
+                var target = hitInfo.transform.gameObject;
+
+                if (hitInfo.transform.parent)
+                    target = (hitInfo.transform.root.gameObject);
+
                 damageComponent.owner = _CharacterMotionBase.gameObject;
-                damageComponent.target = hitInfo.transform.gameObject;
+                damageComponent.target = target;
                 damageComponent.ray = ray;
                 damageComponent.hit = hitInfo;
                 damageComponent.damage = _Damage;
             }
+
 
             damageComponent.isHit = cast;
 

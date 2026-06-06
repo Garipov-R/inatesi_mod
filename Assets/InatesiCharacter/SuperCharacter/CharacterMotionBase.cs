@@ -122,7 +122,7 @@ namespace InatesiCharacter.SuperCharacter
             _MovementType.Initialize(this);
 
             //_AnimatorMonitor = new AnimatorMonitor();
-            _AnimatorMonitor.Initialize(gameObject);
+            //_AnimatorMonitor.Initialize(gameObject);
 
             //_RagdollMonitor = new RagdollMonitor();
             _RagdollMonitor.Initialize(this);
@@ -491,15 +491,15 @@ namespace InatesiCharacter.SuperCharacter
 
         public void HideFoot()
         {
-            Switch(true);
+            HideObjects(true);
         }
 
         public void ShowFoot()
         {
-            Switch(false);
+            HideObjects(false);
         }
 
-        private void Switch(bool state)
+        public void HideObjects(bool state)
         {
             foreach (GameObject obj in _HideObjects)
             {

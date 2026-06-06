@@ -394,7 +394,7 @@ GameObject:
   - component: {fileID: 76099152781819854}
   - component: {fileID: 762072823852501345}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: FPS_mask_Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

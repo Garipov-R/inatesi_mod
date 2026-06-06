@@ -51,7 +51,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                             botComponent.botTest.DamageVisualEffect.gameObject,
                             damageComponent.hit.point,
                             Quaternion.LookRotation(-damageComponent.ray.direction),
-                            Pooling.PoolType.Particle
+                            PoolType.Particle
                     );
 
                     if (botComponent.health <= 0) 
