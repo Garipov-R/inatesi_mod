@@ -539,10 +539,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
             var cast = Physics.Raycast(ray, out RaycastHit hitInfo, 120f, Configs.Config.s_DamageLayerMask2, QueryTriggerInteraction.Ignore);
             if (cast)
             {
-                var target = hitInfo.transform.gameObject;
-
-                if (hitInfo.transform.parent)
-                    target = (hitInfo.transform.root.gameObject);
+                var target = hitInfo.transform.root.gameObject;
 
                 damageComponent.owner = _CharacterMotionBase.gameObject;
                 damageComponent.target = target;

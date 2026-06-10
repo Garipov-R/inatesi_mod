@@ -88,6 +88,11 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClip, _VolumeShoot);
 
+            if (projectile.TryGetComponent(out ProjectileRPG projectileRPG))
+            {
+                projectileRPG.owner = _CharacterMotionBase.gameObject;
+            }
+
             base.Shoot();
         }
     }

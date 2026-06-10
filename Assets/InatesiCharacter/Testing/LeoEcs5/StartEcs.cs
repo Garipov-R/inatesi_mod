@@ -35,13 +35,19 @@ namespace InatesiCharacter.Testing.LeoEcs5
             _LateUpdateSystems = new EcsSystems(_ecsWorld, _SharedData);
 
             _UpdateSystems
-                .Add(new PlayerInitSystem())
 
                 .Add(new PlayerWeaponActionsSystem())
                 .Add(new PlayerSystem())
                 .Add(new BotsBehaviourSystem())
                 .Add(new HitEffectsSystem())
                 .Add(new ObjectPoolManagerSystem())
+
+
+
+                .Add(new BotInitSystem())
+                .Add(new PlayerInitSystem())
+                .Add(new CharacterInitSystem())
+
 
                 .Add(new GameLogicSystem())
 
@@ -53,6 +59,8 @@ namespace InatesiCharacter.Testing.LeoEcs5
                 .DelHere<UseItemEvent>()
                 .DelHere<ItemPickupEvent>()
                 .DelHere<SelectedItemEvent>()
+                .DelHere<CharacterInitEvent>()
+                .DelHere<BotInitEvent>()
             ;
 
             _FixedUpdateSystems

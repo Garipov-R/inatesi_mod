@@ -1,4 +1,5 @@
 ﻿using InatesiCharacter.SuperCharacter;
+using InatesiCharacter.Testing.Character.Bot3;
 using InatesiCharacter.Testing.Character.Data;
 using InatesiCharacter.Testing.Character.InteractionSystem;
 using UnityEngine;
@@ -13,5 +14,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Components
         public InventoryInteraction2 InventoryInteraction2;
         public CharacterSO CharacterSO;
         public float health;
+        public EntityFlag entityFlag;
     }
 }

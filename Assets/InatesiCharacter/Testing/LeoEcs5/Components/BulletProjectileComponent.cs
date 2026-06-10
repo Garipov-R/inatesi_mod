@@ -21,5 +21,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Components
         public bool isRigidbody;
         public Rigidbody rigidbody;
         public Vector3 addForce;
+        public GameObject owner;
     }
 }

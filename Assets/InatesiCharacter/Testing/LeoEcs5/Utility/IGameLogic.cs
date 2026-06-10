@@ -38,5 +38,8 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
         public void OnPlayerPickupItem(ItemScriptableObject itemScriptableObject);
 
         public void OnPlayerSelectItem(ItemScriptableObject itemScriptableObject);
+
+        public void OnPlayerDamage(DamageComponent damageComponent);
+        public void OnPlayerLanded();
     }
 }

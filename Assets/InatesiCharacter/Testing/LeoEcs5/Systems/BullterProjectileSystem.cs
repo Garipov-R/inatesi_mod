@@ -77,7 +77,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                             //var velocity = (_results[i].point - bulletProjectileComponent.transform.position).normalized + bulletProjectileComponent.addForce;
                             //hitComponent.first = transform.root.gameObject;
                             //hitComponent.other = cast.transform.gameObject;
-                            hitComponent.owner = null; // player
+                            hitComponent.owner = bulletProjectileComponent.owner; // player
                             hitComponent.target = _results[i].transform.root.gameObject;
                             hitComponent.damage = 100;
                             hitComponent.velocity = velocity;

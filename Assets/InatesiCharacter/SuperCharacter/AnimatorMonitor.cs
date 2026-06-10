@@ -58,8 +58,6 @@ namespace InatesiCharacter.SuperCharacter
 
             _GameObject = gameObject;
             _Transform = gameObject.transform;
-
-            Debug.Log(gameObject.name);
         }
 
         public void SetHorizontalMovementParameter(float value, float timeScale)

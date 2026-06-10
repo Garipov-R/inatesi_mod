@@ -66,7 +66,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     {
                         if (characterComponent.health <= 0)
                         {
-                            systems.GetWorld().DelEntity(playerCharacterEntity);
+                            //systems.GetWorld().DelEntity(playerCharacterEntity);
                             _gameLogic.OnPlayerDead();
                         }
                     }
@@ -79,6 +79,10 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 ref var playerComponent = ref systems.GetWorld().GetPool<PlayerComponent>().Get(playerInitComponent.entity);
                 _gameLogic.OnPlayerSpawn();
                 _gameLogic.Player = playerComponent.gameObject;
+
+                ref var playerCharacterComponent = ref systems.GetWorld().GetPool<CharacterComponent>().Get(playerInitComponent.entity);
+                playerCharacterComponent.characterMotion.OnLanded.RemoveAllListeners();
+                playerCharacterComponent.characterMotion.OnLanded.AddListener(_gameLogic.OnPlayerLanded);
             }
 
             foreach (var eventEntity in _UseItemEvent)
@@ -97,6 +101,19 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
             {
                 ref var selectedItemEvent = ref _SelectedItemEventPool.Get(eventEntity);
                 _gameLogic.OnPlayerSelectItem(selectedItemEvent.itemScriptableObject);
+            }
+
+            foreach (var damageEntity in _DamageFilter)
+            {
+                ref var damageComponent = ref _DamagePool.Get(damageEntity);
+                foreach (var playerCharacterEntity in _PlayerCharacterFilter)
+                {
+                    ref var playerComponent = ref _PlayerPool.Get(playerCharacterEntity);
+                    if (damageComponent.target == playerComponent.gameObject)
+                    {
+                        _gameLogic.OnPlayerDamage(damageComponent);
+                    }
+                }
             }
         }
     }

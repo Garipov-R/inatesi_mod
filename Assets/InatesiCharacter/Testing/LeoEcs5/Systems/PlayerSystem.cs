@@ -1,6 +1,7 @@
 ﻿using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.Character.InteractionSystem;
 using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
 using InatesiCharacter.Testing.LeoEcs5.Utility;
 using InatesiCharacter.Testing.Shared;
 using Leopotam.EcsLite;
@@ -64,12 +65,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                 characterComponent.characterMotion.UpdateCharacter();
                 characterComponent.characterMotion.UpdateAnimator();
-
-                foreach (var playerInitEntity in _PlayerInitFilter)
-                {
-                    characterComponent.characterMotion.OnLanded.RemoveAllListeners();
-                    characterComponent.characterMotion.OnLanded.AddListener(OnLanded);
-                }
 
 
                 if (playerComponent.inputEnabled == false)
@@ -158,16 +153,25 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         if (characterComponent.health <= 0)
                         {
                             //playerComponent.cameraMotion.InputEnabled = false;
-                            playerComponent.cameraMotion.Follow = null;
-                            playerComponent.cameraMotion.transform.position = characterComponent.transform.position + characterComponent.transform.up * .5f;
+                            //playerComponent.cameraMotion.Follow = null;
+                            //playerComponent.cameraMotion.transform.position = characterComponent.transform.position + characterComponent.transform.up * .5f;
                             playerComponent.inputEnabled = false;
-                            characterComponent.characterMotion.Velocity = Vector3.zero;
+                            //characterComponent.characterMotion.Velocity = Vector3.zero;
                             characterComponent.characterMotion.InputVector = Vector3.zero;
                             characterComponent.characterMotion.InputDirection = Vector3.zero;
                             characterComponent.InventoryInteraction2.DisableCurrentWeapon();
                         }
 
                         UpdateUI();
+
+                        SendEventObjectPool.Send(
+                            systems.GetWorld(),
+                            characterComponent.CharacterSO.DamageVisualEffect.gameObject,
+                            damageComponent.hit.point,
+                            Quaternion.LookRotation(-damageComponent.ray.direction),
+                            damageComponent.hit,
+                            PoolType.Particle
+                        );
                     }
                 }
 
@@ -202,28 +206,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 characterComponent.characterMotion.UpdateAnimator();
                 characterComponent.characterMotion.UpdateFootstep();
             }
-        }
-
-        private void OnLanded()
-        {
-            foreach (var characterEntity in _PlayerCharacterFilter)
-            {
-                ref var characterComponent = ref _CharacterPool.Get(characterEntity);
-
-                if (characterComponent.characterMotion.Velocity.y <= characterComponent.CharacterSO.MoveConfig.FallDamageVelocity)
-                {
-
-                    ref var damageComponent = ref SendDamageEvent.Send(_ecsWorld);
-                    damageComponent.damage = Mathf.Abs( characterComponent.characterMotion.Velocity.y) / 2;
-                    damageComponent.velocity = Vector3.up;
-                    damageComponent.target = characterComponent.gameObject;
-
-                    characterComponent.characterMotion.AudioSource.PlayOneShot(characterComponent.CharacterSO.AudioCharacter.OnLandedClip);
-                }
-
-                characterComponent.characterMotion.AnimatorMonitor.SetAbilityID((int)TransitionAnimationState.Idle);
-            }
-                
         }
 
         private void UpdateUI()

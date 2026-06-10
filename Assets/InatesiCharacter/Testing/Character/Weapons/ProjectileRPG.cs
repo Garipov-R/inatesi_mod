@@ -29,6 +29,7 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
         private SetupLeoEcs _SetupLeoEcs;
         private RaycastHit[] _hits;
         public EcsWorld ecsWorld { get => _SetupLeoEcs.EcsWorld; }
+        public GameObject owner;
 
 
         [Inject]
@@ -131,7 +132,7 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
                         }
                     }
 
-                    hitComponent.owner = null;
+                    hitComponent.owner = owner;
                     hitComponent.target = cast.transform ? cast.transform.gameObject : null;
                     hitComponent.damage = damage;
                     hitComponent.velocity = directionForce;

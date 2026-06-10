@@ -1,6 +1,7 @@
 ﻿using InatesiCharacter.Camera;
 using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.AnimationRiging;
+using InatesiCharacter.Testing.Character.Bot3;
 using InatesiCharacter.Testing.LeoEcs5.Components;
 using Leopotam.EcsLite;
 using System;
@@ -38,36 +39,42 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 if (sharedData.StartPlayerCharacterMotionBase != null)
                 {
                     var newCharacterEntity = systems.GetWorld().NewEntity();
-                    ref var characterComponent = ref _CharacterPool.Add(newCharacterEntity);
                     playerInitEventComponent.entity = newCharacterEntity;
-                    var camera = GameObject.FindAnyObjectByType<LookSource>();
 
 
 
-                    ref var playerComponent = ref _PlayerPool.Add(newCharacterEntity);
-                    playerComponent.cameraMotion = camera.GetComponent<CameraMotion>();
-
-#if UNITY_ANDROID
-
-                    playerComponent.cameraMotion.NewInputSystem = true;
-
-#endif
-
-                    playerComponent.fpc = true;
-                    playerComponent.inputEnabled = true;
-                    playerComponent.uiDocument = sharedData.PlayerUIDocument;
-
+                    // character component setup ================================
+                    ref var characterComponent = ref _CharacterPool.Add(newCharacterEntity);
                     characterComponent.CharacterSO = sharedData.CharacterSO;
                     characterComponent.characterMotion = sharedData.StartPlayerCharacterMotionBase;
-                    characterComponent.characterMotion.LookSource = camera;
                     characterComponent.transform = sharedData.StartPlayerCharacterMotionBase.transform;
                     characterComponent.gameObject = sharedData.StartPlayerCharacterMotionBase.gameObject;
                     characterComponent.health = 100;
-                    //characterComponent.characterMotion.OnLanded.AddListener(OnLanded);
+                    if (characterComponent.gameObject.TryGetComponent(out EntityFlagMono entityFlagMono))
+                    {
+                        characterComponent.entityFlag = entityFlagMono.EntityFlag;
+                    }
+                    // ================================================================
+
+
+                    // player component setup ================================
+                    var camera = GameObject.FindAnyObjectByType<LookSource>();
+                    ref var playerComponent = ref _PlayerPool.Add(newCharacterEntity);
+                    playerComponent.cameraMotion = camera.GetComponent<CameraMotion>();
+#if UNITY_ANDROID
+                    playerComponent.cameraMotion.NewInputSystem = true;
+#endif
+                    playerComponent.fpc = true;
+                    playerComponent.inputEnabled = true;
+                    playerComponent.uiDocument = sharedData.PlayerUIDocument;
                     playerComponent.cameraMotion.Follow = characterComponent.transform;
                     playerComponent.gameObject = characterComponent.characterMotion.gameObject;
+                    characterComponent.characterMotion.LookSource = camera;
+                    playerComponent.riggingTest = characterComponent.gameObject.GetComponent<RiggingTest>();
+                    // end ===============================
 
-                    // inventory
+
+                    // <<inventory>> ===================================
                     characterComponent.InventoryInteraction2 = new Character.InteractionSystem.InventoryInteraction2(characterComponent.characterMotion);
                     characterComponent.InventoryInteraction2.InventoryContainer.Size = 4;
                     characterComponent.InventoryInteraction2.CharacterMotionBase = characterComponent.characterMotion;
@@ -86,7 +93,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     characterComponent.InventoryInteraction2.EnableCurrentWeapon();
 
                     if (characterComponent.InventoryInteraction2.CurrentWeaponBase) characterComponent.InventoryInteraction2.CurrentWeaponBase.FPC = playerComponent.fpc;
-
+                    // end <<inventory>> ================================
 
 
 
@@ -100,7 +107,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         characterComponent.characterMotion.AnimatorMonitor.SetAvatar(characterComponent.gameObject.transform.GetChild(0).GetComponentInChildren<Animator>().avatar);
                     }
 
-                    playerComponent.riggingTest = characterComponent.gameObject.GetComponent<RiggingTest>();
                 }
             }
         }

@@ -308,6 +308,9 @@ namespace InatesiCharacter.Testing.Decals
             if (!sourceMesh)
                 return;
 
+            if (sourceMesh.isReadable == false)
+                return;
+
             sourceMesh.GetVertices(vertices);
             sourceMesh.GetNormals(normals);
             sourceMesh.GetTangents(tangents);

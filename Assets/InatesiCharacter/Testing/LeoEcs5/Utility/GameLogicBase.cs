@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace InatesiCharacter.Testing.LeoEcs5.Utility
 {
@@ -122,6 +121,14 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
         }
 
         public virtual void OnPlayerSelectItem(ItemScriptableObject itemScriptableObject)
+        {
+        }
+
+        public virtual void OnPlayerDamage(DamageComponent damageComponent)
+        {
+        }
+
+        public virtual void OnPlayerLanded()
         {
         }
     }

@@ -77,6 +77,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             var projectile = Instantiate(_Projectile);
 
+            bulletComponent.owner = _CharacterMotionBase.gameObject;
             bulletComponent.ignoreLayer = _CharacterMotionBase.gameObject.layer;
             bulletComponent.gameObject = projectile;
             bulletComponent.transform = projectile.transform;
