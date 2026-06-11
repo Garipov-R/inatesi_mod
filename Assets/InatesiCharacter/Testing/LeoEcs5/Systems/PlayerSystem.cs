@@ -170,8 +170,54 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                             damageComponent.hit.point,
                             Quaternion.LookRotation(-damageComponent.ray.direction),
                             damageComponent.hit,
-                            PoolType.Particle
+                        PoolType.Particle
                         );
+
+                        if (characterComponent.CharacterSO.DamageMaterial != null)
+                        {
+                            ref var objectPoolSendEvent = ref ECSHelper.Create<ObjectPoolSendEvent>(systems.GetWorld());
+                            objectPoolSendEvent.objectToSpawn = systems.GetShared<SharedData>().ParticleSettingsSO.MeshDecalPrefab.gameObject;
+                            objectPoolSendEvent.poolType = PoolType.Particle;
+                            objectPoolSendEvent.data = characterComponent.CharacterSO.DamageMaterial;
+
+                            var isHit = Physics.Raycast(
+                                damageComponent.hit.point,
+                                damageComponent.ray.direction,
+                                out RaycastHit hit,
+                                5f,
+                                Configs.Config.s_DefaultLayerMask,
+                                QueryTriggerInteraction.Ignore
+                            );
+
+                            if (isHit)
+                            {
+                                objectPoolSendEvent.rotation = Quaternion.LookRotation(damageComponent.ray.direction);
+                                objectPoolSendEvent.position = hit.point;
+                                objectPoolSendEvent.parent = hit.transform;
+                            }
+                            else
+                            {
+                                var isHit2 = Physics.Raycast(
+                                    damageComponent.hit.point,
+                                    Vector3.down,
+                                    out RaycastHit hit2,
+                                    3f,
+                                    Configs.Config.s_DefaultLayerMask,
+                                    QueryTriggerInteraction.Ignore
+                                );
+
+                                if (isHit2)
+                                {
+                                    objectPoolSendEvent.rotation = Quaternion.LookRotation(-hit2.normal);
+                                    objectPoolSendEvent.position = hit2.point;
+                                    objectPoolSendEvent.parent = hit2.transform;
+                                }
+                                else
+                                {
+
+                                }
+                            }
+                        }
                     }
                 }
 

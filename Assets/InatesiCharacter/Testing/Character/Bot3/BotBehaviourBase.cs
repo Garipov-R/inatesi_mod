@@ -22,6 +22,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
 
         [Header("Effects")]
         [SerializeField] private VisualEffect _DamageVisualEffect;
+        [SerializeField] private Material _DamageMaterial;
 
         private float _stopTimer;
         private bool _isDead;
@@ -33,6 +34,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
         public AdvancedNavMeshBot AdvancedNavMeshBot { get => _advancedNavMeshBot; set => _advancedNavMeshBot = value; }
         public bool IsDead { get => _isDead; set => _isDead = value; }
         [Zenject.Inject] public StartEcs StartEcs { get; set; }
+        public Material DamageMaterial { get => _DamageMaterial; set => _DamageMaterial = value; }
 
         private void Update()
         {
@@ -61,8 +63,6 @@ namespace InatesiCharacter.Testing.Character.Bot3
             _advancedNavMeshBot.Stop = true;
 
             _stopTimer += 0.5f;
-
-            Debug.Log($"bot is damaged {gameObject.name}");
         }
 
         public void Go()
@@ -74,7 +74,6 @@ namespace InatesiCharacter.Testing.Character.Bot3
         {
             GetComponent<NavMeshAgent>().enabled = false;
             _advancedNavMeshBot.Stop = true;
-            Debug.Log($"bot is dead {gameObject.name}");
             _isDead = true;
             _Animator.ResetTrigger("attack");
             _Animator.SetTrigger("death");
@@ -128,9 +127,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
                 damageComponent.hit = hitInfo;
                 damageComponent.damage = _Damage;
                 damageComponent.velocity = ray.direction * 8f;
-            }
-
-            Debug.Log($"hittitt {cast} {gameObject.name}");
+            }   
 
             damageComponent.isHit = cast; 
             

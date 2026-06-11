@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -12,10 +13,10 @@ namespace InatesiCharacter.Testing.SurfaceManagers
         [SerializeField] private VisualEffect _visualEffect;
 
         [SerializeField] SurfaceDefinition[] _definedSurfaces;
-        [SerializeField] RegisteredMaterial[] _registeredTextures;
+        [SerializeField] List< RegisteredMaterial> _registeredTextures = new List<RegisteredMaterial>();
 
         public SurfaceDefinition[] DefinedSurfaces { get => _definedSurfaces; set => _definedSurfaces = value; }
-        public RegisteredMaterial[] RegisteredTextures { get => _registeredTextures; set => _registeredTextures = value; }
+        public List<RegisteredMaterial> RegisteredTextures { get => _registeredTextures; set => _registeredTextures = value; }
 
         public string[] GetAllSurfaceNames()
         {
@@ -42,15 +43,9 @@ namespace InatesiCharacter.Testing.SurfaceManagers
     [System.Serializable]
     public struct RegisteredMaterial
     {
+        public string textureName;  
         public Texture texture;
         public Texture[] textures;
         public int surfaceIndex;
-    }
-
-    [System.Serializable]
-    public struct SurfaceGameObjectData
-    {
-        public Material[] decalMaterials;
-        public VisualEffect[] visualEffects;
     }
 }

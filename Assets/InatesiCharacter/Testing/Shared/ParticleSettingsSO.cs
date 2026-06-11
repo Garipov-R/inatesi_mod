@@ -9,10 +9,15 @@ namespace InatesiCharacter.Testing.Shared
     [CreateAssetMenu(fileName = "Particle settings", menuName = "GAME/particle", order = 1)]
     public class ParticleSettingsSO : ScriptableObject
     {
+        [SerializeField] private AudioClip _DamageCharacterAudioClip;
+
+        [Header("other")]
         [SerializeField] private GameObject _Particle;
         [SerializeField] private AudioSource _AudioSource;
         [SerializeField] private MeshDecal _MeshDecalPrefab;
         [SerializeField] private List<VisualEffect> _VisualEffectList = new();
+
+        [Header("other")]
         [SerializeField] private int _DefaultCapacity = 10;
         [SerializeField] private int _MaxSize = 10000;
         [SerializeField] private bool _CollectionCheck = true;
@@ -24,6 +29,7 @@ namespace InatesiCharacter.Testing.Shared
         public List<VisualEffect> VisualEffectList { get => _VisualEffectList; set => _VisualEffectList = value; }
         public AudioSource AudioSource { get => _AudioSource; set => _AudioSource = value; }
         public MeshDecal MeshDecalPrefab { get => _MeshDecalPrefab; set => _MeshDecalPrefab = value; }
+        public AudioClip DamageCharacterAudioClip { get => _DamageCharacterAudioClip; set => _DamageCharacterAudioClip = value; }
     }
 
     public class ParticleData

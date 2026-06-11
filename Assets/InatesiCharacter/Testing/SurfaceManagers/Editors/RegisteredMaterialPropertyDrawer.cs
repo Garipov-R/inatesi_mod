@@ -1,6 +1,5 @@
 ﻿#if UNITY_EDITOR
 
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -46,7 +45,8 @@ namespace InatesiCharacter.Testing.SurfaceManagers.Editors
             root.Q<DropdownField>("dropdown").value = t.GetAllSurfaceNames()[surfaceIndex.intValue];
 
             var tt = property.serializedObject.context as SurfaceDataEditor;
-
+            //var target = tt.target as SurfaceDataSO;
+            //Debug.Log(target.RegisteredTextures.Length);
             root.Q<VisualElement>("selected-texture").style.display = DisplayStyle.None;
             root.Q<ObjectField>("texture").RegisterValueChangedCallback(e => 
             {
@@ -62,7 +62,7 @@ namespace InatesiCharacter.Testing.SurfaceManagers.Editors
                 property.serializedObject.UpdateIfRequiredOrScript(); 
                 property.serializedObject.Update(); 
             });
-
+            property.serializedObject.ApplyModifiedProperties();
             return root;
         }
     }

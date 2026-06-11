@@ -2,8 +2,10 @@
 using InatesiCharacter.Testing.Character.Bots;
 using InatesiCharacter.Testing.LeoEcs5.Components;
 using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
 using Leopotam.EcsLite;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace InatesiCharacter.Testing.LeoEcs5.Systems
 {
@@ -60,11 +62,57 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         SendEventObjectPool.Send(
                             systems.GetWorld(),
                             botComponent.botBehaviourBase.DamageVisualEffect.gameObject,
-                            damageComponent.hit.point,
+                            damageComponent.hit.point + -damageComponent.ray.direction * 0.5f,
                             Quaternion.LookRotation(-damageComponent.ray.direction),
                             damageComponent.hit,
                             PoolType.Particle
                         );
+                    }
+
+                    if (botComponent.botBehaviourBase.DamageMaterial != null)
+                    {
+                        ref var objectPoolSendEvent = ref ECSHelper.Create<ObjectPoolSendEvent>(systems.GetWorld());
+                        objectPoolSendEvent.objectToSpawn = systems.GetShared<SharedData>().ParticleSettingsSO.MeshDecalPrefab.gameObject;
+                        objectPoolSendEvent.poolType = PoolType.Particle;
+                        objectPoolSendEvent.data = botComponent.botBehaviourBase.DamageMaterial;
+
+                        var isHit = Physics.Raycast(
+                            damageComponent.hit.point,
+                            damageComponent.ray.direction,
+                            out RaycastHit hit,
+                            5f,
+                            Configs.Config.s_DefaultLayerMask,
+                            QueryTriggerInteraction.Ignore
+                        );
+
+                        if (isHit)
+                        {
+                            objectPoolSendEvent.rotation = Quaternion.LookRotation(damageComponent.ray.direction);
+                            objectPoolSendEvent.position = hit.point;
+                            objectPoolSendEvent.parent = hit.transform;
+                        }
+                        else
+                        {
+                            var isHit2 = Physics.Raycast(
+                                damageComponent.hit.point,
+                                Vector3.down,
+                                out RaycastHit hit2,
+                                4f,
+                                Configs.Config.s_DefaultLayerMask,
+                                QueryTriggerInteraction.Ignore
+                            );
+
+                            if (isHit2)
+                            {
+                                objectPoolSendEvent.rotation = Quaternion.LookRotation(-hit2.normal);
+                                objectPoolSendEvent.position = hit2.point;
+                                objectPoolSendEvent.parent = hit2.transform;
+                            }
+                            else
+                            {
+
+                            }
+                        }
                     }
 
                     if (botCharacterComponent.health <= 0) 
@@ -81,7 +129,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         {
                             foreach(var botEvent in systems.GetShared<SharedData>().BotsEvents)
                             {
-                                botEvent.DeathBot(botComponent.gameObject);
+                                botEvent.DeathBot(botCharacterComponent.gameObject);
                             }
                         }
                         

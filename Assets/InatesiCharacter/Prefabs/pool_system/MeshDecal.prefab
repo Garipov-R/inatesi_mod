@@ -47,10 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.Decals.MeshDecal
   targetMesh: {fileID: 0}
-  m_Material: {fileID: 2100000, guid: 7d4f41058dfa9344f9d20a8dceaa351f, type: 2}
-  offset: 0.01
+  m_Material: {fileID: 0}
+  offset: 0.0052
   removeBackfaces: 1
-  serialized: 1
+  serialized: 0
   hideComponents: 1
   vertices:
   - {x: -0.9999976, y: 1.0000008, z: 0.29000026}
@@ -168,7 +168,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1288622920522789404
 MeshFilter:

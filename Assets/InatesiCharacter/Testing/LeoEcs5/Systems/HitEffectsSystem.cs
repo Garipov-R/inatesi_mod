@@ -37,6 +37,11 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 if ("Character" == characterLayer || "Player" == characterLayer || "CharacterHitCollider" == characterLayer)
                 {
                     hitVisualEffectParticle = null;
+
+                    if (systems.GetShared<SharedData>().ParticleSettingsSO.DamageCharacterAudioClip)
+                    {
+                        hitAudio = systems.GetShared<SharedData>().ParticleSettingsSO.DamageCharacterAudioClip;
+                    }
                 }
                 else
                 {

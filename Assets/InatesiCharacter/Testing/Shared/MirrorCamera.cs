@@ -6,7 +6,7 @@ namespace InatesiCharacter.Testing.Shared
     public class MirrorCamera : MonoBehaviour
     {
         [SerializeField] private Transform _mirror;
-        private UnityEngine.Camera _camera; 
+        [SerializeField] private UnityEngine.Camera _camera;
 
         private void Awake()
         {
@@ -18,9 +18,10 @@ namespace InatesiCharacter.Testing.Shared
             if (_camera != null) 
             {
                 Vector3 localPlayer = _mirror.InverseTransformPoint(_camera.transform.position);
-                transform.position = _mirror.TransformPoint(new Vector3(localPlayer.x, localPlayer.y, localPlayer.z));
+                //transform.position = _mirror.TransformPoint(new Vector3(localPlayer.x, localPlayer.y, -localPlayer.z));
 
-                Vector3 lockAtMirror = _mirror.TransformPoint(new Vector3(-localPlayer.x, localPlayer.y, localPlayer.z));
+                //  transform.localRotation = _camera.transform.localRotation;
+                Vector3 lockAtMirror = _mirror.TransformPoint(new Vector3(localPlayer.x, localPlayer.y, -localPlayer.z));
                 transform.LookAt(lockAtMirror);
             }
             else

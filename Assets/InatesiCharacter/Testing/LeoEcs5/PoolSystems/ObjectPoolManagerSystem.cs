@@ -118,19 +118,23 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
                         foreach (var damageEntity in _DamageFilter)
                         {
                             ref var damageCom = ref _DamagePool.Get(damageEntity);
-
                             if (damageCom.isHit == false) continue;
 
                             var decal = obj.GetComponent<MeshDecal>();
 
                             var direction = Vector3.zero;
                             var lookRotation = Vector3.zero;
+                            var scale = Vector3.one * 0.1f;
                             var characterLayer = LayerMask.LayerToName(damageCom.target.layer);
+                            var isCharacter = false;
                             //Debug.Log(characterLayer);
                             if ("Character" == characterLayer || "Player" == characterLayer || "CharacterHitCollider" == characterLayer)
                             {
                                 direction = Vector3.down;
                                 lookRotation = Vector3.down;
+                                scale = Vector3.one;
+
+                                isCharacter = true;
                             }
                             else
                             {
@@ -138,27 +142,46 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
                                 lookRotation = -damageCom.hit.normal;
                             }
 
-                            var sphereCast = Physics.SphereCast(
-                                objectPoolEventComponent.position, 
-                                .001f, 
-                                direction, 
-                                out RaycastHit hitInfo, 
-                                1f, 
-                                Configs.Config.s_DefaultLayerMask, 
-                                QueryTriggerInteraction.Ignore
-                            );
 
-                            Debug.DrawRay(objectPoolEventComponent.position, direction, Color.red, 2, true);
-
-                            if (sphereCast == true)
+                            if (isCharacter == false)
                             {
-                                decal.material = objectPoolEventComponent.data != null ? objectPoolEventComponent.data as Material : decal.material;
+                                var sphereCast = Physics.SphereCast(
+                                    objectPoolEventComponent.position,
+                                    .001f,
+                                    direction,
+                                    out RaycastHit hitInfo,
+                                    1f,
+                                    Configs.Config.s_DefaultLayerMask,
+                                    QueryTriggerInteraction.Ignore
+                                );
 
-                                decal.targetMesh = objectPoolEventComponent.parent;
-                                decal.transform.rotation = Quaternion.LookRotation(lookRotation);
-                                decal.transform.localEulerAngles = new Vector3(decal.transform.eulerAngles.x, decal.transform.eulerAngles.y, Random.Range(0, 360f));
-                                decal.Recalculate();
+                                Debug.DrawRay(objectPoolEventComponent.position, direction, Color.red, 2, true);
+
+                                if (sphereCast == true)
+                                {
+                                    decal.material = objectPoolEventComponent.data != null ? objectPoolEventComponent.data as Material : decal.material;
+
+                                    decal.targetMesh = objectPoolEventComponent.parent;
+                                    decal.transform.rotation = Quaternion.LookRotation(-hitInfo.normal);
+                                    decal.transform.eulerAngles = new Vector3(decal.transform.eulerAngles.x, decal.transform.eulerAngles.y, Random.Range(0, 360f));
+                                    decal.transform.localScale = scale;
+                                    decal.Recalculate();
+                                }
                             }
+                            else
+                            {
+                                decal.transform.position = objectPoolEventComponent.position;
+                                decal.material = objectPoolEventComponent.data != null ? objectPoolEventComponent.data as Material : decal.material;
+                                decal.transform.localScale = scale;
+                                decal.targetMesh = objectPoolEventComponent.parent;
+                                decal.transform.eulerAngles = new Vector3(decal.transform.eulerAngles.x, decal.transform.eulerAngles.y, Random.Range(0, 360f));
+                                //decal.gameObject.SetActive(false);
+
+                                decal.Recalculate();
+                                //decal.gameObject.SetActive(true);
+                                //break;
+                            }
+                            
 
                             /*var hits = Physics.RaycastAll(
                                 objectPoolEventComponent.position, 

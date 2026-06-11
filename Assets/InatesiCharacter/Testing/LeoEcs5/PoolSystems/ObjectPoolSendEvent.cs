@@ -10,5 +10,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
         public PoolType poolType;
         public object data;
         public Transform parent;
+        public RaycastHit hit;
+        public Ray ray;
     }
 }

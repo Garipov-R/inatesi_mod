@@ -11,10 +11,13 @@ namespace InatesiCharacter.Testing.Character.Bot2
 {
     public class BotsEvents : MonoBehaviour, IBotObserver
     {
-        [SerializeField] private List<GameObject> _botTests = new List<GameObject>();
+        [SerializeField] private List<GameObject> _botsOnScene = new List<GameObject>();
+        [SerializeField] private List<GameObject> _botPrefabs = new List<GameObject>();
         [SerializeField] private UnityEvent _OnAllDeathBot;
-        [SerializeField] private UnityEvent _OnDeathBot;
+        [SerializeField] private UnityEvent _OnAnyDeathBotEvent;
+        [SerializeField] private UnityEvent<GameObject> _OnDeathBotEvent;
         [SerializeField] private Transform _SpawnPoint;
+        [SerializeField] private List<Transform> _SpawnPoints = new List<Transform>();
 
         private int _countDeath;
         [Zenject.Inject] private StartEcs _StartEcs;
@@ -22,24 +25,26 @@ namespace InatesiCharacter.Testing.Character.Bot2
 
         public void DeathBot(GameObject botGameObject)
         {
-            _OnDeathBot?.Invoke();
+            _OnAnyDeathBotEvent?.Invoke();
+            _OnDeathBotEvent?.Invoke(botGameObject);
 
-            _botTests.ForEach (bot => 
+            foreach (var bot in _botsOnScene)
             {
-                if (bot.gameObject == botGameObject)
+                if (bot == botGameObject)
                 {
                     Debug.Log(_countDeath);
+
                     _countDeath++;
                 }
                 else
                 {
                     return;
                 }
-            });
+            }
 
             
 
-            if (_countDeath >= _botTests.Count)
+            if (_countDeath >= _botsOnScene.Count)
             {
                 _OnAllDeathBot?.Invoke();
             }
@@ -53,13 +58,45 @@ namespace InatesiCharacter.Testing.Character.Bot2
             if (_SpawnPoint == null)
                 return;
 
-            if (_botTests == null && _botTests.Count == 0)
+            if (_botPrefabs == null && _botPrefabs.Count == 0)
                 return;
 
             ref var component = ref ECSHelper.Create<BotInitEvent>(_StartEcs.EcsWorld);
-            component.prefab = _botTests[0];
+            component.prefab = _botPrefabs[0];
             component.position = _SpawnPoint.position;
             component.rotation = _SpawnPoint.rotation;
+        }
+
+        public void SpawnBot(GameObject targetBotGameObject)
+        {
+            if (_StartEcs == null)
+                return;
+
+            if (_SpawnPoint == null)
+                return;
+
+            if (_botPrefabs == null && _botPrefabs.Count == 0)
+                return;
+
+
+            GameObject prefab = null;
+            var spawnPoint = _SpawnPoints[Random.Range(0, _SpawnPoints.Count - 1)];
+            foreach (var botPrefab in _botPrefabs)
+            {
+                var nameBot = targetBotGameObject.name.Replace("(Clone)", "");
+                if (botPrefab.name == nameBot)
+                {
+                    prefab = botPrefab;
+                }
+            }
+
+            if (prefab != null)
+            {
+                ref var component = ref ECSHelper.Create<BotInitEvent>(_StartEcs.EcsWorld);
+                component.prefab = prefab;
+                component.position = spawnPoint.position;
+                component.rotation = spawnPoint.rotation;
+            }
         }
 
         public void InvokeAllDeathBot()

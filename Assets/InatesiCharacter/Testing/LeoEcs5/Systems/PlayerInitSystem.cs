@@ -61,7 +61,9 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     var camera = GameObject.FindAnyObjectByType<LookSource>();
                     ref var playerComponent = ref _PlayerPool.Add(newCharacterEntity);
                     playerComponent.cameraMotion = camera.GetComponent<CameraMotion>();
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+                    playerComponent.cameraMotion.NewInputSystem = false;
+#elif UNITY_ANDROID
                     playerComponent.cameraMotion.NewInputSystem = true;
 #endif
                     playerComponent.fpc = true;

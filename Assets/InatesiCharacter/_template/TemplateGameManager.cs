@@ -43,15 +43,16 @@ namespace InatesiCharacter.Template
 
         private void Update()
         {
-            if (PlayerAlive == false)
-                return;
-
             if (Input.Pressed("MainMenu"))
             {
                 G.SetPause(!G.IsPause);
                 G.SetVisibleCursor(G.IsPause);
                 _mainMenuUI.SetRootPanel(G.IsPause);
             }
+
+            if (PlayerAlive == false)
+                return;
+            
 
             //if (Input.Down("Secondary Attack"))
             if (Input.GetKeyDown(UnityEngine.InputSystem.Key.Q))
@@ -159,7 +160,7 @@ namespace InatesiCharacter.Template
                 {
                     point = characterComponent.transform.position + characterComponent.transform.up * 2f
                 };
-                damageComponent.ray = new Ray(characterComponent.transform.position, characterComponent.transform.up);
+                damageComponent.ray = new Ray(characterComponent.transform.position, characterComponent.transform.forward);
 
                 characterComponent.characterMotion.AudioSource.PlayOneShot(characterComponent.CharacterSO.AudioCharacter.OnLandedClip);
             }
