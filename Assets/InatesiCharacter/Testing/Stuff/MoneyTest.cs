@@ -18,7 +18,7 @@ namespace InatesiCharacter.Testing.Stuff
 
         private void Update()
         {
-            idleCashOne = idleCashOne + new IdleCash(1, idleCashOne.type);
+            idleCashOne = idleCashOne + new IdleCash(0.01f);
             _Text.text = $"$ {idleCashOne.value.ToString(".0").Replace(",", ".")} {idleCashOne.type}" ;
         }
     }
