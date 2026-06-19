@@ -41,5 +41,9 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
 
         public void OnPlayerDamage(DamageComponent damageComponent);
         public void OnPlayerLanded();
+
+        public void OnPlayerCombatEvent();
+
+        public void OnCameraCollision(CollisionComponentEvent collisionComponentEvent);
     }
 }

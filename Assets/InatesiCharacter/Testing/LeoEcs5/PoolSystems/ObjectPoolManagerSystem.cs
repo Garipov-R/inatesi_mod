@@ -86,30 +86,34 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
                     {
                         Color pixelColor = Color.gray;
 
-                        // Check what type of object was hit
-                        RaycastHit hit = (RaycastHit)objectPoolEventComponent.data;
-                        string hitLayer = hit.transform != null ? LayerMask.LayerToName(hit.transform.gameObject.layer) : "fuck you";
-                        var position = hit.transform != null ? hit.point : Vector3.zero;
-
-
-                        if (hitLayer == LayerMask.LayerToName(0)) // default
+                        if (objectPoolEventComponent.data != null)
                         {
-                            if (hit.collider is TerrainCollider)
-                            {
-                                pixelColor = TerrainTextureReader.GetColorAtWorldPosition(hit.point, hit.transform);
-                            }
-                            else if (hit.collider.GetComponent<SkinnedMeshRenderer>() != null)
-                            {
-                                pixelColor = SkinnedMeshTextureReader.GetColorAtWorldPosition(position, hit.transform);
-                            }
-                            else
-                            {
-                                pixelColor = MeshTextureReader.GetColorAtWorldPosition(hit.point, hit);
-                            }
+                            // Check what type of object was hit
+                            RaycastHit hit = (RaycastHit)objectPoolEventComponent.data;
+                            string hitLayer = hit.transform != null ? LayerMask.LayerToName(hit.transform.gameObject.layer) : "fuck you";
+                            var position = hit.transform != null ? hit.point : Vector3.zero;
 
-                            if (obj.GetComponent<VisualEffect>().HasVector4("Color"))
-                                obj.GetComponent<VisualEffect>().SetVector4("Color", new Vector4(pixelColor.r, pixelColor.g, pixelColor.b, 1));
+
+                            if (hitLayer == LayerMask.LayerToName(0)) // default
+                            {
+                                if (hit.collider is TerrainCollider)
+                                {
+                                    pixelColor = TerrainTextureReader.GetColorAtWorldPosition(hit.point, hit.transform);
+                                }
+                                else if (hit.collider.GetComponent<SkinnedMeshRenderer>() != null)
+                                {
+                                    pixelColor = SkinnedMeshTextureReader.GetColorAtWorldPosition(position, hit.transform);
+                                }
+                                else
+                                {
+                                    pixelColor = MeshTextureReader.GetColorAtWorldPosition(hit.point, hit);
+                                }
+
+                                if (obj.GetComponent<VisualEffect>().HasVector4("Color"))
+                                    obj.GetComponent<VisualEffect>().SetVector4("Color", new Vector4(pixelColor.r, pixelColor.g, pixelColor.b, 1));
+                            }
                         }
+                        
                         obj.GetComponent<VisualEffect>().Play();
 
                     }
@@ -215,7 +219,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
                 }
                 catch (Exception e)
                 {
-                    Debug.Log(e);
+                    Debug.Log($"{e}");
                 }
             }
 

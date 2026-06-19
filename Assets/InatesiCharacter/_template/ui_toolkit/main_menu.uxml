@@ -1,32 +1,46 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/ui_toolkit/main_menu_style.uss?fileID=7433441132597879392&amp;guid=8d915bcf0fd683f40b954b7047aa5c43&amp;type=3#main_menu_style" />
+    <Style src="project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/ui_toolkit/main_menu_style.uss?fileID=7433441132597879392&amp;guid=8d915bcf0fd683f40b954b7047aa5c43&amp;type=3#main_menu_style"/>
     <ui:VisualElement name="root-panel" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.7); background-image: none;">
         <ui:VisualElement name="buttons-panel" style="flex-grow: 1; width: 80%; align-self: center; justify-content: flex-start; top: auto; display: none; align-items: center;">
-            <ui:Label text="InatesI Mod" name="game-name" style="-unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); font-size: 122px; color: rgb(255, 255, 255); -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0); -unity-font-style: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
-            <ui:Button text="continue" name="continue-button" class="button" />
-            <ui:Button text="save game" name="save-game-button" enabled="true" class="button" style="display: none;" />
-            <ui:Button text="load game" name="load-game-button" class="button" style="display: none;" />
-            <ui:Button text="settings" name="settings-button" class="button" />
-            <ui:Button text="exit" name="exit-button" class="button" />
-            <ui:Button text="change language" name="language-button" class="button" />
+            <ui:Label text="InatesI Mod" name="game-name" style="-unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); font-size: 122px; color: rgb(255, 255, 255); -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0); -unity-font-style: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+            <ui:Button text="continue" name="continue-button" class="button"/>
+            <ui:Button text="save game" name="save-game-button" enabled="true" class="button" style="display: none;"/>
+            <ui:Button text="load game" name="load-game-button" class="button" style="display: none;"/>
+            <ui:Button text="settings" name="settings-button" class="button"/>
+            <ui:Button text="exit" name="exit-button" class="button"/>
+            <ui:Button text="change language" name="language-button" class="button"/>
         </ui:VisualElement>
         <ui:VisualElement name="settings-panel" style="flex-grow: 1; display: none; padding-top: 100px;">
-            <ui:Button text="&lt;" name="back-button" class="button" style="width: 100px; height: 100px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; top: 50px; left: 50px; border-top-left-radius: 72px; border-top-right-radius: 72px; border-bottom-right-radius: 72px; border-bottom-left-radius: 72px; font-size: 59px; -unity-text-align: middle-center;" />
-            <ui:Label text="settings" name="setting-name" style="-unity-text-align: upper-center; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); font-size: 36px;" />
-            <ui:VisualElement style="width: 50%; align-self: center; position: relative; top: auto; align-content: flex-start;">
-                <ui:VisualElement name="row-panel" class="setting-row-panel">
-                    <ui:Label text="mouse sensetive senseitive" name="mouse-sensitivity-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);" />
-                    <ui:Slider label="Slider" value="42" high-value="100" name="mouse-sensetive-slider" focusable="false" class="slider" style="color: rgb(255, 255, 255);" />
+            <ui:Button text="&lt;" name="back-button" class="button" style="width: 100px; height: 100px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; top: 50px; left: 50px; border-top-left-radius: 72px; border-top-right-radius: 72px; border-bottom-right-radius: 72px; border-bottom-left-radius: 72px; font-size: 59px; -unity-text-align: middle-center;"/>
+            <ui:Label text="settings" name="setting-name" style="-unity-text-align: upper-center; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); font-size: 36px;"/>
+            <ui:ScrollView name="" vertical-scroller-visibility="AlwaysVisible" horizontal-scroller-visibility="Hidden" touch-scroll-type="Elastic" class="scroll-view">
+                <ui:VisualElement style="width: 50%; align-self: center; position: relative; top: auto; align-content: flex-start;">
+                    <ui:VisualElement name="row-panel" class="setting-row-panel">
+                        <ui:Label text="mouse sensetive senseitive" name="mouse-sensitivity-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);"/>
+                        <ui:Slider label="Slider" value="42" high-value="100" name="mouse-sensetive-slider" focusable="false" class="slider" style="color: rgb(255, 255, 255);"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="row-panel" class="setting-row-panel">
+                        <ui:Label text="music" name="music-value-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);"/>
+                        <ui:Slider label="Slider" value="42" high-value="1" name="music-volume-slider" focusable="false" class="slider" style="color: rgb(255, 255, 255);"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="row-panel" class="setting-row-panel">
+                        <ui:Label text="sfx" name="sfx-value-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);"/>
+                        <ui:Slider label="Slider" value="42" high-value="1" name="sfx-volume-slider" focusable="false" class="slider" style="color: rgb(255, 255, 255);"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="row-panel" class="setting-row-panel">
+                        <ui:Label text="graphic" name="graphic-value-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);"/>
+                        <ui:DropdownField label="Dropdown" choices="1,2,3" name="graphic-settings-dropdown" class="drop-down"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="row-panel" class="setting-row-panel" style="flex-direction: row; align-items: center;">
+                        <ui:Label text="vSync" name="vSync-value-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);"/>
+                        <ui:Toggle label="Toggle" name="vSync-toggle" class="toggle"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="row-panel" class="setting-row-panel">
+                        <ui:Label text="fov" name="fov-value-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);"/>
+                        <ui:Slider label="Slider" value="42" high-value="100" name="fov-slider" focusable="false" low-value="40" class="slider" style="color: rgb(255, 255, 255);"/>
+                    </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement name="row-panel" class="setting-row-panel">
-                    <ui:Label text="music" name="music-value-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);" />
-                    <ui:Slider label="Slider" value="42" high-value="100" name="music-volume-slider" focusable="false" class="slider" style="color: rgb(255, 255, 255);" />
-                </ui:VisualElement>
-                <ui:VisualElement name="row-panel" class="setting-row-panel">
-                    <ui:Label text="sfx" name="sfx-value-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);" />
-                    <ui:Slider label="Slider" value="42" high-value="100" name="sfx-volume-slider" focusable="false" class="slider" style="color: rgb(255, 255, 255);" />
-                </ui:VisualElement>
-            </ui:VisualElement>
+            </ui:ScrollView>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

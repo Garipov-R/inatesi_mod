@@ -131,5 +131,14 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
         public virtual void OnPlayerLanded()
         {
         }
+
+        public virtual void OnPlayerCombatEvent()
+        {
+
+        }
+
+        public virtual void OnCameraCollision(CollisionComponentEvent collisionComponentEvent)
+        {
+        }
     }
 }

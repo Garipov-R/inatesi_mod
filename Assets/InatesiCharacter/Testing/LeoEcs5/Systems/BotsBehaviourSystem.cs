@@ -160,9 +160,9 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                         if (attack)
                         {
-                            if (botComponent.botBehaviourBase.AdvancedNavMeshBot.IsVisibleTarget(damageComponent.owner.transform, 30f))
+                            if (botComponent.botBehaviourBase.IsVisibleTarget(damageComponent.owner.transform))
                             {
-                                botComponent.botBehaviourBase.AdvancedNavMeshBot.SetTarget(damageComponent.owner.transform);
+                                botComponent.botBehaviourBase.SetTarget(damageComponent.owner.transform);
                             }
                         }
                         
@@ -194,17 +194,17 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                     //Debug.Log($"{botCharacterComponent.gameObject.name} {targetCharacterComponent.gameObject.name} {targetCharacterComponent.health}");
 
-                    if (botComponent.botBehaviourBase.AdvancedNavMeshBot.CurrentState == _Demonstration.bot_test.AdvancedNavMeshBot.AIState.Chasing)
+                    if (botComponent.botBehaviourBase.CurrentBotState == Character.Bot3.BotState.Chasing)
                     {
                         foreach (var targetEntityFlag in botComponent.botBehaviourBase.TargetsEntityFlag)
                         {
                             if (targetEntityFlag == targetCharacterComponent.entityFlag)
                             {
-                                if (botComponent.botBehaviourBase.AdvancedNavMeshBot.Target == targetCharacterComponent.transform)
+                                if (botComponent.botBehaviourBase.Target == targetCharacterComponent.transform)
                                 {
                                     if (targetCharacterComponent.health <= 0)
                                     {
-                                        botComponent.botBehaviourBase.AdvancedNavMeshBot.SetTarget(null);
+                                        botComponent.botBehaviourBase.SetTarget(null);
                                     }
                                     else
                                     {
@@ -238,9 +238,9 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                         if (target == targetCharacterComponent.entityFlag)
                         {
-                            if (botComponent.botBehaviourBase.AdvancedNavMeshBot.IsVisibleTarget(targetCharacterComponent.transform))
+                            if (botComponent.botBehaviourBase.IsVisibleTarget(targetCharacterComponent.transform))
                             {
-                                botComponent.botBehaviourBase.AdvancedNavMeshBot.SetTarget(targetCharacterComponent.transform);
+                                botComponent.botBehaviourBase.SetTarget(targetCharacterComponent.transform);
                             }
                         }
                     }

@@ -9,7 +9,8 @@ namespace InatesiCharacter.Testing.LeoEcs5.Components
 {
     public struct CollisionComponentEvent
     {
-        public GameObject gameObject;
+        public GameObject ownerGameObject;
         public GameObject collideGameObject;
+        public bool entered;
     }
 }

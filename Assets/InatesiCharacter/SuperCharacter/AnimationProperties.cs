@@ -6,13 +6,6 @@ using System.Threading.Tasks;
 
 namespace InatesiCharacter.SuperCharacter
 {
-    public enum TransitionAnimationState
-    {
-        Idle = 0,
-        Jump = 1,
-        Crouch = 4
-    }
-
     public enum WeaponTypeAnimation
     {
         none = 0,

@@ -37,8 +37,8 @@ namespace InatesiCharacter.Testing.LeoEcs5
             _UpdateSystems
 
                 .Add(new PlayerWeaponActionsSystem())
-                .Add(new PlayerSystem())
                 .Add(new BotsBehaviourSystem())
+                .Add(new PlayerSystem())
                 .Add(new HitEffectsSystem())
                 .Add(new ObjectPoolManagerSystem())
 
@@ -61,6 +61,7 @@ namespace InatesiCharacter.Testing.LeoEcs5
                 .DelHere<SelectedItemEvent>()
                 .DelHere<CharacterInitEvent>()
                 .DelHere<BotInitEvent>()
+                .DelHere<CombatEvent>()
             ;
 
             _FixedUpdateSystems

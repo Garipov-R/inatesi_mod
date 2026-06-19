@@ -27,6 +27,8 @@ namespace InatesiCharacter.Movements.SourceEngine
         [SerializeField] private float _rigidbodyPushForce = 0.5f;
         [SerializeField] private float _SpeedRotate = 10f;
         [SerializeField] private float _StepOffset = .2f;
+        [SerializeField] private bool _IsTrainRotation = false;
+        [SerializeField] private bool _IsInputTargetRotation = true;
 
         // move data
         [SerializeField] private Vector3 _Gravity = new Vector3(0, -11f, 0);
@@ -44,6 +46,7 @@ namespace InatesiCharacter.Movements.SourceEngine
         private Vector3 _velocity;
         private Vector3 _externalVelocity;
         private bool _wishExternalVelocity;
+        private Quaternion _targetAngle;
 
         public override Vector3 Velocity 
         { 
@@ -91,6 +94,7 @@ namespace InatesiCharacter.Movements.SourceEngine
             _DefaultHeight = _Motor.Capsule.height;
             _radius = _Motor.Capsule.radius;
             _Collider = _Motor.Capsule;
+            _targetAngle = transform.rotation;
 
             _Motor = GetComponent<KinematicCharacterMotor>();
             SetHeight();
@@ -160,12 +164,17 @@ namespace InatesiCharacter.Movements.SourceEngine
 
         public void BuildWishVelocity()
         {
-            var result = new Vector3();
             Vector3 direction = new Vector3(_InputVector.x, _InputVector3.y, _InputVector.y);
             //direction = new Vector3(_InputDirection.x, _InputVector3.y, _InputDirection.y);
 
             Quaternion rotationT = transform.rotation;
-            result = rotationT * direction;
+
+            if (_IsTrainRotation == false)
+            {
+                rotationT = _MovementType.GetRotation(_InputDirection.x, _InputDirection.y);
+            }
+            var result = rotationT * direction;
+            //result = direction;
 
 
 
@@ -290,11 +299,20 @@ namespace InatesiCharacter.Movements.SourceEngine
             if (_IsInputDisabled ) return;
 
             float moveRotationSpeed = 0;
-            var targetAngle = _MovementType.GetRotation(_InputDirection.x, InputDirection.y);
 
-            var newRotation = _lerpRotate ? Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * _SpeedRotate) : targetAngle;
+            if (Mathf.Abs(_InputDirection.magnitude) > 0 && _IsInputTargetRotation)
+            {
+                _targetAngle = _MovementType.GetRotation(_InputDirection.x, InputDirection.y);
+            }
+            else
+            {
+                _targetAngle = _MovementType.GetRotation(_InputDirection.x, InputDirection.y);
+            }
+            
+            var newRotation = _lerpRotate ? Quaternion.Slerp(transform.rotation, _targetAngle, Time.deltaTime * _SpeedRotate) : _targetAngle;
             var angleDiff = Quaternion.Angle(transform.rotation, newRotation); // Rotation.Distance is unsigned
             moveRotationSpeed = (angleDiff) / Time.deltaTime;
+
             currentRotation = newRotation;
 
             _MoveRotationSpeed = moveRotationSpeed;
@@ -351,18 +369,23 @@ namespace InatesiCharacter.Movements.SourceEngine
                         //currentVelocity += addedVelocity;
                     }
 
-                    currentVelocity -= _Gravity * deltaTime * -1 * (_underwater ? .11f : _GravityFactor);
 
                     if (_underwater)
-                        currentVelocity = currentVelocity.ApplyFriction(0, _MoveConfig.AirStopSpeed);
+                    {
+                        currentVelocity = currentVelocity.ApplyFriction(_MoveConfig.Friction, _MoveConfig.StopSpeed);
+                        currentVelocity = currentVelocity.WithAcceleration(_wishVelocity, _MoveConfig.Acceleration * deltaTime);
+                    }
                     else
                     {
                         currentVelocity = currentVelocity.ApplyFriction(0, _MoveConfig.AirStopSpeed);
+                        currentVelocity = currentVelocity.WithAcceleration(Vector3.ClampMagnitude(_wishVelocity, _MoveConfig.AirClampLength), _MoveConfig.AirAcceleration * deltaTime);
+
                         //currentVelocity = currentVelocity.ApplyFriction(_MoveConfig.Friction, _MoveConfig.AirStopSpeed);
                     }
 
+                    currentVelocity -= _Gravity * deltaTime * -1 * (_underwater ? 0f : _GravityFactor);
                     //currentVelocity = SurfPhysics.WithAirAcceleration(Vector3.ClampMagnitude(_wishVelocity, _airClampLength), currentVelocity);
-                    currentVelocity = currentVelocity.WithAcceleration(Vector3.ClampMagnitude(_wishVelocity, _MoveConfig.AirClampLength), _MoveConfig.AirAcceleration * deltaTime);
+                    //currentVelocity = currentVelocity.WithAcceleration(Vector3.ClampMagnitude(_wishVelocity, _MoveConfig.AirClampLength), _MoveConfig.AirAcceleration * deltaTime);
                     //currentVelocity = currentVelocity.WithAirAcceleration(Vector3.ClampMagnitude(_wishVelocity, _MoveConfig.AirClampLength));
 
                     //currentVelocity = currentVelocity.WithAirAcceleration(Vector3.ClampMagnitude(_wishVelocity, _MoveConfig.AirClampLength));

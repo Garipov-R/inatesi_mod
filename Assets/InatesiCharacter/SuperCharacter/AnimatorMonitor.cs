@@ -36,6 +36,8 @@ namespace InatesiCharacter.SuperCharacter
         private static int s_RotationSpeed = Animator.StringToHash("RotationSpeed");
         private static int s_MoveSpeed = Animator.StringToHash("MoveSpeed");
         private static int s_AbilityIntDataHash = Animator.StringToHash("AbilityIntData");
+        private static int s_SlotAction = Animator.StringToHash("SlotAction");
+        private static int s_SlotData = Animator.StringToHash("SlotData");
 
 
         public Animator Animator { get => _Animator; set => _Animator = value; }
@@ -228,6 +230,39 @@ namespace InatesiCharacter.SuperCharacter
                 else
                 {
                     _Animator.ResetTrigger(s_Slot0ChangeHash);
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        public void SetSlotData(int id)
+        {
+            var change = _Slot0 != id;
+
+            if (change)
+            {
+                if (_Animator != null)
+                {
+                    _Animator.SetInteger(s_SlotData, id);
+                    SetSlotActionChange(true); //SetAbilityChangeParameter(true);
+                }
+                _Slot0 = id;
+            }
+        }
+
+        public bool SetSlotActionChange(bool value)
+        {
+            if (_Animator != null && _Animator.GetBool(s_SlotAction) != value)
+            {
+                if (value)
+                {
+                    _Animator.SetTrigger(s_SlotAction);
+                }
+                else
+                {
+                    _Animator.ResetTrigger(s_SlotAction);
                 }
                 return true;
             }

@@ -10,9 +10,14 @@ namespace InatesiCharacter.SuperCharacter
     {
         Idle = 0,
         Jump = 1,
-        Crouch = 2,
+        Crouch = 4,
         Die = 3,
-        Damage = 4,
-        Attack = 5
+        Damage = 5,
+        Attack = 6,
+    }
+
+    public enum SlotData
+    {
+        AttackMontirovka = 1
     }
 }

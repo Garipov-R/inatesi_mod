@@ -1,6 +1,7 @@
 ﻿using GameToolkit.Localization;
 using InatesiCharacter.Testing.LeoEcs;
 using InatesiCharacter.Testing.LeoEcs5;
+using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
 using InatesiCharacter.Testing.LeoEcs5.Utility;
 using System;
 using System.Collections;
@@ -9,6 +10,7 @@ using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 using Zenject;
 
 namespace InatesiCharacter.Testing.Character.InteractionSystem
@@ -16,6 +18,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
     public class CollisionEvent : MonoBehaviour
     {
         [SerializeField] private InteractionConditionBase _InteractionConditionBase;
+        [Space(2f)]
         [SerializeField] private UnityEvent _OnCollisionEnter;
         [SerializeField] private UnityEvent _OnCollisionExit;
         [SerializeField] private UnityEvent _OnCollisionStay;
@@ -27,8 +30,10 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         [SerializeField] private UnityEvent _OnUse;
         [SerializeField] private UnityEvent _OnSuccess;
         [SerializeField] private UnityEvent _OnError;
+        [Space(2f)]
         [SerializeField] private bool _IsOneObjectEntered = false;
         [SerializeField] private LayerMask _EnterLayer;
+        [Space(2f)]
 
         protected SetupLeoEcs _SetupLeoEcs;
         private bool _Entered;
@@ -86,12 +91,14 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             {
                 ref var collisionEvent = ref ECSHelper.Create<InatesiCharacter.Testing.LeoEcs5.Components.CollisionComponentEvent>(_StartEcs.EcsWorld);
                 collisionEvent.collideGameObject = other.gameObject;
-                collisionEvent.gameObject = gameObject;
+                collisionEvent.ownerGameObject = gameObject;
+                collisionEvent.entered = true;
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
+            if (IsIncludeLayer(other) == false) return;
             _Objects.Remove(other.gameObject); 
             ClearEmptyObjects();
 
@@ -110,6 +117,15 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
             _OnTriggerExit?.Invoke();
             _OnAnyEvent?.Invoke();
+
+
+            if (_StartEcs)
+            {
+                ref var collisionEvent = ref ECSHelper.Create<InatesiCharacter.Testing.LeoEcs5.Components.CollisionComponentEvent>(_StartEcs.EcsWorld);
+                collisionEvent.collideGameObject = other.gameObject;
+                collisionEvent.ownerGameObject = gameObject;
+                collisionEvent.entered = false;
+            }
         }
 
         private void OnTriggerStay(Collider other)

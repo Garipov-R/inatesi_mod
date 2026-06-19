@@ -182,7 +182,7 @@ namespace InatesiCharacter.Camera
                 }
             }
 
-            _LookRotationEuler += GameSettings.GameSettingsValue.MouseSens  * new Vector3(_LookInputVector.y, _LookInputVector.x, 0) + _ShakeRotation;
+            _LookRotationEuler += G.GameSettingsValue.MouseSens  * new Vector3(_LookInputVector.y, _LookInputVector.x, 0) + _ShakeRotation;
             //_LookRotationEuler += GameSettings.GameSettingsValue.MouseSens * _SpeedLook.x * new Vector3(_LookInputVector.y, _LookInputVector.x, 0) + _ShakeRotation;
             _LookRotationEuler = new Vector3(Mathf.Clamp(_LookRotationEuler.x, _LimitXRotation.x, _LimitXRotation.y), _LookRotationEuler.y, 0);
             _LookRotation = Quaternion.Euler(_LookRotationEuler.x, _LookRotationEuler.y, 0);

@@ -12,10 +12,12 @@ namespace InatesiCharacter.Testing.Shared
         [SerializeField] private static bool _MuteAudio = false;
         private static Action<bool> _OnPauseGameAction;
         private static bool _IsPause;
+        private static GameSettingsValue _GameSettingsValue = new();
 
         public static bool MuteAudio { get => _MuteAudio; set => _MuteAudio = value; }
         public static Action<bool> OnPauseGameAction { get => _OnPauseGameAction; set => _OnPauseGameAction = value; }
         public static bool IsPause { get => _IsPause; set => _IsPause = value; }
+        public static GameSettingsValue GameSettingsValue { get => _GameSettingsValue; set => _GameSettingsValue = value; }
 
         public static void SetPause(bool state)
         {

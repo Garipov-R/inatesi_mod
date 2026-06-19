@@ -1,5 +1,8 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <uie:PropertyField binding-path="_definedSurfaces" />
-    <uie:PropertyField binding-path="_registeredTextures" />
-    <ui:Button text="Insert textures from active scene" name="insert-textures" />
+    <uie:PropertyField binding-path="_definedSurfaces"/>
+    <uie:PropertyField binding-path="_registeredTextures"/>
+    <ui:Button text="Insert textures from active scene" name="insert-textures"/>
+    <ui:Label text="Water Audio"/>
+    <uie:PropertyField binding-path="_waterAudioClips"/>
+    <uie:PropertyField binding-path="_underWaterAudioClips"/>
 </ui:UXML>

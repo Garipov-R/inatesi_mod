@@ -552,6 +552,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
             damageComponent.isHit = cast;
 
             Shared.ParticlesManager.SendParticleEvent(_StartEcs.EcsWorld, damageComponent.hit);
+
+            ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
         }
     }
 }

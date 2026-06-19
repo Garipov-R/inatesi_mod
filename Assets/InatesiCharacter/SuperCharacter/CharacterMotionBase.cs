@@ -367,7 +367,7 @@ namespace InatesiCharacter.SuperCharacter
                 _waterDepth = 0;
             }
 
-            if (_waterDepth >= 0.5f)
+            if (_waterDepth >= 0.8f)
             {
                 //_surfer.MoveType = MoveType.Swim;
 
@@ -503,6 +503,8 @@ namespace InatesiCharacter.SuperCharacter
         {
             foreach (GameObject obj in _HideObjects)
             {
+                if (obj == null) continue;
+
                 obj.transform.localScale = state ? Vector3.one : Vector3.zero;
             }
         }

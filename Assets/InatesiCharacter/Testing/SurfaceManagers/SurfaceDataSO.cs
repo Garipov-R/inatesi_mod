@@ -15,8 +15,13 @@ namespace InatesiCharacter.Testing.SurfaceManagers
         [SerializeField] SurfaceDefinition[] _definedSurfaces;
         [SerializeField] List< RegisteredMaterial> _registeredTextures = new List<RegisteredMaterial>();
 
+        [SerializeField] AudioClip[] _waterAudioClips;
+        [SerializeField] AudioClip[] _underWaterAudioClips;
+
         public SurfaceDefinition[] DefinedSurfaces { get => _definedSurfaces; set => _definedSurfaces = value; }
         public List<RegisteredMaterial> RegisteredTextures { get => _registeredTextures; set => _registeredTextures = value; }
+        public AudioClip[] WaterAudioClips { get => _waterAudioClips; set => _waterAudioClips = value; }
+        public AudioClip[] UnderWaterAudioClips { get => _underWaterAudioClips; set => _underWaterAudioClips = value; }
 
         public string[] GetAllSurfaceNames()
         {

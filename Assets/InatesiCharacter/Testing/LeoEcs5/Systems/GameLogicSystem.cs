@@ -27,6 +27,10 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
         private EcsFilter _ItemPickupFilter;
         private EcsPool<SelectedItemEvent> _SelectedItemEventPool;
         private EcsFilter _SelectedItemEventFilter;
+        private EcsPool<CombatEvent> _CombatEventPool;
+        private EcsFilter _CombatEventFilter;
+        private EcsFilter _CollisionEventFilter;
+        private EcsPool<CollisionComponentEvent> _CollisionEventPool;
 
         public void Init(IEcsSystems systems)
         {
@@ -45,6 +49,11 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
             _ItemPickupEventPool = systems.GetWorld().GetPool<ItemPickupEvent>();
             _SelectedItemEventFilter = systems.GetWorld().Filter<SelectedItemEvent>().End();
             _SelectedItemEventPool = systems.GetWorld().GetPool<SelectedItemEvent>();
+            _CombatEventPool = systems.GetWorld().GetPool<CombatEvent>();
+            _CombatEventFilter = systems.GetWorld().Filter<CombatEvent>().End();
+            _CollisionEventFilter = systems.GetWorld().Filter<CollisionComponentEvent>().End();
+            _CollisionEventPool = systems.GetWorld().GetPool<CollisionComponentEvent>();
+
             //_gameLogic.StartGame();
         }
 
@@ -114,6 +123,17 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         _gameLogic.OnPlayerDamage(damageComponent);
                     }
                 }
+            }
+
+            foreach (var combatEntity in _CombatEventFilter)
+            {
+                _gameLogic.OnPlayerCombatEvent();
+            }
+
+            foreach (var collisionEntity in _CollisionEventFilter)
+            {
+                ref var col = ref _CollisionEventPool.Get(collisionEntity);
+                _gameLogic.OnCameraCollision(col);
             }
         }
     }

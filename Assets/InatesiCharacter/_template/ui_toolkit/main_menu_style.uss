@@ -2,7 +2,7 @@
 }
 
 .button {
-    -unity-font-definition: url("project://database/Assets/_demonstration/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&guid=d1a3b84db50ba254995db5d2ada7834b&type=3#CormorantInfant-VariableFont_wght");
+    -unity-font-definition: url("project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&guid=d1a3b84db50ba254995db5d2ada7834b&type=3#CormorantInfant-VariableFont_wght");
     font-size: 33px;
     color: rgb(255, 255, 255);
     -unity-text-align: middle-center;
@@ -135,4 +135,83 @@
     margin-right: 0;
     margin-left: 0;
     border-top-width: 1px;
+}
+
+.drop-down Label {
+    display: none;
+}
+
+.drop-down > .unity-popup-field__input {
+    background-color: rgba(255, 255, 255, 0);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 45px;
+    padding-bottom: 0;
+    padding-left: 45px;
+}
+
+.drop-down {
+    height: 60px;
+}
+
+.drop-down > .unity-popup-field__input > .unity-base-popup-field__arrow {
+    width: 21px;
+    height: 21px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.drop-down > .unity-popup-field__input > .unity-base-popup-field__text {
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url("project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&guid=d1a3b84db50ba254995db5d2ada7834b&type=3#CormorantInfant-VariableFont_wght");
+    font-size: 25px;
+    -unity-text-align: middle-center;
+}
+
+.toggle {
+}
+
+.toggle Label {
+    display: none;
+}
+
+.toggle > .unity-toggle__input > #unity-checkmark {
+    background-color: rgb(0, 0, 0);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    -unity-background-image-tint-color: rgb(190, 0, 255);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    width: 45px;
+    height: 45px;
+    margin-top: 12px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    margin-left: 12px;
+}
+
+.scroll-view {
+}
+
+.unity-scroll-view--vertical > #unity-content-and-vertical-scroll-container > .unity-disabled {
+    background-color: rgb(0, 0, 0);
 }

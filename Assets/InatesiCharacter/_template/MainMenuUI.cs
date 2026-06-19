@@ -1,6 +1,7 @@
 ﻿using InatesiCharacter.Testing.Shared;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UIElements;
 
 namespace InatesiCharacter.Template
@@ -14,6 +15,13 @@ namespace InatesiCharacter.Template
         [SerializeField] private string _settingsButtonName;
         [SerializeField] private string _buttonsPanelName;
         [SerializeField] private string _settingsPanelName;
+        [SerializeField] private string _graphicSettingDropdown;
+        [SerializeField] private string _vSyncToggle;
+        [SerializeField] private string _musicSlider = "music-volume-slider";
+        [SerializeField] private string _sfxVolumeSider = "sfx-volume-slider";
+        [SerializeField] private string _mouseSensetiveSider = "mouse-sensetive-slider";
+        [SerializeField] private string _fovSider = "fov-slider";
+        [SerializeField] private AudioMixer _AudioMixer;
 
 
         public UIDocument Document { get => _document; set => _document = value; }
@@ -26,6 +34,64 @@ namespace InatesiCharacter.Template
             _document.rootVisualElement.Q<Button>(_continueButtonName).clicked += ContinueClicked;
             _document.rootVisualElement.Q<Button>(_backButtonName).clicked += OpenButtonsPanelButtonClicked;
             _document.rootVisualElement.Q<Button>(_settingsButtonName).clicked += SettingsButtonClicked;
+
+            _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices = new();
+            _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices.Clear();
+            foreach (var qualityName in QualitySettings.names)
+            {
+                _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices.Add(qualityName);
+            }
+            _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).index = QualitySettings.GetQualityLevel();
+            _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).RegisterValueChangedCallback((e) => 
+            {
+                int indexQuaility = 0;
+                foreach (var qualityName in QualitySettings.names)
+                {
+                    if (qualityName == e.newValue)
+                    {
+                        QualitySettings.SetQualityLevel(indexQuaility);
+                    }
+
+                    indexQuaility++;
+                }
+
+            });
+
+            Debug.Log(QualitySettings.vSyncCount);
+            _document.rootVisualElement.Q<Toggle>(_vSyncToggle).value = QualitySettings.vSyncCount == 0 ? false : true;
+            _document.rootVisualElement.Q<Toggle>(_vSyncToggle).RegisterValueChangedCallback(e => 
+            {
+                QualitySettings.vSyncCount = e.newValue == true ? 1 : 0;
+            });
+
+
+            _document.rootVisualElement.Q<Slider>(_musicSlider).RegisterValueChangedCallback(e => 
+            {
+                _AudioMixer.SetFloat("music", Mathf.Log10(e.newValue) * 20);
+                //e.newValue
+                Debug.Log(e.newValue);
+            });
+
+            _document.rootVisualElement.Q<Slider>(_sfxVolumeSider).RegisterValueChangedCallback(e => 
+            {
+                _AudioMixer.SetFloat("master", Mathf.Log10(e.newValue) * 20);
+                //e.newValue
+            });
+
+            _document.rootVisualElement.Q<Slider>(_mouseSensetiveSider).value = G.GameSettingsValue.MouseSens;
+            _document.rootVisualElement.Q<Slider>(_mouseSensetiveSider).RegisterValueChangedCallback(e => 
+            {
+                G.GameSettingsValue.MouseSens = e.newValue;
+                //e.newValue
+            });
+
+            _document.rootVisualElement.Q<Slider>(_fovSider).value = G.GameSettingsValue.Fov;
+            _document.rootVisualElement.Q<Slider>(_fovSider).RegisterValueChangedCallback(e => 
+            {
+                G.GameSettingsValue.Fov = e.newValue;
+                //e.newValue
+            });
+
 
             SetActivePanel(_buttonsPanelName);
             SetRootPanel(false);    
