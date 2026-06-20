@@ -11,6 +11,7 @@ using InatesiCharacter.Testing.LeoEcs5.Utility;
 using InatesiCharacter.Testing.Shared;
 using Leopotam.EcsLite;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using Input = Inatesi.Inputs.Input;
 
@@ -22,6 +23,8 @@ namespace InatesiCharacter.Template
         [SerializeField] private MainMenuUI _mainMenuUI;
         [SerializeField] private PlayerUI _PlayerUI;
         [SerializeField] private FogSettingSO _underwaterFogSettingSO;
+        [SerializeField] private Volume _DamageVolume;
+        [SerializeField] private WaypointUITest _waypointUITest;
 
         private float _DeadTimeSince;
         private float _aimTimeSince;
@@ -106,20 +109,27 @@ namespace InatesiCharacter.Template
 
                 }
             }
-            
 
-            var wishView = Inatesi.Inputs.Input.Pressed("View");
-            if (wishView)
+
+            if (_DamageVolume)
             {
-                SetFPSCamera(!FPS);
-                ref var characterComponent = ref ECSHelper.Get<CharacterComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<CharacterComponent>().Inc<PlayerComponent>().End());
-                characterComponent.characterMotion.FirstPersonSettings.HideObjects(!FPS);
+                _DamageVolume.weight = Mathf.Lerp(_DamageVolume.weight, 0, Time.deltaTime);
             }
-            
-            if (Input.GetKeyDown(UnityEngine.InputSystem.Key.T))
+
+
+            if (_waypointUITest)
             {
-                if (CameraMotion.GetComponent<AudioLowPassFilter>() != null)
-                    CameraMotion.GetComponent<AudioLowPassFilter>().enabled = !CameraMotion.GetComponent<AudioLowPassFilter>().enabled;
+                ref var playerComponent = ref ECSHelper.Get<PlayerComponent>(_StartEcs.EcsWorld);
+                ref var characterComponent = ref ECSHelper.Get<CharacterComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<CharacterComponent>().Inc<PlayerComponent>().End());
+                
+                if (ECSHelper.Has<BotComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<BotComponent>().End()))
+                {
+                    ref var botComponent = ref ECSHelper.Get<BotComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<BotComponent>().End());
+
+                    _waypointUITest.Camera = playerComponent.cameraMotion.Camera;
+                    _waypointUITest.Target = botComponent.gameObject.transform;
+                }
+                
             }
         }
 
@@ -177,8 +187,13 @@ namespace InatesiCharacter.Template
                 return;
 
             ref var characterComponent = ref ECSHelper.Get<CharacterComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<CharacterComponent>().Inc<PlayerComponent>().End());
-
+                
             _PlayerUI.UpdateHealthUI((int)characterComponent.health);
+
+            if (_DamageVolume != null)
+            {
+                _DamageVolume.weight = 1;
+            }
         }
 
         public override void OnPlayerLanded()
@@ -309,6 +324,15 @@ namespace InatesiCharacter.Template
 
             if (characterComponent.InventoryInteraction2.CurrentWeaponBase)
                 characterComponent.InventoryInteraction2.CurrentWeaponBase.FPC = playerComponent.fpc;
+
+
+
+            var wishView = Inatesi.Inputs.Input.Pressed("View");
+            if (wishView)
+            {
+                SetFPSCamera(!FPS);
+                characterComponent.characterMotion.FirstPersonSettings.HideObjects(!FPS);
+            }
         }
     }
 }
