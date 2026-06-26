@@ -1,5 +1,6 @@
 ﻿using InatesiCharacter.Testing.Effects;
-using InatesiCharacter.Testing.Shared.Components;
+using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
 using System.Collections;
 using UnityEngine;
 using Input = Inatesi.Inputs.Input;
@@ -21,17 +22,28 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 Reload();
             }
 
-            if ((Input.Pressed("Attack") || Input.Pressed("Secondary Attack")) && _TimeSinceAttack >= _delayShootTime && _reloading == false)
+            if (Input.Pressed("Attack") && _TimeSinceAttack >= _delayShootTime && _reloading == false)
             {
-                
                 Shoot();
                 _TimeSinceAttack = 0;
 
-                if (Input.Pressed("Secondary Attack"))
+                /*if (Input.Pressed("Secondary Attack") && false)
                 {
                     _secondaryShootTimeSince = 0;
                     _secondaryShooting = true;
-                }
+                }*/
+            }
+
+            if (Input.Pressed("Secondary Attack"))
+            {
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = true;
+            }
+
+            if (Input.Released("Secondary Attack"))
+            {
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = false;
             }
 
             if (_secondaryShootTimeSince > 0.1f && _secondaryShooting == true)
@@ -51,12 +63,11 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 return;
             }
 
-            SendDamageComponent();
-
             _SwayBob.Shake(_ForceShake);
 
             CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClip, _VolumeShoot);
 
+            SendDamageComponent();
 
             if (EcsWorld != null)
             {
@@ -128,11 +139,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 }
             }
 
-
-
-
             base.Shoot();
-
         }
     }
 }

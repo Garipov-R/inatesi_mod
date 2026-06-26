@@ -33,5 +33,12 @@ namespace InatesiCharacter.Testing.Utility.ShakeSmooth
         {
             transform.DOKill();
         }
+
+        private void OnEnable()
+        {
+            _startPosition = transform.position;
+            transform.DOMove(transform.position + _Move, _moveDuration).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).Play();
+            transform.DORotate(_Rotate, _rotateDuration, RotateMode.WorldAxisAdd).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).Play();
+        }
     }
 }

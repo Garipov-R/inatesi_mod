@@ -45,6 +45,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                     // character component setup ================================
                     ref var characterComponent = ref _CharacterPool.Add(newCharacterEntity);
+                    characterComponent.entity = newCharacterEntity;
                     characterComponent.CharacterSO = sharedData.CharacterSO;
                     characterComponent.characterMotion = sharedData.StartPlayerCharacterMotionBase;
                     characterComponent.transform = sharedData.StartPlayerCharacterMotionBase.transform;
@@ -78,7 +79,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                     // <<inventory>> ===================================
                     characterComponent.InventoryInteraction2 = new Character.InteractionSystem.InventoryInteraction2(characterComponent.characterMotion);
-                    characterComponent.InventoryInteraction2.InventoryContainer.Size = 4;
+                    characterComponent.InventoryInteraction2.InventoryContainer.Size = 6;
                     characterComponent.InventoryInteraction2.CharacterMotionBase = characterComponent.characterMotion;
                     characterComponent.InventoryInteraction2.EcsWorld = systems.GetWorld();
 

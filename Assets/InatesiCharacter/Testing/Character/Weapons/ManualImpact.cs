@@ -1,5 +1,7 @@
-﻿using InatesiCharacter.Testing.Effects;
-using InatesiCharacter.Testing.Shared.Components;
+﻿using InatesiCharacter.SuperCharacter;
+using InatesiCharacter.Testing.Effects;
+using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
 using System.Collections;
 using UnityEngine;
 using Input = Inatesi.Inputs.Input;
@@ -36,8 +38,24 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 Reload();
             }
 
+            if (Input.Pressed("Secondary Attack"))
+            {
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = true;
+            }
+
+            if (Input.Released("Secondary Attack"))
+            {
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = false;
+            }
+
             if (Input.Down("Attack") && _TimeSinceAttack >= _delayShootTime)
             {
+                CharacterMotion.AnimatorMonitor.SetSlotData((int)SlotData.AttackMontirovka);
+                ECSHelper.Create<ShootEvent>(_StartEcs.EcsWorld);
+
+
                 RaycastHit hit;
                 _RaycastDistance = 1.5f;
                 var isHit = RaycastSphere(
@@ -49,9 +67,9 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
                 if (isHit)
                 {
-                    var entity = EcsWorld.NewEntity();
+                    var entity = _StartEcs.EcsWorld.NewEntity();
 
-                    var hitPool = EcsWorld.GetPool<DamageComponent>();
+                    var hitPool = _StartEcs.EcsWorld.GetPool<DamageComponent>();
                     hitPool.Add(entity);
                     ref var hitComponent = ref hitPool.Get(entity);
 
@@ -74,23 +92,12 @@ namespace InatesiCharacter.Testing.Character.Weapons
                         hit.rigidbody.AddForce(CharacterMotion.LookSource.Transform.forward * _forceVelocityDamage, _ForceMode);
                     }
 
-                    // CharacterMotion.AudioSource.PlayOneShot(_HitAudioClips[Random.Range(0, _HitAudioClips.Length - 1)]);
-                    CharacterMotion.AudioSource.PlayOneShot(_AudioClips[Random.Range(0, _AudioClips.Length - 1)]);
-                    Shared.ParticlesManager.SendParticleEvent(EcsWorld, _RaycastHit);
+
+                    Shared.ParticlesManager.SendParticleEvent(_StartEcs.EcsWorld, _RaycastHit);
                     //LineSystem.Instance.SetLine(startLinePosition, hit.distance < 10 ? hit.point : _startRaycastPosition + _startRaycastDirection * 10f);
                 }
-                else
-                {
-                    //LineSystem.Instance.SetLine(startLinePosition, _startRaycastPosition + _startRaycastDirection * 10f);
-                    CharacterMotion.AudioSource.PlayOneShot(_AudioClips[Random.Range(0, _AudioClips.Length - 1)]);
-                }
 
-
-                if (_SpawnedViewModel.activeSelf) 
-                    _SpawnedViewModel.GetComponent<Animator>().Play(_Animation[_animID].name);
-                
-                _animID++;
-                if (_Animation.Length <= _animID) _animID = 0;
+                CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClip);
 
 
 

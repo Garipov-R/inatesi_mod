@@ -33,6 +33,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 characterComponent.transform = characterInitComponent.gameObject.transform;
                 characterComponent.gameObject = characterInitComponent.gameObject;
                 characterComponent.health = characterInitComponent.health;
+                characterComponent.entity = characterInitComponent.entity;
                 if (characterComponent.gameObject.TryGetComponent(out EntityFlagMono entityFlagMono))
                 {
                     characterComponent.entityFlag = entityFlagMono.EntityFlag;

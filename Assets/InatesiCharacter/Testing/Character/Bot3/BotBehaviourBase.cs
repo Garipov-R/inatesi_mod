@@ -3,6 +3,7 @@ using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.LeoEcs5;
 using InatesiCharacter.Testing.LeoEcs5.Utility;
 using InatesiCharacter.Testing.Shared;
+using InatesiCharacter.Testing.Stuff;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -143,7 +144,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
         {
             _AnimatorMonitor.SetAbilityID((int)_DamageAnimAbility);
 
-            _stopTimer += 0.5f;
+            _stopTimer += 0.1f;
         }
 
         public void Go()
@@ -249,6 +250,9 @@ namespace InatesiCharacter.Testing.Character.Bot3
             if (_target == null)
                 return;
 
+            if (InRaduisAttack() == false)
+                return;
+
             var targetPosition = _target.position - transform.position;
             targetPosition.y = 0;
             var targetRotation = Quaternion.LookRotation(targetPosition, transform.up);
@@ -263,7 +267,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
         {
             agent.speed = patrolSpeed;
 
-            if (!agent.pathPending && agent.remainingDistance < 2f)
+            if (!agent.pathPending && agent.remainingDistance < 2f && waypoints.Count > 0)
             {
                 currentWaypoint = (currentWaypoint + 1) % waypoints.Count;
                 agent.SetDestination(waypoints[currentWaypoint]);

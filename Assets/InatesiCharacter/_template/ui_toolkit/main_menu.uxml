@@ -10,14 +10,14 @@
             <ui:Button text="exit" name="exit-button" class="button"/>
             <ui:Button text="change language" name="language-button" class="button"/>
         </ui:VisualElement>
-        <ui:VisualElement name="settings-panel" style="flex-grow: 1; display: none; padding-top: 100px;">
+        <ui:VisualElement name="settings-panel" style="flex-grow: 1; display: flex; padding-top: 100px;">
             <ui:Button text="&lt;" name="back-button" class="button" style="width: 100px; height: 100px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; top: 50px; left: 50px; border-top-left-radius: 72px; border-top-right-radius: 72px; border-bottom-right-radius: 72px; border-bottom-left-radius: 72px; font-size: 59px; -unity-text-align: middle-center;"/>
             <ui:Label text="settings" name="setting-name" style="-unity-text-align: upper-center; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); font-size: 36px;"/>
             <ui:ScrollView name="" vertical-scroller-visibility="AlwaysVisible" horizontal-scroller-visibility="Hidden" touch-scroll-type="Elastic" class="scroll-view">
                 <ui:VisualElement style="width: 50%; align-self: center; position: relative; top: auto; align-content: flex-start;">
                     <ui:VisualElement name="row-panel" class="setting-row-panel">
                         <ui:Label text="mouse sensetive senseitive" name="mouse-sensitivity-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);"/>
-                        <ui:Slider label="Slider" value="42" high-value="100" name="mouse-sensetive-slider" focusable="false" class="slider" style="color: rgb(255, 255, 255);"/>
+                        <ui:Slider label="Slider" value="1.4" high-value="2" name="mouse-sensetive-slider" focusable="false" class="slider" style="color: rgb(255, 255, 255);"/>
                     </ui:VisualElement>
                     <ui:VisualElement name="row-panel" class="setting-row-panel">
                         <ui:Label text="music" name="music-value-text" style="font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255);"/>

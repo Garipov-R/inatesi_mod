@@ -16,7 +16,6 @@ namespace InatesiCharacter.Testing.Character.Bot2
         [SerializeField] private UnityEvent _OnAllDeathBot;
         [SerializeField] private UnityEvent _OnAnyDeathBotEvent;
         [SerializeField] private UnityEvent<GameObject> _OnDeathBotEvent;
-        [SerializeField] private Transform _SpawnPoint;
         [SerializeField] private List<Transform> _SpawnPoints = new List<Transform>();
 
         private int _countDeath;
@@ -32,8 +31,6 @@ namespace InatesiCharacter.Testing.Character.Bot2
             {
                 if (bot == botGameObject)
                 {
-                    Debug.Log(_countDeath);
-
                     _countDeath++;
                 }
                 else
@@ -41,8 +38,6 @@ namespace InatesiCharacter.Testing.Character.Bot2
                     return;
                 }
             }
-
-            
 
             if (_countDeath >= _botsOnScene.Count)
             {
@@ -55,16 +50,20 @@ namespace InatesiCharacter.Testing.Character.Bot2
             if (_StartEcs == null)
                 return;
 
-            if (_SpawnPoint == null)
+            if (_SpawnPoints == null)
+                return;
+
+            if (_SpawnPoints.Count == 0) 
                 return;
 
             if (_botPrefabs == null && _botPrefabs.Count == 0)
                 return;
 
             ref var component = ref ECSHelper.Create<BotInitEvent>(_StartEcs.EcsWorld);
-            component.prefab = _botPrefabs[0];
-            component.position = _SpawnPoint.position;
-            component.rotation = _SpawnPoint.rotation;
+            component.prefab = _botPrefabs[Random.Range(0, _botPrefabs.Count)];
+            var spawnPoint = _SpawnPoints[Random.Range(0, _SpawnPoints.Count)];
+            component.position = spawnPoint.position;
+            component.rotation = spawnPoint.rotation;
         }
 
         public void SpawnBot(GameObject targetBotGameObject)
@@ -72,7 +71,10 @@ namespace InatesiCharacter.Testing.Character.Bot2
             if (_StartEcs == null)
                 return;
 
-            if (_SpawnPoint == null)
+            if (_SpawnPoints == null)
+                return;
+
+            if (_SpawnPoints.Count == 0)
                 return;
 
             if (_botPrefabs == null && _botPrefabs.Count == 0)
@@ -80,7 +82,7 @@ namespace InatesiCharacter.Testing.Character.Bot2
 
 
             GameObject prefab = null;
-            var spawnPoint = _SpawnPoints[Random.Range(0, _SpawnPoints.Count - 1)];
+            var spawnPoint = _SpawnPoints[Random.Range(0, _SpawnPoints.Count)];
             foreach (var botPrefab in _botPrefabs)
             {
                 var nameBot = targetBotGameObject.name.Replace("(Clone)", "");

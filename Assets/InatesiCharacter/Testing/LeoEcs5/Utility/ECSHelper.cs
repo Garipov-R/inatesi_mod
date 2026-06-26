@@ -58,5 +58,15 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
 
             return false;
         }
+
+        public static void Delete(EcsWorld ecsWorld, int entity)
+        {
+            if (ecsWorld == null)
+            {
+                return;
+            }
+
+            ecsWorld.DelEntity(entity);
+        }
     }
 }

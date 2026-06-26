@@ -6595,8 +6595,8 @@ MonoBehaviour:
     _HorizontalMovementDampingTime: 0.1
     _ForwardMovementDampingTime: 0.1
   _RagdollMonitor:
-    _RagdollLayerMask: CharacterIgnore
-    _NotRagdollLayerMask: CharacterIgnore
+    _RagdollLayerMask: Ignore Raycast
+    _NotRagdollLayerMask: Ignore Raycast
   _TimeScale: 1
   _RaycastLayer:
     serializedVersion: 2
@@ -6643,7 +6643,7 @@ MonoBehaviour:
   _AutoBhop: 1
   _lerpRotate: 1
   _rigidbodyPushForce: 0.5
-  _SpeedRotate: 5
+  _SpeedRotate: 10
   _StepOffset: 0.2
   _IsTrainRotation: 0
   _IsInputTargetRotation: 0
@@ -10616,13 +10616,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8498168263986340100}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000091851646, y: 0.29581228, z: 0.95524603, w: -0.000000059604616}
-  m_LocalPosition: {x: 0.00016, y: 0.00018, z: 0.00044}
-  m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5909262861451569083}
-  m_LocalEulerAnglesHint: {x: -34.413, y: 0, z: 180}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 180}
 --- !u!1 &8499942077532930321
 GameObject:
   m_ObjectHideFlags: 0

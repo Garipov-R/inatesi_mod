@@ -15,5 +15,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Components
         public CharacterSO CharacterSO;
         public float health;
         public EntityFlag entityFlag;
+        public int entity;
     }
 }

@@ -52,7 +52,7 @@ namespace InatesiCharacter.Testing.Shared
                     _body.position + Vector3.up * 2f + _body.right * legData.rightOffset * 1f + _body.forward * legData.forwardOffset,  
                     -Vector3.up + _body.forward * .3f
                 );
-                var cast = Physics.SphereCast(ray, 1f, out _hitInfo, 10, Configs.Config.s_DefaultLayerMask, QueryTriggerInteraction.Ignore);
+                var cast = Physics.SphereCast(ray, .1f, out _hitInfo, 6, Configs.Config.s_DefaultLayerMask, QueryTriggerInteraction.Ignore);
                 if (cast)
                 {
                     legData.Update(_stepSpeed, _legAnimCurve);
@@ -68,7 +68,7 @@ namespace InatesiCharacter.Testing.Shared
                     //Debug.Log(legData.IsMoving + " " + Vector3.Distance(legData.currentPosition, hitInfo.point) + " " + legData.currentPosition);
 
 
-                    //if (!CanMove(index)) continue;
+                    if (!CanMove(index)) continue;
 
                     if (!legData.IsMoving && !(Vector3.Distance(legData.currentPosition, _hitInfo.point) > _stepLength))
                     {

@@ -40,10 +40,16 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
         public void OnPlayerSelectItem(ItemScriptableObject itemScriptableObject);
 
         public void OnPlayerDamage(DamageComponent damageComponent);
+
         public void OnPlayerLanded();
 
-        public void OnPlayerCombatEvent();
+        public void OnPlayerAimEvent();
+
+        public void OnPlayerShoot();
 
         public void OnCameraCollision(CollisionComponentEvent collisionComponentEvent);
+
+        public void OnCharacterDead(CharacterComponent characterComponent);
+        public void OnCharacterDamage(CharacterComponent characterComponent, DamageComponent damageComponent);
     }
 }

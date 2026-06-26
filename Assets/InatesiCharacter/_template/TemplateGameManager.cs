@@ -29,12 +29,12 @@ namespace InatesiCharacter.Template
         private float _DeadTimeSince;
         private float _aimTimeSince;
         private bool _aim;
+        private bool _aimWeapon;
 
         [Zenject.Inject]
         private void TestInject(StartEcs startEcs)
         {
             _StartEcs = startEcs;
-            Debug.Log(123);
         }
 
         private void Start()
@@ -63,39 +63,23 @@ namespace InatesiCharacter.Template
 
 
 
-            _aimTimeSince -= Time.deltaTime;
 
-            if (_aimTimeSince < 0 && FPS == false)
+            if (_aim == true && _aimWeapon == false)
             {
-                ref var characterComponent = ref ECSHelper.Get<CharacterComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<CharacterComponent>().Inc<PlayerComponent>().End());
-                ref var playerComponent = ref ECSHelper.Get<PlayerComponent>(_StartEcs.EcsWorld);
-                characterComponent.characterMotion.ActiveMovementType = new Adventure();
-                characterComponent.characterMotion.ActiveMovementType.Initialize(characterComponent.characterMotion);
-                _aim = false;
+                _aimTimeSince -= Time.deltaTime;
 
-                if (playerComponent.riggingTest)
+                if (_aimTimeSince < 0)
                 {
-                    playerComponent.riggingTest.RightHandRig.weight = _aim ? 1 : 0;
+                    SetAimAnimation(false);
                 }
-
-                characterComponent.characterMotion.AnimatorMonitor.Animator.SetLayerWeight(1, _aim ? 1 : 0);
-                characterComponent.characterMotion.AnimatorMonitor.SetSlot0((int)characterComponent.InventoryInteraction2.InventoryContainer.ActiveItem.ItemScriptableObject.WeaponTypeAnimation);
             }
 
-            //if (Input.Down("Secondary Attack"))
-            if (Input.GetKeyDown(UnityEngine.InputSystem.Key.Q))
+
+            if (FPS == false)
             {
-                ref var characterComponent = ref ECSHelper.Get<CharacterComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<CharacterComponent>().Inc<PlayerComponent>().End());
-                ref var playerComponent = ref ECSHelper.Get<PlayerComponent>(_StartEcs.EcsWorld);
-                //playerComponent.riggingTest.Target.position = playerComponent.cameraMotion.transform.forward * 15f;
-                characterComponent.characterMotion.ActiveMovementType = new Adventure();
-                characterComponent.characterMotion.ActiveMovementType.Initialize(characterComponent.characterMotion);
-
-                _aim = !_aim;
-                playerComponent.riggingTest.RightHandRig.weight = _aim  ? 1 : 0;
-                characterComponent.characterMotion.AnimatorMonitor.Animator.SetLayerWeight(1, _aim ? 1 : 0);
-                characterComponent.characterMotion.AnimatorMonitor.SetSlot0((int)characterComponent.InventoryInteraction2.InventoryContainer.ActiveItem.ItemScriptableObject.WeaponTypeAnimation);
+                CameraMotion.ZoomAmount = Mathf.Lerp(CameraMotion.ZoomAmount, _aimWeapon ? 1f : 3, Time.deltaTime * 10f);
             }
+
 
 
             if (ECSHelper.Has<PlayerComponent>(_StartEcs.EcsWorld))
@@ -108,12 +92,18 @@ namespace InatesiCharacter.Template
                     playerComponent.riggingTest.Target.position = playerComponent.cameraMotion.transform.position + playerComponent.cameraMotion.transform.forward * 5;
 
                 }
+
+                characterComponent.characterMotion.AnimatorMonitor.Animator.SetLayerWeight(
+                    1, 
+                    Mathf.Lerp(characterComponent.characterMotion.AnimatorMonitor.Animator.GetLayerWeight(1), _aim ? 1 : 0, Time.deltaTime * 10f) 
+                );
+
             }
 
 
             if (_DamageVolume)
             {
-                _DamageVolume.weight = Mathf.Lerp(_DamageVolume.weight, 0, Time.deltaTime);
+                _DamageVolume.weight = Mathf.Lerp(_DamageVolume.weight, 0, Time.deltaTime * 2f);
             }
 
 
@@ -129,7 +119,8 @@ namespace InatesiCharacter.Template
                     _waypointUITest.Camera = playerComponent.cameraMotion.Camera;
                     _waypointUITest.Target = botComponent.gameObject.transform;
                 }
-                
+
+                _waypointUITest.Player = playerComponent.gameObject.transform;
             }
         }
 
@@ -164,21 +155,8 @@ namespace InatesiCharacter.Template
             ref var characterComponent = ref ECSHelper.Get<CharacterComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<CharacterComponent>().Inc<PlayerComponent>().End());
             ref var playerComponent = ref ECSHelper.Get<PlayerComponent>(_StartEcs.EcsWorld);
 
-            if (playerComponent.riggingTest == null)
-                return;
-
-            _aim = itemScriptableObject != null;
-            if (itemScriptableObject.WeaponTypeAnimation != WeaponTypeAnimation.none)
-            {
-                playerComponent.riggingTest.RightHandRig.weight = _aim ? 1 : 0;
-                characterComponent.characterMotion.AnimatorMonitor.Animator.SetLayerWeight(1, _aim ? 1 : 0);
-            }
-            else
-            {
-                characterComponent.characterMotion.AnimatorMonitor.Animator.SetLayerWeight(1, 0);
-                playerComponent.riggingTest.RightHandRig.weight = 0;
-            }
-            characterComponent.characterMotion.AnimatorMonitor.SetSlot0((int)itemScriptableObject.WeaponTypeAnimation);
+            SetAimAnimation(false);
+            _aimWeapon = false;
         }
 
         public override void OnPlayerDamage(DamageComponent damageComponent)
@@ -193,6 +171,11 @@ namespace InatesiCharacter.Template
             if (_DamageVolume != null)
             {
                 _DamageVolume.weight = 1;
+            }
+
+            if (_waypointUITest != null)
+            {
+                _waypointUITest.RegisterHit(damageComponent.ray.origin);
             }
         }
 
@@ -220,16 +203,49 @@ namespace InatesiCharacter.Template
             characterComponent.characterMotion.AnimatorMonitor.SetAbilityID((int)AnimationAbility.Idle);
         }
 
-        public override void OnPlayerCombatEvent()
+        public override void OnPlayerAimEvent()
         {
-            _aimTimeSince = 2;
-            _aim = true;
             ref var characterComponent = ref ECSHelper.Get<CharacterComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<CharacterComponent>().Inc<PlayerComponent>().End());
             ref var playerComponent = ref ECSHelper.Get<PlayerComponent>(_StartEcs.EcsWorld);
-            characterComponent.characterMotion.ActiveMovementType = new Combat();
+            ref var playerCombatEvent = ref ECSHelper.Get<CombatEvent>(_StartEcs.EcsWorld);
+
+            _aim = playerCombatEvent.aim;
+
+            if (playerCombatEvent.aim)
+            {
+
+            }
+            else
+            {
+                _aimTimeSince = 0;
+            }
+
+            SetAimAnimation(playerCombatEvent.aim);
+
+            _aimWeapon = playerCombatEvent.aim;
+        }
+
+        public override void OnPlayerShoot()
+        {
+            SetAimAnimation(true);
+        }
+
+        private void SetAimAnimation(bool state)
+        {
+            ref var characterComponent = ref ECSHelper.Get<CharacterComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<CharacterComponent>().Inc<PlayerComponent>().End());
+            ref var playerComponent = ref ECSHelper.Get<PlayerComponent>(_StartEcs.EcsWorld);
+
+            _aim = state;
+            _aimTimeSince = 2;
+            characterComponent.characterMotion.ActiveMovementType = _aim ? new Combat() : new Adventure();
             characterComponent.characterMotion.ActiveMovementType.Initialize(characterComponent.characterMotion);
-            playerComponent.riggingTest.RightHandRig.weight = _aim ? 1 : 0;
-            characterComponent.characterMotion.AnimatorMonitor.Animator.SetLayerWeight(1, _aim ? 1 : 0);
+
+            if (playerComponent.riggingTest)
+            {
+                playerComponent.riggingTest.RightHandRig.weight = _aim ? 1 : 0;
+            }
+
+            //characterComponent.characterMotion.AnimatorMonitor.Animator.SetLayerWeight(1, _aim ? 1 : 0);
             characterComponent.characterMotion.AnimatorMonitor.SetSlot0((int)characterComponent.InventoryInteraction2.InventoryContainer.ActiveItem.ItemScriptableObject.WeaponTypeAnimation);
         }
 
@@ -321,6 +337,8 @@ namespace InatesiCharacter.Template
             if (Inatesi.Inputs.Input.Pressed("2")) characterComponent.InventoryInteraction2.SetActiveInventoryItem(1);
             if (Inatesi.Inputs.Input.Pressed("3")) characterComponent.InventoryInteraction2.SetActiveInventoryItem(2);
             if (Inatesi.Inputs.Input.Pressed("4")) characterComponent.InventoryInteraction2.SetActiveInventoryItem(3);
+            if (Inatesi.Inputs.Input.Pressed("5")) characterComponent.InventoryInteraction2.SetActiveInventoryItem(4);
+            if (Inatesi.Inputs.Input.Pressed("6")) characterComponent.InventoryInteraction2.SetActiveInventoryItem(5);
 
             if (characterComponent.InventoryInteraction2.CurrentWeaponBase)
                 characterComponent.InventoryInteraction2.CurrentWeaponBase.FPC = playerComponent.fpc;

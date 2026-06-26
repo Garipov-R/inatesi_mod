@@ -9,41 +9,75 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
         [SerializeField] private float _returnTime = 30f;
 
         private Dictionary<GameObject, float> _TimerGameObjects = new Dictionary<GameObject, float>();
+        private List<GameObject> _GameObjects = new();
 
         public float ReturnTime { get => _returnTime; set => _returnTime = value; }
 
 
         private void Update()
         {
-            foreach (var item in _TimerGameObjects)
+            if (_TimerGameObjects == null)
             {
-                if (item.Key == null)
+                return;
+            }
+
+            if (_TimerGameObjects.Count == 0)
+            {
+                return;
+            }
+
+            if (_GameObjects == null)
+            {
+                return;
+            }
+
+            if (_GameObjects.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var item in _GameObjects)
+            {
+                if (item == null)
                 {
                     continue;
                 }
 
-                if (item.Key.activeSelf == false)
+                if (item.activeSelf == true)
                 {
                     continue;
                 }
 
-                if (_TimerGameObjects.TryGetValue(item.Key, out float time))
+                if (_TimerGameObjects.TryGetValue(item, out float time))
                 {
-                    time -= Time.deltaTime;
-
-                    if (time <= _returnTime)
+                    if (time <= 0)
                     {
-                        item.Key.SetActive(true);
+                        item.SetActive(true);
                     }
 
-                    _TimerGameObjects[item.Key] = time;
+                    time -= Time.deltaTime;
+
+                    _TimerGameObjects[item] = time;
                 }
             }
         }
 
         public void AddGameObject(GameObject addGameObject)
         {
-            _TimerGameObjects.Add(addGameObject, _returnTime);
+            if (_GameObjects.Contains(addGameObject) == false)
+            {
+                _GameObjects.Add(addGameObject);
+            }
+
+            if (_TimerGameObjects.ContainsKey(addGameObject) == true)
+            {
+                _TimerGameObjects[addGameObject] = _returnTime;
+                Debug.Log(_TimerGameObjects[addGameObject]);
+            }
+            else
+            {
+                _TimerGameObjects.Add(addGameObject, _returnTime);
+            }
         }
     }
 }

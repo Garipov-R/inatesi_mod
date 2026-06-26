@@ -57,7 +57,6 @@ namespace InatesiCharacter.Template
 
             });
 
-            Debug.Log(QualitySettings.vSyncCount);
             _document.rootVisualElement.Q<Toggle>(_vSyncToggle).value = QualitySettings.vSyncCount == 0 ? false : true;
             _document.rootVisualElement.Q<Toggle>(_vSyncToggle).RegisterValueChangedCallback(e => 
             {

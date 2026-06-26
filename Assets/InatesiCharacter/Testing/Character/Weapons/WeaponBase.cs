@@ -9,6 +9,7 @@ using InatesiCharacter.Testing.LeoEcs4.Components;
 using InatesiCharacter.Testing.LeoEcs5;
 using InatesiCharacter.Testing.LeoEcs5.Components;
 using InatesiCharacter.Testing.LeoEcs5.Utility;
+using InatesiCharacter.Testing.Stuff;
 using Leopotam.EcsLite;
 using System;
 using System.Collections;
@@ -485,6 +486,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 
             }
 
+
             if (_TrailVisualEffect != null)
             {
                 var shootPoint = _SpawnedViewModel.transform.Find("shootPoint");
@@ -531,10 +533,21 @@ namespace InatesiCharacter.Testing.Character.Weapons
         {
             if (_StartEcs.EcsWorld == null) return;
 
+            if (IsEmpty())
+            {
+                return;
+            }
+
             ref var damageComponent = ref SendDamageEvent.Send(_StartEcs.EcsWorld);
             
             var origin = _CharacterMotionBase.LookSource.LookPosition();
             var direction = _CharacterMotionBase.LookSource.LookDirection();
+
+            if (!FPC)
+            {
+                origin = _CharacterMotionBase.transform.position + _CharacterMotionBase.Up * (_CharacterMotionBase.Height - _CharacterMotionBase.Radius / 2);
+            }
+
             var ray = new Ray(origin, direction);
             var cast = Physics.Raycast(ray, out RaycastHit hitInfo, 120f, Configs.Config.s_DamageLayerMask2, QueryTriggerInteraction.Ignore);
             if (cast)
@@ -553,7 +566,9 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             Shared.ParticlesManager.SendParticleEvent(_StartEcs.EcsWorld, damageComponent.hit);
 
-            ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+            ECSHelper.Create<ShootEvent>(_StartEcs.EcsWorld);
+            /*ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+            combatEvent.aim = */
         }
     }
 }

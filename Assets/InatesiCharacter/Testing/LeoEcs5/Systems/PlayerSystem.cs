@@ -80,6 +80,9 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 {
                     ref var damageComponent = ref _DamagePool.Get(entityDamage);
 
+                    if (characterComponent.health <= 0)
+                        continue;
+
                     if (damageComponent.target == characterComponent.gameObject)
                     {
                         characterComponent.characterMotion.AddForce(damageComponent.velocity);
@@ -105,6 +108,11 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                             characterComponent.characterMotion.InputVector = Vector3.zero;
                             characterComponent.characterMotion.InputDirection = Vector3.zero;
                             characterComponent.InventoryInteraction2.DisableCurrentWeapon();
+
+
+                            ref var characterDeadEventComponent = ref ECSHelper.Create<CharacterDeadEvent>(systems.GetWorld());
+                            characterDeadEventComponent.entity = characterEntity;
+                            characterDeadEventComponent.gameObject = characterComponent.gameObject;
                         }
 
                         SendEventObjectPool.Send(
@@ -168,7 +176,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 {
                     ref var collisionEvent = ref _CollisionEventPool.Get(collicionEventEntity);
                     
-
                     if (collisionEvent.collideGameObject == playerComponent.gameObject)
                     {
                         _sharedData.GameLogic.OnPlayerCollision(collisionEvent);
@@ -180,8 +187,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                             if (item.AudioClip) characterComponent.characterMotion.AudioSource.PlayOneShot(item.AudioClip);
                         }
                     }
-
-                    
                 }
             }
         }

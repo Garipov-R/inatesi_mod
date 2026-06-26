@@ -300,11 +300,12 @@ namespace InatesiCharacter.Movements.SourceEngine
 
             float moveRotationSpeed = 0;
 
-            if (Mathf.Abs(_InputDirection.magnitude) > 0 && _IsInputTargetRotation)
+            if (!_IsInputTargetRotation)
             {
                 _targetAngle = _MovementType.GetRotation(_InputDirection.x, InputDirection.y);
+
             }
-            else
+            else if(Mathf.Abs(_InputDirection.magnitude) > 0)
             {
                 _targetAngle = _MovementType.GetRotation(_InputDirection.x, InputDirection.y);
             }

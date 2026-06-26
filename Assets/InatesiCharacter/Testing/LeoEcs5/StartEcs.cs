@@ -48,8 +48,8 @@ namespace InatesiCharacter.Testing.LeoEcs5
                 .Add(new PlayerInitSystem())
                 .Add(new CharacterInitSystem())
 
-
                 .Add(new GameLogicSystem())
+
 
                 .DelHere<DamageComponent>()
                 .DelHere<ParticleEvent>()
@@ -62,6 +62,8 @@ namespace InatesiCharacter.Testing.LeoEcs5
                 .DelHere<CharacterInitEvent>()
                 .DelHere<BotInitEvent>()
                 .DelHere<CombatEvent>()
+                .DelHere<ShootEvent>()
+                .DelHere<CharacterDeadEvent>()
             ;
 
             _FixedUpdateSystems

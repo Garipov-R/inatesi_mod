@@ -129,11 +129,15 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         {
                             foreach(var botEvent in systems.GetShared<SharedData>().BotsEvents)
                             {
-                                botEvent.DeathBot(botCharacterComponent.gameObject);
+                                //botEvent.DeathBot(botCharacterComponent.gameObject);
                             }
                         }
                         
                         botComponent.botBehaviourBase.Die();
+
+                        ref var characterDeadEventComponent = ref ECSHelper.Create<CharacterDeadEvent>(systems.GetWorld());
+                        characterDeadEventComponent.entity = entityBot;
+                        characterDeadEventComponent.gameObject = botCharacterComponent.gameObject;
                     }
                     else 
                     {

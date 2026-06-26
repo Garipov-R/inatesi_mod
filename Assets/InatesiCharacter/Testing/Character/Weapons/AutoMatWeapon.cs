@@ -1,7 +1,8 @@
 ﻿using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.Decals;
 using InatesiCharacter.Testing.Effects;
-using InatesiCharacter.Testing.Shared.Components;
+using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
 using System.Collections;
 using UnityEngine;
 using Input = Inatesi.Inputs.Input;
@@ -32,6 +33,18 @@ namespace InatesiCharacter.Testing.Character.Weapons
         public override void UpdateTick()
         {
             base.UpdateTick();
+
+            if (Input.Pressed("Secondary Attack"))
+            {
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = true;
+            }
+
+            if (Input.Released("Secondary Attack"))
+            {
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = false;
+            }
 
             if (Input.Down("Attack"))
             {
@@ -76,6 +89,15 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 Reload();
                 return;
             }
+
+            _SwayBob.Shake(_ForceShake);
+
+            CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClip, _VolumeShoot);
+
+            SendDamageComponent();
+
+            base.Shoot(1);
+
 
             if (EcsWorld == null) return;
 
@@ -127,16 +149,12 @@ namespace InatesiCharacter.Testing.Character.Weapons
             }
             
 
-            _SwayBob.Shake(_ForceShake);
-            CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClip, _VolumeShoot);
+            
 
             if (_Animation)
             {
                 _Animation.Play(PlayMode.StopSameLayer);
             }
-
-
-            base.Shoot(1);
         }
 
         public override void OnReload()

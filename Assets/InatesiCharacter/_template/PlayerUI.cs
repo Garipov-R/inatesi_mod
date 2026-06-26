@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UIElements;
 
 namespace InatesiCharacter._template
@@ -24,6 +23,20 @@ namespace InatesiCharacter._template
 
             _uIDocument.rootVisualElement.Q<Label>("health-text").text = string.Format(_healthText, Mathf.Clamp(health, 0, 99999));
 			_uIDocument.rootVisualElement.Q<Label>("health-text").style.unityBackgroundImageTintColor = Color.Lerp(Color.red, Color.green, (float)health / 100f);
+
+        }
+
+		public void UpdateAmmoUI(int ammo, int totalAmmo)
+		{
+            if (_uIDocument == null)
+                return;
+
+            if (ammo < 0)
+            {
+				return;
+            }
+
+            _uIDocument.rootVisualElement.Q<Label>("ammo-text").text = $"🧨 {ammo} / {totalAmmo}";
 
         }
     }

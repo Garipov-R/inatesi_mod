@@ -92,14 +92,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6451612731522666690}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.79364145, z: 0, w: 0.6083858}
-  m_LocalPosition: {x: 0, y: 153.0809, z: 0}
+  m_LocalRotation: {x: 0, y: 0.65941924, z: 0, w: 0.7517755}
+  m_LocalPosition: {x: 0, y: 167.55226, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8244123067127779474}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -59.761, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -330.863, z: 0}
 --- !u!114 &5357633984030025713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,8 +113,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.Utility.ShakeSmooth.ShakeSmooth
   _Rotate: {x: 0, y: 360, z: 0}
-  _rotateDuration: 4
-  _Move: {x: 0, y: 0.4, z: 0}
+  _rotateDuration: 1
+  _Move: {x: 0, y: 0, z: 0}
   _moveDuration: 2
 --- !u!65 &2799161056071017130
 BoxCollider:
@@ -159,7 +159,7 @@ MonoBehaviour:
     _TotalAmmo: 60
     _MagCapacity: 30
     _MaxAmmo: 99999
-  _AudioClip: {fileID: 0}
+  _AudioClip: {fileID: 8300000, guid: aa81600b1ca9c3c40a3b09131960854c, type: 3}
 --- !u!114 &3643662544815454733
 MonoBehaviour:
   m_ObjectHideFlags: 0
