@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.VFX;
 
@@ -21,6 +22,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
         [SerializeField] private float _Damage = 1;
         [SerializeField] private GameObject _hitCollidersContainer;
         [SerializeField] private GameObject _collidersContainer;
+        [SerializeField] private CharacterController _characterCollider;
 
         [Header("Effects")]
         [SerializeField] private VisualEffect _DamageVisualEffect;
@@ -34,13 +36,13 @@ namespace InatesiCharacter.Testing.Character.Bot3
         [SerializeField] private int numberOfRandomWaypoints = 5; 
         
         [Header("AI Behavior")]
-        [SerializeField] private float visionRange = 15f;
         [SerializeField] private float chaseSpeed = 5f;
         [SerializeField] private float patrolSpeed = 3f;
 
         [Header("Settings")]
         [SerializeField] private float _visionRange = 5;
         [SerializeField] private float _AttackVelocity = 5;
+        [SerializeField] private bool _ZigZagWalk = false;
 
         [Header("Animation setings")]
         [SerializeField] private AnimationAbility _AttackAnimAbility = AnimationAbility.Attack;
@@ -58,9 +60,10 @@ namespace InatesiCharacter.Testing.Character.Bot3
         private bool _attacked;
         private BotState _currentBotState;
         private Transform _target;
-         private NavMeshAgent agent;
+        private NavMeshAgent agent;
         private List<Vector3> waypoints = new List<Vector3>();
         private int currentWaypoint = 0;
+        private float _currentSpeed = 6;
 
         public int Health { get => _Health; set => _Health = value; }
         public VisualEffect DamageVisualEffect { get => _DamageVisualEffect; set => _DamageVisualEffect = value; }
@@ -82,6 +85,8 @@ namespace InatesiCharacter.Testing.Character.Bot3
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
+            agent.updatePosition = false;
+            agent.updateRotation = false;
             SetupWaypoints();
         }
 
@@ -116,7 +121,96 @@ namespace InatesiCharacter.Testing.Character.Bot3
                 _stopTimer -= Time.deltaTime;
             }
 
-            //Debug.Log(_AnimatorMonitor.Animator == null);
+            UpdateAnimators();
+
+            _AttackSinceTime = _AttackSinceTime > 0 ? _AttackSinceTime - Time.deltaTime : 0;
+
+            UpdateRotation();
+            UpdateMovement();
+
+            RotateToTarget();
+            if (agent.updatePosition == false && agent.isOnNavMesh)
+            {
+                agent.nextPosition = transform.position;
+            }
+        }
+
+        private void UpdateMovement()
+        {
+            var movementDirection = GetMovementDirection() ;
+             
+            if (_ZigZagWalk)
+            {
+                movementDirection += transform.right * Mathf.Sin(Time.time * 2) * .1f;
+            }
+
+            if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
+            {
+                if (_characterCollider.isGrounded)
+                {
+                    _currentSpeed = 0;
+                }
+            }
+
+            Vector3 movement = movementDirection * _currentSpeed * Time.deltaTime;
+            if (!_characterCollider.isGrounded)
+            {
+                movement.y -= 9.81f * Time.deltaTime;
+            }
+            _characterCollider.Move(movement);
+        }
+
+        private void UpdateRotation()
+        {
+            if (InRaduisAttack() == true)
+            {
+                return;
+            }
+
+            var movementDirection = GetMovementDirection();
+
+            if (_ZigZagWalk)
+            {
+                movementDirection += transform.right * Mathf.Sin(Time.time * 20) * 1;
+            }
+
+            var targetRotation = Quaternion.LookRotation(movementDirection, transform.up);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+        }
+
+        private Vector3 GetMovementDirection()
+        {
+            Vector3 velocity = agent.nextPosition - transform.position;
+            Vector3 horizontalVelocity = new Vector3(velocity.x, 0, velocity.z);
+            Vector3 moveDirection = horizontalVelocity.normalized;
+            if (moveDirection != Vector3.zero)
+            {
+                return moveDirection;
+            }
+
+            return Vector3.zero;
+        }
+
+        private Vector3 GetNormalGround()
+        {
+            Physics.Raycast(
+                transform.position,
+                -transform.up,
+                out RaycastHit hit,
+                2f,
+                Configs.Config.s_DefaultLayerMask,
+                QueryTriggerInteraction.Ignore
+            );
+            return hit.transform != null ? hit.normal : Vector3.zero;
+        }
+
+        private void LateUpdate()
+        {
+            
+        }
+
+        private void UpdateAnimators()
+        {
             _AnimatorMonitor.SetForwardMovementParameter(agent.velocity.magnitude, Time.deltaTime);
             _AnimatorMonitor.WithVelocity(agent.velocity);
             _AnimatorMonitor.SetMovingParameter(agent.velocity.magnitude > 0);
@@ -124,9 +218,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
             _AnimatorMonitor.IsGrounded = agent.velocity.y < 0 ? false : true;
             _AnimatorMonitor.SetParameters();
 
-            RotateToTarget();
 
-            _AttackSinceTime = _AttackSinceTime > 0 ? _AttackSinceTime - Time.deltaTime : 0;
 
             switch (_currentBotState)
             {
@@ -202,11 +294,15 @@ namespace InatesiCharacter.Testing.Character.Bot3
 
             ref var damageComponent = ref SendDamageEvent.Send(StartEcs.EcsWorld);
 
-            var origin = (transform.position + transform.forward * .1f) + transform.up * 1.0f;
+            var origin = (transform.position + transform.forward * 0) + transform.up * 0;
             var direction = transform.forward;
+
+            direction = InRaduisAttack() ? ((_target.position + transform.up) - transform.position).normalized : transform.forward;
+
             var ray = new Ray(origin, direction);
+
             var cast = Physics.Raycast(ray, out RaycastHit hitInfo, 2f, Configs.Config.s_DamageLayerMask2, QueryTriggerInteraction.Ignore);
-            cast = Physics.SphereCast(ray, .5f, out hitInfo, 2f, Configs.Config.s_DamageLayerMask2, QueryTriggerInteraction.Ignore);
+            cast = Physics.SphereCast(ray, .1f, out hitInfo, 3f, Configs.Config.s_DamageLayerMask2, QueryTriggerInteraction.Ignore);
             Debug.DrawLine(ray.origin, ray.origin + ray.direction, Color.cadetBlue, 1f);
             if (cast)
             {
@@ -231,10 +327,10 @@ namespace InatesiCharacter.Testing.Character.Bot3
 
         public bool InRaduisAttack()
         {
-            if (_target && Vector3.Distance(_target.position, transform.position) < 2f)
+            if (_target && Vector3.Distance(_target.position, transform.position) < 3f)
             {
                 Vector3 forward = transform.TransformDirection(Vector3.forward);
-                Vector3 toOther = Vector3.Normalize(_target.position - transform.position);
+                Vector3 toOther = Vector3.Normalize(Vector3.Scale(_target.position, new Vector3(1, 0, 1)) - Vector3.Scale(transform.position, new Vector3(1, 0, 1)));
                 var dot = Vector3.Dot(forward, toOther);
                 if (Mathf.Abs(dot) > 0.8f)
                 {
@@ -266,6 +362,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
         void Patrol()
         {
             agent.speed = patrolSpeed;
+            _currentSpeed = patrolSpeed;
 
             if (!agent.pathPending && agent.remainingDistance < 2f && waypoints.Count > 0)
             {
@@ -289,6 +386,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
         void Chase()
         {
             agent.speed = chaseSpeed;
+            _currentSpeed = chaseSpeed;
 
             if (_target != null)
             {

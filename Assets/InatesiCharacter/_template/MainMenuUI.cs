@@ -22,6 +22,7 @@ namespace InatesiCharacter.Template
         [SerializeField] private string _mouseSensetiveSider = "mouse-sensetive-slider";
         [SerializeField] private string _fovSider = "fov-slider";
         [SerializeField] private AudioMixer _AudioMixer;
+        [SerializeField] private GameObject _virtualInput;
 
 
         public UIDocument Document { get => _document; set => _document = value; }
@@ -34,6 +35,7 @@ namespace InatesiCharacter.Template
             _document.rootVisualElement.Q<Button>(_continueButtonName).clicked += ContinueClicked;
             _document.rootVisualElement.Q<Button>(_backButtonName).clicked += OpenButtonsPanelButtonClicked;
             _document.rootVisualElement.Q<Button>(_settingsButtonName).clicked += SettingsButtonClicked;
+            _document.rootVisualElement.Q<Button>("open-menu").clicked += () => { ToggleRootPanel(); };
 
             _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices = new();
             _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices.Clear();
@@ -91,12 +93,23 @@ namespace InatesiCharacter.Template
                 //e.newValue
             });
 
+            _document.rootVisualElement.Q<Toggle>("virtual-input-toggle").RegisterValueChangedCallback(e =>
+            {
+                SetActiveVirtualInput(e.newValue);
+            });
+
 
             SetActivePanel(_buttonsPanelName);
             SetRootPanel(false);    
         }
 
-        
+
+
+        public void SetActiveVirtualInput(bool state)
+        {
+            _virtualInput?.SetActive(state);
+        }
+
         #region buttons events
 
         private void ContinueClicked()

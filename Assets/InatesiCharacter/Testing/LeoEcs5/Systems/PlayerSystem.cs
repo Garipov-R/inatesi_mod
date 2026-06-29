@@ -60,12 +60,15 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 ref var playerComponent = ref _PlayerPool.Get(characterEntity);
 
 
+                characterComponent.characterMotion.UpdateAnimator();
+
+                if (characterComponent.health <= 0)
+                    continue;
 
                 if (playerComponent.inputEnabled == false)
                     continue;
 
                 //characterComponent.characterMotion.UpdateCharacter();
-                characterComponent.characterMotion.UpdateAnimator();
                 characterComponent.characterMotion.UpdateFootstep();
                 characterComponent.characterMotion.UpdateCharacterMethod();
                 characterComponent.characterMotion.CheckWater();

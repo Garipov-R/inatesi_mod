@@ -216,6 +216,10 @@ namespace InatesiCharacter.Testing.Character.Weapons
             _onReload = null;
             enabled = false; 
             _SpawnedViewModel?.SetActive(false);
+            if (_SwayBob != null)
+            {
+                _SwayBob.Aim(false);
+            }
             //Destroy(gameObject); 
         }
         public virtual void Enable() 
@@ -430,6 +434,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             _CurrentAmmo = _carriableObjectData.Ammo;
             _onAmmoChanged?.Invoke(_CurrentAmmo);
+
+            ECSHelper.Create<ShootEvent>(_StartEcs.EcsWorld);
 
             return;
 

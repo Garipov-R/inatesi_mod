@@ -144,7 +144,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
             switch (inventoryItem.TypeItem)
             {
-                case TypeItem.Weapon:
+                case TypeItem.Basic or TypeItem.Weapon:
 
                     if (_CurrentWeaponBase != null)
                     {

@@ -11,7 +11,7 @@ namespace InatesiCharacter._template
         public UIDocument UIDocument { get => _uIDocument; set => _uIDocument = value; }
 
 
-		public void UpdateHealthUI(int health)
+        public void UpdateHealthUI(int health)
 		{
 			if (_uIDocument == null)
 				return;

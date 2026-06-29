@@ -57,6 +57,7 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
         [SerializeField] private Vector3 _OffsetPoosition;
 
         private bool _isOffset = false;
+        private bool _aim;
         private GameObject _viewModel;
 
 
@@ -137,7 +138,10 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
             invertLook.y = Mathf.Clamp(invertLook.y, -_maxYStepDistance, _maxYStepDistance);
 
             var offset = _isOffset ? _OffsetPoosition : Vector3.zero;
-            _swayPos = invertLook + _startPosition + _shake + offset;
+            var startPosition = _aim ? 
+                new Vector3(0, _startPosition.y / 2, _startPosition.z) : 
+                _startPosition;
+            _swayPos = invertLook + startPosition + _shake + offset;
             //_swayPos = invertLook;
         }
 
@@ -163,6 +167,12 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
             _bobPosition.y = (curveSin * _bobLimit.y) - ( Mathf.Abs(walkInput.y) * _travelLimit.y);
             _bobPosition.z = -(walkInput.y * _travelLimit.z);
 
+
+            if (_aim)
+            {
+                _bobPosition.x = 0;
+                _bobPosition.y /= 3;
+            }
             //_bobPosition = _swayPos;
         }
 
@@ -192,6 +202,11 @@ namespace InatesiCharacter.Testing.InatesiArch.WeaponsTest
                     .0133f * Time.timeScale * _SmoothRot
                 );
             }
+        }
+
+        public void Aim(bool aim)
+        {
+            _aim = aim;
         }
     }
 }

@@ -44,6 +44,19 @@ namespace InatesiCharacter.Testing.Character.Weapons
             {
                 ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
                 combatEvent.aim = false;
+                _SwayBob.Aim(false);
+            }
+
+            if (Input.Down("Secondary Attack"))
+            {
+                if (_reloading == false)
+                {
+                    _SwayBob.Aim(true);
+                }
+                else
+                {
+                    _SwayBob.Aim(false);
+                }
             }
 
             if (_secondaryShootTimeSince > 0.1f && _secondaryShooting == true)

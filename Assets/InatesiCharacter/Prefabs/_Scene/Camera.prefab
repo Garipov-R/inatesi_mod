@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 929511420191774435}
   - component: {fileID: 7792495176373239812}
   - component: {fileID: 4372295336583639109}
-  - component: {fileID: 8569037277425961149}
   - component: {fileID: 4749150799682269692}
   - component: {fileID: 2533152568300311861}
   - component: {fileID: 4350333945063871671}
@@ -165,7 +164,7 @@ MonoBehaviour:
   _Mask:
     serializedVersion: 2
     m_Bits: 55
-  _Radius: 0.4
+  _Radius: 0.1
   _UpdateMethod: 2
   _StartZoom: 10.04
   _ZoomChangeValue: 0.25
@@ -210,23 +209,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.Character.FPS_Utility.FirstPersonCameraHelper
   _RightHandTransform: {fileID: 4756233365668897046}
---- !u!114 &8569037277425961149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3466619533801513265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: 925b927c39ddd5f4ba00088c59e77d7f, type: 2}
 --- !u!135 &4749150799682269692
 SphereCollider:
   m_ObjectHideFlags: 0
