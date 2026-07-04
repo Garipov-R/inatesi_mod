@@ -37,8 +37,8 @@ namespace InatesiCharacter.Testing.LeoEcs5
             _UpdateSystems
 
                 .Add(new PlayerWeaponActionsSystem())
-                .Add(new DamageObserverSystem())
                 .Add(new BotsBehaviourSystem())
+                .Add(new DamageObserverSystem())
                 .Add(new PlayerSystem())
                 .Add(new HitEffectsSystem())
                 .Add(new ObjectPoolManagerSystem())

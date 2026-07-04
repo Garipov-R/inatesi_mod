@@ -25,6 +25,9 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
             {
                 ref var damageComponent = ref _DamagePool.Get(entity);
 
+                if (damageComponent.isHit == false)
+                    continue;
+
                 if (damageComponent.target.TryGetComponent(out CollisionEvent collisionEvent))
                 {
                     collisionEvent.Damage();

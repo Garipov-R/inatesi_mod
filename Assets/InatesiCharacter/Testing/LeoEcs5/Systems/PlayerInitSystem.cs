@@ -69,7 +69,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 #endif
                     playerComponent.fpc = true;
                     playerComponent.inputEnabled = true;
-                    playerComponent.uiDocument = sharedData.PlayerUIDocument;
                     playerComponent.cameraMotion.Follow = characterComponent.transform;
                     playerComponent.gameObject = characterComponent.characterMotion.gameObject;
                     characterComponent.characterMotion.LookSource = camera;

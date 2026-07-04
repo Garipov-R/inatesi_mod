@@ -181,8 +181,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     
                     if (collisionEvent.collideGameObject == playerComponent.gameObject)
                     {
-                        _sharedData.GameLogic.OnPlayerCollision(collisionEvent);
-
                         if (collisionEvent.ownerGameObject.TryGetComponent(out CarriableObject item))
                         {
                             var i= characterComponent.InventoryInteraction2.AddItem(item.ItemScriptableObject);

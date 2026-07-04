@@ -17,5 +17,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Components
 
         public BotTest botTest;
         public BotBehaviourBase botBehaviourBase;
+
+        public float searchTargetTimeSince;
     }
 }

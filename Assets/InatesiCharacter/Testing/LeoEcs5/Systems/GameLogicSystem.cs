@@ -1,7 +1,6 @@
 ﻿using InatesiCharacter.Testing.LeoEcs5.Components;
 using InatesiCharacter.Testing.LeoEcs5.Utility;
 using Leopotam.EcsLite;
-using NUnit.Framework.Internal.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -206,6 +205,18 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 foreach (var gameLogic in _gameLogics)
                 {
                     gameLogic.OnCameraCollision(col);
+                }
+
+                foreach (var playerEntity in _PlayerCharacterFilter)
+                {
+                    ref var playerComponent = ref _PlayerPool.Get(playerEntity);
+                    if (col.collideGameObject == playerComponent.gameObject)
+                    {
+                        foreach (var gameLogic in _gameLogics)
+                        {
+                            gameLogic.OnPlayerCollision(col);
+                        }
+                    }
                 }
             }
 

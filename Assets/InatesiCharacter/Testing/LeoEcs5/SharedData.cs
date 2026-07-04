@@ -20,17 +20,11 @@ namespace InatesiCharacter.Testing.LeoEcs5
         [SerializeField] private CharacterSO _CharacterSO;
         [SerializeField] private CharacterMotionBase _StartPlayerCharacterMotionBase;
         [SerializeField] private ParticleSettingsSO _ParticleSettingsSO;
-        [SerializeField] private UIDocument _PlayerUIDocument;
-        [SerializeField] private SimplePlayerUI _SimplePlayerUI;
-        [SerializeField] private GameLogicBase _gameLogic;
         [SerializeField] private List<BotsEvents> _botsEvents=new();
 
         public CharacterSO CharacterSO { get => _CharacterSO; set => _CharacterSO = value; }
         public CharacterMotionBase StartPlayerCharacterMotionBase { get => _StartPlayerCharacterMotionBase; set => _StartPlayerCharacterMotionBase = value; }
         public ParticleSettingsSO ParticleSettingsSO { get => _ParticleSettingsSO; set => _ParticleSettingsSO = value; }
-        public UIDocument PlayerUIDocument { get => _PlayerUIDocument; set => _PlayerUIDocument = value; }
-        public SimplePlayerUI SimplePlayerUI { get => _SimplePlayerUI; set => _SimplePlayerUI = value; }
-        public IGameLogic GameLogic { get => _gameLogic; }
         public List<BotsEvents> BotsEvents { get => _botsEvents; set => _botsEvents = value; }
     }
 }

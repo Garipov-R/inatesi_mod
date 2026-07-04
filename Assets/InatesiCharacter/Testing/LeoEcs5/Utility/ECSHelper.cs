@@ -31,7 +31,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
                 ref var component = ref ecsWorld.GetPool<T>().Get(entity);
 
                 if (ecsWorld.GetPool<T>().Has(entity))
-                return ref component;
+                    return ref component;
             }
             
 

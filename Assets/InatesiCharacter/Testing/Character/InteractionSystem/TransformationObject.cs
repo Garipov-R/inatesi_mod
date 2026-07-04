@@ -66,11 +66,13 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
             _translated = !_translated;
 
             EventObserver();
-
         }
 
         public void TranslateB(bool translate)
         {
+            if (_translated == translate)
+                return;
+
             _translate = true;
             _translated = translate;
 

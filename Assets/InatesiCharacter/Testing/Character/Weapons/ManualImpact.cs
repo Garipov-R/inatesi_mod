@@ -57,7 +57,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
 
                 RaycastHit hit;
-                _RaycastDistance = 1.5f;
+                _RaycastDistance = 2f;
                 var isHit = RaycastSphere(
                     .1f,
                     out hit

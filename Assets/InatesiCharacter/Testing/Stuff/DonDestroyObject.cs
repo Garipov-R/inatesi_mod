@@ -7,6 +7,14 @@ namespace InatesiCharacter.Testing.Stuff
     {
         private void Awake()
         {
+            var r = FindObjectsByType<DonDestroyObject>(FindObjectsSortMode.None);
+
+            if (r != null && r.Length > 1)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             DontDestroyOnLoad(gameObject);
         }
     }

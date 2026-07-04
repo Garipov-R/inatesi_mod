@@ -215,3 +215,56 @@
 .unity-scroll-view--vertical > #unity-content-and-vertical-scroll-container > .unity-disabled {
     background-color: rgb(0, 0, 0);
 }
+
+
+
+.inatesi-info:hover {
+    scale: 1.2 1.2 1.2;
+    rotate: 1440deg;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-width: 7px;
+    border-right-width: 7px;
+    border-bottom-width: 7px;
+    border-left-width: 7px;
+    border-left-color: rgb(192, 192, 192);
+    border-right-color: rgb(192, 192, 192);
+    border-top-color: rgb(192, 192, 192);
+    border-bottom-color: rgb(192, 192, 192);
+    background-color: rgb(63, 63, 63);
+}
+
+.inatesi-info {
+    background-color: rgb(77, 0, 156);
+    width: 500px;
+    align-self: center;
+    height: 500px;
+    position: relative;
+    top: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-top-width: 67px;
+    border-right-width: 78px;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-left-color: rgb(125, 0, 255);
+    border-right-color: rgb(48, 0, 96);
+    border-top-color: rgb(125, 0, 255);
+    border-bottom-color: rgb(48, 0, 96);
+    border-top-left-radius: 155px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 107px;
+    border-bottom-left-radius: 26px;
+    margin-right: 0;
+    margin-left: 0;
+    padding-top: 74px;
+    padding-right: 19px;
+    padding-bottom: 19px;
+    padding-left: 29px;
+    transition-duration: 700ms, 1200ms;
+    transition-timing-function: ease-in-back, ease-in-out-bounce;
+    transition-delay: 0s, 700ms;
+    transition-property: all, scale;
+}

@@ -1,6 +1,7 @@
 ﻿using InatesiCharacter.Camera;
 using InatesiCharacter.Testing.InatesiArch.InventorySystems;
 using InatesiCharacter.Testing.LeoEcs5.Components;
+using Leopotam.EcsLite.Di;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -152,6 +153,61 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
 
         public virtual void OnCharacterDamage(CharacterComponent characterComponent, DamageComponent damageComponent)
         {
+        }
+
+        public Ray GetRay()
+        {
+            if (_StartEcs == null)
+                return new();
+
+            ref var playerComponent = ref ECSHelper.Get<PlayerComponent>(_StartEcs.EcsWorld);
+            ref var characterComponent = ref ECSHelper.Get<CharacterComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<CharacterComponent>().Inc<PlayerComponent>().End());
+
+            var ray = new Ray();
+            var startPoint = characterComponent.characterMotion.transform.position + characterComponent.characterMotion.Up * characterComponent.characterMotion.Height;
+            var direction = characterComponent.characterMotion.LookSource.LookDirection();
+
+
+            if (FPS)
+            {
+                ray.direction = direction;
+                ray.origin = characterComponent.characterMotion.transform.position + characterComponent.characterMotion.Up * characterComponent.characterMotion.Height;
+            }
+            else
+            {
+                ray.direction = direction;
+                ray.origin = startPoint;
+            }
+
+            return ray;
+        }
+
+        public bool TryGetPlayerComponent(ref PlayerComponent playerComponent)
+        {
+            try
+            {
+                playerComponent = ref ECSHelper.Get<PlayerComponent>(_StartEcs.EcsWorld);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.ToString());
+                return false;
+            }
+        }
+
+        public bool TryGetPlayerCharacterComponent(ref CharacterComponent characterComponent)
+        {
+            try
+            {
+                characterComponent = ref ECSHelper.Get<CharacterComponent>(_StartEcs.EcsWorld, _StartEcs.EcsWorld.Filter<CharacterComponent>().Inc<PlayerComponent>().End());
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.ToString());
+                return false;
+            }
         }
     }
 }

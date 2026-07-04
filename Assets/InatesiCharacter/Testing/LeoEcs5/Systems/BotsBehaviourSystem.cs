@@ -3,6 +3,7 @@ using InatesiCharacter.Testing.Character.Bots;
 using InatesiCharacter.Testing.LeoEcs5.Components;
 using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
 using InatesiCharacter.Testing.LeoEcs5.Utility;
+using InatesiCharacter.Testing.Shared;
 using Leopotam.EcsLite;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -45,6 +46,96 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
         public void Run(IEcsSystems systems)
         {
+            if (G.IsPause) return;
+
+            foreach (var botEntity in _BotFilter)
+            {
+                ref var botComponent = ref _BotPool.Get(botEntity);
+
+                if (!_CharacterPool.Has(botEntity))
+                    continue;
+
+                ref var botCharacterComponent = ref _CharacterPool.Get(botEntity);
+
+                if (botCharacterComponent.health <= 0f)
+                    continue;
+
+                foreach (var targetCharacterEntity in _CharacterFilter)
+                {
+                    if (botEntity == targetCharacterEntity)
+                    {
+                        continue;
+                    }
+
+                    ref var targetCharacterComponent = ref _CharacterPool.Get(targetCharacterEntity);
+
+                    //Debug.Log($"{botCharacterComponent.gameObject.name} {targetCharacterComponent.gameObject.name} {targetCharacterComponent.health}");
+
+                    if (botComponent.botBehaviourBase.CurrentBotState == Character.Bot3.BotState.Chasing)
+                    {
+                        foreach (var targetEntityFlag in botComponent.botBehaviourBase.TargetsEntityFlag)
+                        {
+                            if (targetEntityFlag == targetCharacterComponent.entityFlag)
+                            {
+                                if (botComponent.botBehaviourBase.Target == targetCharacterComponent.transform)
+                                {
+                                    if (targetCharacterComponent.health <= 0)
+                                    {
+                                        botComponent.botBehaviourBase.SetTarget(null);
+                                    }
+                                    else
+                                    {
+                                        if (botComponent.botBehaviourBase.InRaduisAttack())
+                                        {
+                                            botComponent.botBehaviourBase.Attack();
+
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            botComponent.botBehaviourBase.StopAttack();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        continue;
+                    }
+
+                    foreach (var target in botComponent.botBehaviourBase.TargetsEntityFlag)
+                    {
+                        if (botEntity == targetCharacterEntity)
+                        {
+                            continue;
+                        }
+
+                        if (targetCharacterComponent.health <= 0)
+                            continue;
+
+                        if (botComponent.searchTargetTimeSince > 0)
+                            continue;
+
+                        if (target == targetCharacterComponent.entityFlag)
+                        {
+                            if (botComponent.botBehaviourBase.IsVisibleTarget(targetCharacterComponent.transform))
+                            {
+                                botComponent.botBehaviourBase.SetTarget(targetCharacterComponent.transform);
+                            }
+                        }
+                    }
+                }
+
+
+                if (botComponent.searchTargetTimeSince < 0)
+                {
+                    botComponent.searchTargetTimeSince = 1f;
+                }
+
+                botComponent.searchTargetTimeSince -= Time.deltaTime;
+
+            }
+
             foreach (var entityDamage in _DamageFilter)
             {
                 ref var damageComponent = ref _DamagePool.Get(entityDamage);
@@ -170,83 +261,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                             }
                         }
                         
-                    }
-                }
-            }
-
-            foreach (var botEntity in _BotFilter)
-            {
-                ref var botComponent = ref _BotPool.Get(botEntity);
-
-                if (!_CharacterPool.Has(botEntity))
-                    continue;
-
-                ref var botCharacterComponent = ref _CharacterPool.Get(botEntity);
-
-                if (botCharacterComponent.health <= 0f)
-                    continue;
-                
-
-                foreach (var targetCharacterEntity in _CharacterFilter)
-                {
-                    if (botEntity == targetCharacterEntity)
-                    {
-                        continue;
-                    }
-
-                    ref var targetCharacterComponent = ref _CharacterPool.Get(targetCharacterEntity);
-
-                    //Debug.Log($"{botCharacterComponent.gameObject.name} {targetCharacterComponent.gameObject.name} {targetCharacterComponent.health}");
-
-                    if (botComponent.botBehaviourBase.CurrentBotState == Character.Bot3.BotState.Chasing)
-                    {
-                        foreach (var targetEntityFlag in botComponent.botBehaviourBase.TargetsEntityFlag)
-                        {
-                            if (targetEntityFlag == targetCharacterComponent.entityFlag)
-                            {
-                                if (botComponent.botBehaviourBase.Target == targetCharacterComponent.transform)
-                                {
-                                    if (targetCharacterComponent.health <= 0)
-                                    {
-                                        botComponent.botBehaviourBase.SetTarget(null);
-                                    }
-                                    else
-                                    {
-                                        if (botComponent.botBehaviourBase.InRaduisAttack())
-                                        {
-                                            botComponent.botBehaviourBase.Attack();
-
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            botComponent.botBehaviourBase.StopAttack();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        continue;
-                    }
-
-                    foreach (var target in botComponent.botBehaviourBase.TargetsEntityFlag)
-                    {
-                        if (botEntity == targetCharacterEntity)
-                        {
-                            continue;
-                        }
-
-                        if (targetCharacterComponent.health <= 0)
-                            continue;
-
-                        if (target == targetCharacterComponent.entityFlag)
-                        {
-                            if (botComponent.botBehaviourBase.IsVisibleTarget(targetCharacterComponent.transform))
-                            {
-                                botComponent.botBehaviourBase.SetTarget(targetCharacterComponent.transform);
-                            }
-                        }
                     }
                 }
             }
