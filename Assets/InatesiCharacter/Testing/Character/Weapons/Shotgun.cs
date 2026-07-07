@@ -76,6 +76,9 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 return;
             }
 
+            if (_inputDisabled)
+                return;
+
             _SwayBob.Shake(_ForceShake);
 
             CharacterMotion.AudioSource.PlayOneShot(_ShootAudioClip, _VolumeShoot);

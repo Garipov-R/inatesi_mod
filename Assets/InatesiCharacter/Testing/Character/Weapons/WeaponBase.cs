@@ -48,6 +48,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
         [SerializeField] protected AudioClip _OutOfAmmoClip;
         [SerializeField] protected float _VolumeShoot = 1f;
         [SerializeField] protected float _ForceShake = -1f;
+        [SerializeField] protected Vector3 _ForceShakeVector = new Vector3(0,0,-.5f);
 
         [Header("Particle settings")]
         [SerializeField] protected float _VelocityParticle = 10f;
@@ -73,6 +74,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
         protected Transform _ShootPoint;
         protected StartEcs _StartEcs;
         protected WeaponThirdPersonMono _weaponThirdPersonMono;
+        protected bool _inputDisabled;
 
         protected EcsWorld EcsWorld 
         {
@@ -99,7 +101,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
             }
         }
         public WeaponThirdPersonMono WeaponThirdPersonMono { get => _weaponThirdPersonMono; set => _weaponThirdPersonMono = value; }
-
+        public bool InputDisabled { get => _inputDisabled; set => _inputDisabled = value; }
 
         [Zenject.Inject]
         protected void Construct(StartEcs startEcs)
@@ -465,6 +467,9 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 if (_RaycastHit.transform.TryGetComponent(out CollisionCheckerView component)) { component.OnHit(); }
             }*/
 
+            if (_inputDisabled)
+                return;
+
             if (IsEmpty()) return;
 
             _carriableObjectData.Ammo -= ammoAmount;
@@ -539,6 +544,9 @@ namespace InatesiCharacter.Testing.Character.Weapons
         {
             if (_StartEcs.EcsWorld == null) return;
 
+            if (_inputDisabled)
+                return;
+
             if (IsEmpty())
             {
                 return;
@@ -565,6 +573,11 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 damageComponent.ray = ray;
                 damageComponent.hit = hitInfo;
                 damageComponent.damage = _Damage;
+
+                if (hitInfo.rigidbody != null)
+                {
+                    hitInfo.rigidbody.AddForce(CharacterMotion.LookSource.Transform.forward * _forceVelocityDamage, _ForceMode);
+                }
             }
 
 
@@ -573,8 +586,6 @@ namespace InatesiCharacter.Testing.Character.Weapons
             Shared.ParticlesManager.SendParticleEvent(_StartEcs.EcsWorld, damageComponent.hit);
 
             ECSHelper.Create<ShootEvent>(_StartEcs.EcsWorld);
-            /*ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
-            combatEvent.aim = */
         }
     }
 }

@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using InatesiCharacter.Testing.Decals;
+﻿using InatesiCharacter.Testing.Decals;
+using InatesiCharacter.Testing.LeoEcs4.Components;
+using InatesiCharacter.Testing.LeoEcs4.PoolSystems;
 using InatesiCharacter.Testing.LeoEcs5.Components;
 using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
 using InatesiCharacter.Testing.Shared;
 using Leopotam.EcsLite;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 using UnityEngine.UIElements;
 using UnityEngine.VFX;
@@ -17,7 +21,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
     public class ObjectPoolManagerSystem : IEcsInitSystem, IEcsRunSystem
     {
         private EcsFilter _ObjectPoolManagerFilter;
-        private EcsFilter _ObjectPoolEventFilter;
+        private EcsFilter _ObjectPoolSendEventFilter;
         private EcsPool<ObjectPoolManagerComponent> _ObjectPoolManagerPool;
         private EcsPool<ObjectPoolSendEvent> _ObjectPoolEventPool;
         private EcsFilter _ParticleEventFilter;
@@ -26,6 +30,8 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
         private EcsPool<DamageComponent> _DamagePool;
         private EcsFilter _ObjectPoolComponentFilter;
         private EcsPool<ObjectPoolComponent> _ObjectPoolComponentPool;
+        private EcsFilter _ReleaseObjectEventFilter;
+        private EcsPool<ReleaseObjectEvent> _ReleaseObjectPool;
 
         private EcsWorld _EcsWorld;
 
@@ -34,13 +40,18 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
             _ObjectPoolManagerPool = systems.GetWorld().GetPool<ObjectPoolManagerComponent>();
             _ObjectPoolEventPool = systems.GetWorld().GetPool<ObjectPoolSendEvent>();
             _ObjectPoolManagerFilter = systems.GetWorld().Filter<ObjectPoolManagerComponent>().End();
-            _ObjectPoolEventFilter = systems.GetWorld().Filter<ObjectPoolSendEvent>().End();
+            _ObjectPoolSendEventFilter = systems.GetWorld().Filter<ObjectPoolSendEvent>().End();
             _ParticleEventFilter = systems.GetWorld().Filter<ParticleEvent>().End();
             _ParticleEventPool = systems.GetWorld().GetPool<ParticleEvent>();
             _DamagePool = systems.GetWorld().GetPool<DamageComponent>();
             _DamageFilter = systems.GetWorld().Filter<DamageComponent>().End();
             _ObjectPoolComponentPool = systems.GetWorld().GetPool<ObjectPoolComponent>();
             _ObjectPoolComponentFilter = systems.GetWorld().Filter<ObjectPoolComponent>().End();
+            _ReleaseObjectEventFilter = systems.GetWorld().Filter<ReleaseObjectEvent>().End();
+            _ReleaseObjectPool = systems.GetWorld().GetPool<ReleaseObjectEvent>();
+
+
+
 
             var newEntity = systems.GetWorld().NewEntity();
             ref var objectPoolComponent = ref _ObjectPoolManagerPool.Add(newEntity);
@@ -54,7 +65,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
 
         public void Run(IEcsSystems systems)
         {
-            foreach (var entity in _ObjectPoolEventFilter)
+            foreach (var entity in _ObjectPoolSendEventFilter)
             {
                 ref var objectPoolEventComponent = ref _ObjectPoolEventPool.Get(entity);
 
@@ -223,7 +234,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
                 }
             }
 
-
             foreach (var entity in _ObjectPoolComponentFilter)
             {
                 ref var objectPoolComponent = ref _ObjectPoolComponentPool.Get(entity);
@@ -254,6 +264,12 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
                     }
                 }
                 
+            }
+
+            foreach (var entity in _ReleaseObjectEventFilter)
+            {
+                ref var releaseComponent = ref _ReleaseObjectPool.Get(entity);
+                ReturnObjectToPool(releaseComponent.targetGameObject);
             }
         }
 
@@ -310,7 +326,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
                 obj.transform.SetParent(parentObject.transform);
             }
 
-            obj.gameObject.name += $"_{Random.Range(0, 999)}";
+            obj.gameObject.name += $"__{Random.Range(0, 999)}";
 
             int newEntity = _EcsWorld.NewEntity();
             ref var objectPoolComponent = ref _ObjectPoolComponentPool.Add(newEntity);
@@ -367,11 +383,19 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
                 }
                 else
                 {
-                    obj.transform.position = spawnPos;
-                    obj.transform.rotation = spawnRot;
+                    Debug.Log(123);
+                    if (obj.TryGetComponent(out Rigidbody rigidbody))
+                    {
+                        rigidbody.position = spawnPos;
+                    }
+                    else
+                    {
+                        obj.transform.position = spawnPos;
+                        obj.transform.rotation = spawnRot;
+                    }
                 }
 
-                obj.SetActive(true);
+                //obj.SetActive(true);
 
                 if (typeof(T) == typeof(GameObject))
                 {
@@ -431,15 +455,59 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
             {
                 Debug.LogError("null " + gameObject.name);
             }
+
+
+            string keysname = "";
+            foreach (var key in GetPoolManagerComponent().objectsPool.Keys)
+            {
+                if (GetPoolManagerComponent().objectsPool.TryGetValue(key, out ObjectPool<GameObject> value))
+                {
+                    keysname += $"name {key.name} / Count all: {value.CountAll} | active: {value.CountActive}  \n ";
+                }
+            }
+
+            keysname += $"target: {gameObject.name} \n";
+
+            //Debug.Log(keysname);
         }
 
         private void OnGetObject(GameObject gameObject)
         {
+            ref var component = ref ECSHelper.Create<OnGetObjectEvent>(_EcsWorld);
+            component.targetObject = gameObject;
+
+
+            foreach (var key in GetPoolManagerComponent().clonePrefabMap.Keys)
+            {
+                if (key == gameObject)
+                {
+                    component.sourceObject = GetPoolManagerComponent().clonePrefabMap[gameObject];
+                    break;
+                }
+            }
+
+            if (GetPoolManagerComponent().clonePrefabMap.TryGetValue(gameObject, out GameObject value))
+            {
+                Debug.Log(value.name);
+
+                component.sourceObject = GetPoolManagerComponent().clonePrefabMap[gameObject];
+            }
+
+            if (gameObject.TryGetComponent(out Rigidbody rigidbody))
+            {
+                rigidbody.isKinematic = false;
+            }
+
             gameObject.SetActive(true);
         }
 
         private void OnReleaseObject(GameObject gameObject)
         {
+            if (gameObject.TryGetComponent(out Rigidbody rigidbody))
+            {
+                rigidbody.isKinematic = true;
+            }
+
             gameObject.SetActive(false);
         }
 

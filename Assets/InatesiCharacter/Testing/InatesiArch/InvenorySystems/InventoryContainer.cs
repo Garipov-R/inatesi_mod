@@ -22,7 +22,7 @@ namespace InatesiCharacter.Testing.InatesiArch.InventorySystems
             set 
             {
                 _Size = value;
-                Initialize();
+                Resize();
             }
         }
         public int ActiveSlotIndex 
@@ -59,6 +59,17 @@ namespace InatesiCharacter.Testing.InatesiArch.InventorySystems
 
             for (int i = 0; i < _Size; i++)
             {
+                _inventoryItems.Add(null);
+            }
+        }
+
+        public void Resize()
+        {
+            for (int i = 0; i < _Size; i++)
+            {
+                if (InventoryItems.Count > i)
+                    continue;
+
                 _inventoryItems.Add(null);
             }
         }

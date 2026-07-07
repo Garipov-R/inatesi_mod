@@ -1,6 +1,8 @@
 ﻿using InatesiCharacter.Camera;
 using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.InatesiArch.WeaponsTest;
+using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -22,6 +24,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
         private Rigidbody _SelectedRigidbody;
         private float _distanceSelectedRigidbody;
         private Quaternion _SelecterdRigidbodyRotation;
+
+        public bool Active { get; private set; }
 
 
         public override void Init()
@@ -48,8 +52,17 @@ namespace InatesiCharacter.Testing.Character.Weapons
         {
             if (Input.Pressed("Attack"))
             {
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = true;
+
                 SelectObject();
                 _SwayBob.Shake(_ForceShake);
+            }
+
+            if (Input.Released("Attack"))
+            {
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = false;
             }
 
             if (Input.Down("Attack"))
@@ -58,11 +71,11 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
                 if (isHit)
                 {
-                    LineRender(_SpawnedViewModel.transform.position, hit.point);
+                    LineRender(_SpawnedViewModel.transform.localPosition, hit.point);
                 }
                 else
                 {
-                    LineRender(_SpawnedViewModel.transform.position, _SpawnedViewModel.transform.position + CharacterMotion.LookSource.LookDirection() * 100f);
+                    LineRender(_SpawnedViewModel.transform.localPosition, _SpawnedViewModel.transform.position + CharacterMotion.LookSource.LookDirection() * 100f);
                 }
 
 
@@ -75,12 +88,14 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 LineRender(Vector3.zero, Vector3.zero, false);
             }
 
-            if (Input.Down("Rotate"))
+            if (Input.GetKey(UnityEngine.InputSystem.Key.R))
             {
                 CameraMotion.InputEnabled = false;
                 RotateObject();
+                Debug.Log(333333);
             }
-            else
+
+            if (Input.GetKeyUp(UnityEngine.InputSystem.Key.R))
             {
                 SetupObjectRotate();
                 CameraMotion.InputEnabled = true;
@@ -88,10 +103,13 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             if (Input.Pressed("Secondary Attack"))
             {
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = false;
+
                 FreezeObject();
             }
 
-            _distanceSelectedRigidbody = Mathf.Lerp(_distanceSelectedRigidbody, _distanceSelectedRigidbody + Input.GetVector("Zoom").y * 10f, Time.deltaTime * _ZoomLerp);
+            _distanceSelectedRigidbody = Mathf.Lerp(_distanceSelectedRigidbody, _distanceSelectedRigidbody + Input.GetVector("Scroll").y * 10f, Time.deltaTime * _ZoomLerp);
             _distanceSelectedRigidbody = Mathf.Clamp(_distanceSelectedRigidbody, CharacterMotion.Radius * 2.5f, _distanceSelectedRigidbody);
 
             base.UpdateTick();
@@ -116,6 +134,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 _SelectedRigidbody.freezeRotation = false;
                 _SelectedRigidbody = null;
             }
+
+            Active = false;
         }
 
         private void SelectObject()
@@ -138,6 +158,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
                     //_SelectedRigidbody.freezeRotation = true;
                 }
             }
+
+            Active = true;
         }
 
         private void KeepObject()
@@ -192,16 +214,16 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
             var axis = Vector3.Scale(CharacterMotion.LookSource.Transform.up, Vector3.up);
             var input = Input.GetVector("Look");
+            Debug.Log(input);
 
+            var r =  Quaternion.LookRotation( new Vector3(-input.x / 10, input.y / 10, 0), CharacterMotion.transform.up);
+
+            //_SelectedRigidbody.transform.rotation = r;
 
             _SelectedRigidbody.angularVelocity = Vector3.MoveTowards(
-                _SelectedRigidbody.angularVelocity, 
+                _SelectedRigidbody.angularVelocity,
                 //_SelectedRigidbody.angularVelocity + 
-                new Vector3(
-                    input.y * 10f,
-                    input.x * 10f, 
-                    0
-                ), Time.deltaTime * 500f);
+                r.eulerAngles, Time.deltaTime * 100f);
 
             _SelecterdRigidbodyRotation = _SelectedRigidbody.transform.localRotation;
         }

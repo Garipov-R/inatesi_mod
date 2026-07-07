@@ -50,8 +50,11 @@ MonoBehaviour:
   _continueButtonName: continue-button
   _backButtonName: back-button
   _settingsButtonName: settings-button
+  _exitButtonName: exit-button
   _buttonsPanelName: buttons-panel
   _settingsPanelName: settings-panel
+  _loadingPanelName: loading-panel
+  _loadingProgressTextName: loading-progress-text
   _graphicSettingDropdown: graphic-settings-dropdown
   _vSyncToggle: vSync-toggle
   _musicSlider: music-volume-slider
@@ -1365,9 +1368,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6793220435274754754}
   - {fileID: 536169453535548390}
   - {fileID: 8638684320632474381}
-  - {fileID: 6793220435274754754}
   - {fileID: 6489334383740819528}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2146,7 +2149,7 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 1af9447d56c8d624ca469174ee10d5ca,
     type: 3}
-  m_SortingOrder: 999
+  m_SortingOrder: 9999
   m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920

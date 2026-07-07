@@ -1,9 +1,11 @@
 ﻿using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
 using InatesiCharacter.Testing.LeoEcs5.Utility;
 using Leopotam.EcsLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -36,9 +38,22 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
         private EcsPool<ShootEvent> _ShootEventPool;
         private EcsFilter _CharacterDeadEventFilter;
         private EcsPool<CharacterDeadEvent> _CharacterDeadEventPool;
+        private EcsFilter _GetObjectEventFilter;
+        private EcsPool<OnGetObjectEvent> _GetObjectEventPool;
+        private EcsFilter _ReleaseObjectEventFilter;
+        private EcsPool<ReleaseObjectEvent> _ReleaseObjectEventPool;
 
         public void Init(IEcsSystems systems)
         {
+            var implementers = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(t => typeof(IGameLogic).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+
+            foreach (var type in implementers)
+            {
+                Console.WriteLine($"Found implementing class: {type.Name}");
+            }
+
+
             var gameLogicList = GameObject.FindObjectsByType<GameLogicBase>(FindObjectsSortMode.None);
             foreach (var i in gameLogicList)
             {
@@ -68,6 +83,10 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
             _CharacterFilter = systems.GetWorld().Filter<CharacterComponent>().End();
             _CharacterDeadEventPool = systems.GetWorld().GetPool<CharacterDeadEvent>();
             _CharacterDeadEventFilter = systems.GetWorld().Filter<CharacterDeadEvent>().End();
+            _GetObjectEventFilter = systems.GetWorld().Filter<OnGetObjectEvent>().End();
+            _GetObjectEventPool = systems.GetWorld().GetPool<OnGetObjectEvent>();
+            _ReleaseObjectEventFilter = systems.GetWorld().Filter<ReleaseObjectEvent>().End();
+            _ReleaseObjectEventPool = systems.GetWorld().GetPool<ReleaseObjectEvent>();
 
             //_gameLogic.StartGame();
         }
@@ -232,6 +251,25 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     {
                         gameLogic.OnCharacterDead(characterComponent);
                     }
+                }
+            }
+
+            foreach (var eventEntity in _GetObjectEventFilter)
+            {
+                ref var component = ref _GetObjectEventPool.Get(eventEntity);
+                foreach (var gameLogic in _gameLogics)
+                {
+                    gameLogic.OnSpawnObject(component.targetObject, component.sourceObject);
+                }
+            }
+
+            foreach (var eventEntity in _ReleaseObjectEventFilter)
+            {
+                ref var component = ref _ReleaseObjectEventPool.Get(eventEntity);
+
+                foreach (var gameLogic in _gameLogics)
+                {
+                    gameLogic.OnReleaseObject(component.targetGameObject);
                 }
             }
         }

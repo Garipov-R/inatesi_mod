@@ -209,5 +209,13 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
                 return false;
             }
         }
+
+        public virtual void OnSpawnObject(GameObject targetObject, GameObject sourceObject)
+        {
+        }
+
+        public virtual void OnReleaseObject(GameObject targetObject)
+        {
+        }
     }
 }

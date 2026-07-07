@@ -2,6 +2,7 @@
 using InatesiCharacter.Testing.Effects;
 using InatesiCharacter.Testing.InatesiArch.WeaponsTest;
 using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.Utility;
 using InatesiCharacter.Testing.Shared;
 using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
@@ -29,15 +30,24 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 Reload();
             }
 
-            if (Input.Pressed("Attack") && _TimeSinceAttack >= _delayShootTime && _reloading == false)
+            if (Input.Down("Attack") && _TimeSinceAttack >= _delayShootTime && _reloading == false)
             {
                 Shoot();
                 _TimeSinceAttack = 0;
             }
+
             if (Input.Down("Secondary Attack") && _TimeSinceAttack >= .1f && _reloading == false)
             {
-                Shoot();
-                _TimeSinceAttack = 0;
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = true;
+                //Shoot();
+                //_TimeSinceAttack = 0;
+            }
+
+            if (Input.Released("Secondary Attack"))
+            {
+                ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
+                combatEvent.aim = false;
             }
         }
 
@@ -104,6 +114,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 bulletComponent.rigidbody = projectile.GetComponent<Rigidbody>();
                 bulletComponent.rigidbody.AddForce(bulletComponent.moveDirection * _projectileMoveSpeed, ForceMode.Impulse);
             }
+
+            ECSHelper.Create<ShootEvent>(_StartEcs.EcsWorld);
         }
     }
 }

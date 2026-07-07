@@ -50,6 +50,11 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
         public void OnCameraCollision(CollisionComponentEvent collisionComponentEvent);
 
         public void OnCharacterDead(CharacterComponent characterComponent);
+
         public void OnCharacterDamage(CharacterComponent characterComponent, DamageComponent damageComponent);
+
+        public void OnSpawnObject(GameObject targetObject, GameObject sourceObject);
+
+        public void OnReleaseObject(GameObject targetObject);
     }
 }

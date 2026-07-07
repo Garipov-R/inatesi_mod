@@ -118,14 +118,18 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                             characterDeadEventComponent.gameObject = characterComponent.gameObject;
                         }
 
-                        SendEventObjectPool.Send(
-                            systems.GetWorld(),
-                            characterComponent.CharacterSO.DamageVisualEffect.gameObject,
-                            damageComponent.hit.point,
-                            Quaternion.LookRotation(-damageComponent.ray.direction),
-                            damageComponent.hit,
-                        PoolType.Particle
-                        );
+                        if (characterComponent.CharacterSO.DamageVisualEffect)
+                        {
+                            SendEventObjectPool.Send(
+                                systems.GetWorld(),
+                                characterComponent.CharacterSO.DamageVisualEffect.gameObject,
+                                damageComponent.hit.point,
+                                Quaternion.LookRotation(-damageComponent.ray.direction),
+                                damageComponent.hit,
+                                PoolType.Particle
+                            );
+                        }
+                        
 
                         if (characterComponent.CharacterSO.DamageMaterial != null)
                         {
@@ -178,12 +182,14 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 foreach (var collicionEventEntity in _CollisionEventFilter)
                 {
                     ref var collisionEvent = ref _CollisionEventPool.Get(collicionEventEntity);
-                    
+
+                    Debug.Log(2432);
+
                     if (collisionEvent.collideGameObject == playerComponent.gameObject)
                     {
                         if (collisionEvent.ownerGameObject.TryGetComponent(out CarriableObject item))
                         {
-                            var i= characterComponent.InventoryInteraction2.AddItem(item.ItemScriptableObject);
+                            var i = characterComponent.InventoryInteraction2.AddItem(item.ItemScriptableObject);
                             characterComponent.InventoryInteraction2.SetActiveInventoryItem(i.SlotIndex);
                             if (item.AudioClip) characterComponent.characterMotion.AudioSource.PlayOneShot(item.AudioClip);
                         }

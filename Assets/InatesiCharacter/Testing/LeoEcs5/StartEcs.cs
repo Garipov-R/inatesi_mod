@@ -55,6 +55,8 @@ namespace InatesiCharacter.Testing.LeoEcs5
                 .DelHere<DamageComponent>()
                 .DelHere<ParticleEvent>()
                 .DelHere<ObjectPoolSendEvent>()
+                .DelHere<OnGetObjectEvent>()
+                .DelHere<ReleaseObjectEvent>()
                 .DelHere<PlayerInitEvent>()
                 .DelHere<CollisionComponentEvent>()
                 .DelHere<UseItemEvent>()

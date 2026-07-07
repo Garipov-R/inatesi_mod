@@ -208,9 +208,13 @@ namespace InatesiCharacter.Testing.Character.Bot3
             {
                 movementDirection = transform.forward;
             }
-            
-            Vector3 movement = _currentSpeed * Time.deltaTime * movementDirection;
 
+            if (_remainingDistance < _stopDistance)
+            {
+                movementDirection = Vector3.zero;
+            }
+
+            Vector3 movement = _currentSpeed * Time.deltaTime * movementDirection;
 
             if (!_characterController.isGrounded && _Gravity == true)
             {
@@ -221,16 +225,18 @@ namespace InatesiCharacter.Testing.Character.Bot3
             {
                 if (_ZigZagWalk)
                 {
-                    movement += .1f * Mathf.Sin(Time.time * 2) * transform.right;
+                    //movement += .1f * Mathf.Sin(Time.time * 11) * transform.right;
                 }
-                _characterController.Move(movement);
+                
                 _velocity = _characterController.velocity;
             }
             else
             {
                 _velocity = Vector3.zero;
             }
-                
+
+            _characterController.Move(movement);
+
         }
 
         private void UpdateRotation()
@@ -308,6 +314,9 @@ namespace InatesiCharacter.Testing.Character.Bot3
                 direction.Normalize();
 
                 Vector3 moveAmount = direction * _currentSpeed * Time.deltaTime;
+
+
+
 
                 return direction;
             }
@@ -529,7 +538,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
             if (StartEcs.EcsWorld == null) return;
 
 
-            var origin = (transform.position + transform.forward * 0) + transform.up * 0;
+            var origin = (transform.position + transform.forward * 0) + transform.up * .4f;
             var direction = transform.forward;
 
             direction = InRaduisAttack() ? ((_target.position + transform.up) - transform.position).normalized : transform.forward;
@@ -537,7 +546,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
             var ray = new Ray(origin, direction);
 
             var cast = Physics.Raycast(ray, out RaycastHit hitInfo, 2f, Configs.Config.s_DamageLayerMask2, QueryTriggerInteraction.Ignore);
-            cast = Physics.SphereCast(ray, .1f, out hitInfo, 2f, Configs.Config.s_DamageLayerMask2, QueryTriggerInteraction.Ignore);
+            cast = Physics.SphereCast(ray, .1f, out hitInfo, _stopDistance * 1.1f, Configs.Config.s_DamageLayerMask2, QueryTriggerInteraction.Ignore);
             //Debug.DrawLine(ray.origin, ray.origin + ray.direction, Color.cadetBlue, 1f);
             
             ref var damageComponent = ref SendDamageEvent.Send(StartEcs.EcsWorld);
@@ -594,7 +603,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
 
         public bool InRaduisAttack()
         {
-            if (_target && Vector3.Distance(_target.position, transform.position) < 3f)
+            if (_target && Vector3.Distance(_target.position, transform.position) < _stopDistance + .1f)
             {
                 return TargetOnFront();
             }

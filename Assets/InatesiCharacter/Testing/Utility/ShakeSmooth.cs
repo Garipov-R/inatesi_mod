@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using UnityEngine;
-using DG.Tweening;
+using UnityEngine.UIElements;
 
 namespace InatesiCharacter.Testing.Utility.ShakeSmooth
 {
@@ -24,20 +25,23 @@ namespace InatesiCharacter.Testing.Utility.ShakeSmooth
 
         private void Start()
         {
-            _startPosition = transform.position;
-            transform.DOMove(transform.position + _Move, _moveDuration).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).Play();
-            transform.DORotate(_Rotate, _rotateDuration, RotateMode.WorldAxisAdd).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).Play();
+            //_startPosition = transform.position;
+            //transform.DOMove(transform.position + _Move, _moveDuration).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).Play();
+            //transform.DORotate(_Rotate, _rotateDuration, RotateMode.WorldAxisAdd).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).Play();
         }
 
         private void OnDisable()
         {
             transform.DOKill();
+            transform.DORestart();
         }
 
         private void OnEnable()
         {
+            transform.DOKill();
+            transform.DORestart();
             _startPosition = transform.position;
-            transform.DOMove(transform.position + _Move, _moveDuration).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).Play();
+            //transform.DOMove(_startPosition + _Move, _moveDuration).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).Play();
             transform.DORotate(_Rotate, _rotateDuration, RotateMode.WorldAxisAdd).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).Play();
         }
     }

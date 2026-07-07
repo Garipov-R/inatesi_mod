@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: character
   m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.Character.Data.CharacterSO
   _Prefab: {fileID: 0}
-  _Model: {fileID: 0}
+  _Model: {fileID: 919132149155446097, guid: 177ed115a64bd9b4593a830f95305a97, type: 3}
   _moveConfig:
     _stopSpeed: 0.4
     _airStopSpeed: 0.4
@@ -44,7 +44,7 @@ MonoBehaviour:
     _OnJumpClip: {fileID: 8300000, guid: 55baa167fcf684f4481077548f62230e, type: 3}
     _OnLandedClip: {fileID: 8300000, guid: 88a034c2a66fb324bbc9b6adf3cbf28d, type: 3}
     _VolumeHeart: 1
-  _startWeaponSO: {fileID: 11400000, guid: e2cdd051adc2e2f40b3538a12600cb8f, type: 2}
+  _startWeaponSO: {fileID: 11400000, guid: d8eb0fdbaaac2c7488fc01c4773d8765, type: 2}
   _characterConfig:
     _startHealth: 100
     _TimeAfterDeath: 3
@@ -56,5 +56,6 @@ MonoBehaviour:
   _DamageVisualEffect: {fileID: 0}
   _DamageVisualEffectAsset: {fileID: 0}
   _BloodMeshDecal: {fileID: 0}
+  _DamageMaterial: {fileID: 0}
   _botConfig:
     _BotComponent: {fileID: 0}

@@ -1,4 +1,5 @@
-﻿using Leopotam.EcsLite;
+﻿using InatesiCharacter.Testing.LeoEcs5.Utility;
+using Leopotam.EcsLite;
 using UnityEngine;
 
 namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
@@ -29,6 +30,12 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
             objectPoolSendEvent.poolType = poolType;
             objectPoolSendEvent.data = data;
             objectPoolSendEvent.parent = parent;
+        }
+
+        public static void Release(EcsWorld ecsWorld, GameObject targetObject)
+        {
+            ref var component = ref ECSHelper.Create<ReleaseObjectEvent>(ecsWorld);
+            component.targetGameObject = targetObject;
         }
     }
 }

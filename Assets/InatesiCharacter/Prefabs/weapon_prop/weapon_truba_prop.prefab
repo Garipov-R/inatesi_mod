@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 2799161056071017130}
   - component: {fileID: 8927483520622489172}
   - component: {fileID: 3643662544815454733}
+  - component: {fileID: 6818308173203004127}
   m_Layer: 0
   m_Name: weapon_truba_prop
   m_TagString: Untagged
@@ -92,14 +93,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6451612731522666690}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.17814969, z: 0, w: -0.9840034}
+  m_LocalRotation: {x: -0, y: -0.17814969, z: 0, w: -0.9840034}
   m_LocalPosition: {x: 0, y: 167.55226, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8244123067127779474}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -330.863, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -339.476, z: 0}
 --- !u!114 &5357633984030025713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,6 +223,19 @@ MonoBehaviour:
   _EnterLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &6818308173203004127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6451612731522666690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Zenject::Zenject.ZenAutoInjecter
+  _containerSource: 2
 --- !u!1001 &622314405327796399
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -304,7 +318,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: b7cb69cba0e85334c9141e0d471c99bb, type: 2}
     - target: {fileID: 919132149155446097, guid: 9d74e16c6c596f44a8a4bd9241a66c17,
         type: 3}
       propertyPath: m_Name

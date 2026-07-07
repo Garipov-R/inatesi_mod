@@ -33,7 +33,9 @@ namespace InatesiCharacter._template
 
             if (ammo < 0)
             {
-				return;
+                _uIDocument.rootVisualElement.Q<Label>("ammo-text").text = "";
+
+                return;
             }
 
             _uIDocument.rootVisualElement.Q<Label>("ammo-text").text = $"🧨 {ammo} / {totalAmmo}";

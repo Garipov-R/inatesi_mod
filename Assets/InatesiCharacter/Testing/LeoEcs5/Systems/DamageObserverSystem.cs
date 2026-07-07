@@ -28,6 +28,9 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                 if (damageComponent.isHit == false)
                     continue;
 
+                if (damageComponent.target == null)
+                    continue;
+
                 if (damageComponent.target.TryGetComponent(out CollisionEvent collisionEvent))
                 {
                     collisionEvent.Damage();

@@ -101,7 +101,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
 
 
 
-                _SwayBob.Shake(_ForceShake);
+                _SwayBob.Shake(_ForceShakeVector);
                 _TimeSinceAttack = 0;
             }
         }
