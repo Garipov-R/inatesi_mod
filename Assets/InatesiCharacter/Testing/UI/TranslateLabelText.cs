@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 namespace InatesiCharacter.Testing.UI
 {
     [RequireComponent(typeof( GameToolkit.Localization.LocalizedTextBehaviour))]
-    public class LabelText : MonoBehaviour
+    public class TranlateLabelText : MonoBehaviour
     {
         [SerializeField] private UIDocument _document;
         [SerializeField] private string _ElementPath;
@@ -37,9 +37,21 @@ namespace InatesiCharacter.Testing.UI
                             x.text = value;
                         }
                     }
+
+                    var t = _document.rootVisualElement.Query<Tab>().ToList();
+                    foreach (var x in t)
+                    {
+                        if (x.name == _ElementPath)
+                        {
+                            x.label = value;
+                        }
+                    }
                 }
                 catch { }
             }            
         }
+
+        public UIDocument UIDocument { get => _document; set => _document = value; }
+        public string ElementPath { get => _ElementPath; set => _ElementPath = value; }
     }
 }

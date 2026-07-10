@@ -79,6 +79,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
         private bool _isMoving = false;
         private NavMeshQueryFilter _queryFilter;
         private float _remainingDistance;
+        private float _updateDestinatedSinceTime;
 
         public int Health { get => _Health; set => _Health = value; }
         public VisualEffect DamageVisualEffect { get => _DamageVisualEffect; set => _DamageVisualEffect = value; }
@@ -146,6 +147,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
             if (_isDead)
                 return;
 
+            _updateDestinatedSinceTime -= Time.deltaTime;
 
             if (_stopTimer <= 0)
             {
@@ -183,6 +185,12 @@ namespace InatesiCharacter.Testing.Character.Bot3
             {
                 agent.nextPosition = transform.position;
             }
+
+
+            if (_updateDestinatedSinceTime < 0)
+            {
+                _updateDestinatedSinceTime = .5f;
+            }
         }
 
         private void LateUpdate()
@@ -206,12 +214,12 @@ namespace InatesiCharacter.Testing.Character.Bot3
 
             if (_TrainRotation)
             {
-                movementDirection = transform.forward;
+                movementDirection = movementDirection != Vector3.zero ? transform.forward : Vector3.zero;
             }
 
-            if (_remainingDistance < _stopDistance)
+            if (DistanceBetweenTarget() < _stopDistance)
             {
-                movementDirection = Vector3.zero;
+                //movementDirection = Vector3.zero;
             }
 
             Vector3 movement = _currentSpeed * Time.deltaTime * movementDirection;
@@ -248,7 +256,6 @@ namespace InatesiCharacter.Testing.Character.Bot3
 
             var movementDirection = GetMovementDirection();
 
-
             if (movementDirection != Vector3.zero)
             {
                 if (_ZigZagWalk)
@@ -273,6 +280,27 @@ namespace InatesiCharacter.Testing.Character.Bot3
             targetPosition.y = 0;
             var targetRotation = Quaternion.LookRotation(targetPosition, transform.up);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _turnSpeed);
+        }
+
+        private float DistanceBetweenTarget()
+        {
+            if (!_isMoving || _pathCorners == null || _pathCorners.Length == 0)
+                return 0;
+            else
+            {
+                if (_pathCorners.Length - 1 <= _currentCornerIndex)
+                {
+                    return Vector3.Distance(transform.position, _pathCorners[_currentCornerIndex]);
+
+                }
+            }
+
+            if (_target != null)
+            {
+                return Vector3.Distance(transform.position, _target.position);
+            }
+
+            return 0; 
         }
 
         private Vector3 GetMovementDirection()
@@ -429,6 +457,15 @@ namespace InatesiCharacter.Testing.Character.Bot3
 
         public void SetDestination(Vector3 destination)
         {
+            if (_updateDestinatedSinceTime > 0)
+            {
+                return;
+            }
+            /*if (_remainingDistance < 1f)
+            {
+                return;
+            }*/
+
             NavMesh.CalculatePath(transform.position, destination, _queryFilter, _path);
 
             if (_path.status == NavMeshPathStatus.PathComplete)
@@ -439,15 +476,15 @@ namespace InatesiCharacter.Testing.Character.Bot3
             }
             else
             {
-                NavMesh.FindClosestEdge(transform.position, out NavMeshHit hit, _queryFilter);
+                /*NavMesh.FindClosestEdge(transform.position, out NavMeshHit hit, _queryFilter);
                 Debug.Log(_path.status);
 
                 if (_path.status != NavMeshPathStatus.PathComplete)
                 {
                     if (_path.status == NavMeshPathStatus.PathPartial)
                     {
-                        _pathCorners = _path.corners; 
-                        _currentCornerIndex = 0;
+                        //_pathCorners = _path.corners; 
+                        //_currentCornerIndex = 0;
                     }
 
                     //_isMoving = false;
@@ -458,7 +495,7 @@ namespace InatesiCharacter.Testing.Character.Bot3
                     _pathCorners = new Vector3[0];
                     _pathCorners[0] = hit.position;
                     _currentCornerIndex = 0;
-                }
+                }*/
             }
         }
 
@@ -673,5 +710,30 @@ namespace InatesiCharacter.Testing.Character.Bot3
             }
             return Vector3.zero;
         }
+
+
+#if UNITY_EDITOR
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.pink;
+
+            if (_pathCorners == null) return;
+            if (_pathCorners.Length == 0) return;
+
+            if ( _currentCornerIndex < _pathCorners.Length)
+            {
+                Gizmos.DrawLine(transform.position, _pathCorners[_currentCornerIndex]);
+            }
+            else
+            {
+                Gizmos.DrawLine(transform.position, _pathCorners[_pathCorners.Length - 1]);
+            }
+
+            //Gizmos.DrawLine(transform.position, transform.forward + transform.position);
+            //Gizmos.DrawLine(transform.position, transform.forward * 2 + transform.position);
+        }
+
+#endif
     }
 }

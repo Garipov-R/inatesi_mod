@@ -111,14 +111,16 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     {
                         if (characterComponent.health <= 0)
                         {
-                            //systems.GetWorld().DelEntity(playerCharacterEntity);
 
                             foreach (var gameLogic in _gameLogics)
                             {
                                 gameLogic.OnPlayerDead();
                             }
 
-                            characterComponent.characterMotion.OnLanded.RemoveAllListeners();
+                            if (_CharacterPool.Has(playerCharacterEntity))
+                                characterComponent.characterMotion.OnLanded.RemoveAllListeners();
+
+
                         }
                     }
                 }

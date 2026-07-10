@@ -18,6 +18,7 @@ namespace InatesiCharacter.Testing.LeoEcs5
     public class SharedData
     {
         [SerializeField] private CharacterSO _CharacterSO;
+        [SerializeField] private StartWeaponSO _StartWeaponSO;
         [SerializeField] private CharacterMotionBase _StartPlayerCharacterMotionBase;
         [SerializeField] private ParticleSettingsSO _ParticleSettingsSO;
         [SerializeField] private List<BotsEvents> _botsEvents=new();
@@ -26,5 +27,6 @@ namespace InatesiCharacter.Testing.LeoEcs5
         public CharacterMotionBase StartPlayerCharacterMotionBase { get => _StartPlayerCharacterMotionBase; set => _StartPlayerCharacterMotionBase = value; }
         public ParticleSettingsSO ParticleSettingsSO { get => _ParticleSettingsSO; set => _ParticleSettingsSO = value; }
         public List<BotsEvents> BotsEvents { get => _botsEvents; set => _botsEvents = value; }
+        public StartWeaponSO StartWeaponSO { get => _StartWeaponSO; set => _StartWeaponSO = value; }
     }
 }

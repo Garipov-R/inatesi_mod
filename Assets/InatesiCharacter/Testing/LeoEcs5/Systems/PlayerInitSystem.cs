@@ -82,9 +82,9 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     characterComponent.InventoryInteraction2.CharacterMotionBase = characterComponent.characterMotion;
                     characterComponent.InventoryInteraction2.EcsWorld = systems.GetWorld();
 
-                    if (characterComponent.CharacterSO.StartWeaponSO.Weapons != null)
+                    if (systems.GetShared<SharedData>().StartWeaponSO.Weapons != null)
                     {
-                        foreach (var item in characterComponent.CharacterSO.StartWeaponSO.Weapons)
+                        foreach (var item in systems.GetShared<SharedData>().StartWeaponSO.Weapons)
                         {
                             characterComponent.InventoryInteraction2.AddItem(item);
                         }

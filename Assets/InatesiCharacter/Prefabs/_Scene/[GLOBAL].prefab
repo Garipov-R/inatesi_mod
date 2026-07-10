@@ -67,6 +67,10 @@ MonoBehaviour:
   _AudioMixer: {fileID: 24100000, guid: bd181ac3d72a2754ab94fc09a5ff8bfc, type: 2}
   _virtualInput: {fileID: 7538230147654149194}
   _PostProcessing: {fileID: 4812738331520358101}
+  _languageButtonName: language-button
+  _LanguageTextures:
+  - {fileID: 2800000, guid: d7edccfd27637c6439242ff58f2f01de, type: 3}
+  - {fileID: 2800000, guid: 6a967406eeae7e54bae6b9996dfa4a02, type: 3}
 --- !u!1 &242894697833717416
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,6 +414,69 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Button
+--- !u!1 &285325922089926024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6899169680303903858}
+  - component: {fileID: 8719151480827877766}
+  - component: {fileID: 5491145372018290991}
+  m_Layer: 0
+  m_Name: game-name
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6899169680303903858
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285325922089926024}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 674871016578803582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8719151480827877766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285325922089926024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 5491145372018290991}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: fd5632e23f560c2439ea5f85ddcd1581, type: 2}
+  m_FormatArgs: []
+--- !u!114 &5491145372018290991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285325922089926024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: game-name
 --- !u!1 &352378582089111893
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,6 +556,164 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Button
+--- !u!1 &717572573746077288
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7299074842436923460}
+  - component: {fileID: 505747079938132252}
+  - component: {fileID: 2070113111559775339}
+  m_Layer: 0
+  m_Name: virtual-input-value-text 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7299074842436923460
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717572573746077288}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3026728862603222213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &505747079938132252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717572573746077288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 2070113111559775339}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 5bfcb722e5df7e144806b6a8868e6ab7, type: 2}
+  m_FormatArgs: []
+--- !u!114 &2070113111559775339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717572573746077288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: virtual-input-value-text
+--- !u!1 &750504220552662276
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8322990800796647753}
+  - component: {fileID: 2232180868722422618}
+  - component: {fileID: 1172100820502324852}
+  m_Layer: 0
+  m_Name: post-processing-value-text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8322990800796647753
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750504220552662276}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3026728862603222213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2232180868722422618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750504220552662276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 1172100820502324852}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 19f9d698947e2bf429bb5c2530a4b74c, type: 2}
+  m_FormatArgs: []
+--- !u!114 &1172100820502324852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750504220552662276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: post-processing-value-text
+--- !u!1 &1278084652731730420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5926340618136262923}
+  m_Layer: 0
+  m_Name: inatesi_mod
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5926340618136262923
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278084652731730420}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 397650614345977818}
+  m_Father: {fileID: 1854784805536218027}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1350267171243013591
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,6 +761,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.TargetFramerate
   _Frame: 60
   _UIDocument: {fileID: 4964386514314154204}
+--- !u!1 &1365016041549305392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4977848354023403265}
+  - component: {fileID: 6461076030367709049}
+  - component: {fileID: 4312534918642726965}
+  m_Layer: 0
+  m_Name: vSync-value-text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4977848354023403265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365016041549305392}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3026728862603222213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6461076030367709049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365016041549305392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 4312534918642726965}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 0097277ffe156094084d716bf8c9ad2e, type: 2}
+  m_FormatArgs: []
+--- !u!114 &4312534918642726965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365016041549305392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: vSync-value-text
 --- !u!1 &1370021706661490813
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,6 +1004,132 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Inatesi.Inputs.Virtual.VirtualTouch
   _NameInput: Look
   _TouchSensitive: 0.1
+--- !u!1 &1546510514177254612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5520312699163983684}
+  - component: {fileID: 5590818380856088912}
+  - component: {fileID: 481847798576809099}
+  m_Layer: 0
+  m_Name: fov-value-text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5520312699163983684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546510514177254612}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3026728862603222213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5590818380856088912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546510514177254612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 481847798576809099}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 6831efd332425ec48b357ce2c02fc10a, type: 2}
+  m_FormatArgs: []
+--- !u!114 &481847798576809099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546510514177254612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: fov-value-text
+--- !u!1 &1632977647301559245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5634408340691175706}
+  - component: {fileID: 5193308369979292374}
+  - component: {fileID: 4349685984737657683}
+  m_Layer: 0
+  m_Name: load-game-button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5634408340691175706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632977647301559245}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 674871016578803582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5193308369979292374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632977647301559245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 4349685984737657683}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: e9a3a650354f74045bc13b3580f8d0f8, type: 2}
+  m_FormatArgs: []
+--- !u!114 &4349685984737657683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632977647301559245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: load-game-button
 --- !u!1 &1686429511860886764
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,6 +1539,69 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 8cce06c4f1bebf44fa24cda1b1225cd1, type: 2}
+--- !u!1 &2405543046269781028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2573062465738682558}
+  - component: {fileID: 4596340076142979659}
+  - component: {fileID: 7533867842933639692}
+  m_Layer: 0
+  m_Name: info-button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2573062465738682558
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405543046269781028}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 674871016578803582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4596340076142979659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405543046269781028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 7533867842933639692}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: bfd53edb3b16d5348a7ab4b02bd1e61e, type: 2}
+  m_FormatArgs: []
+--- !u!114 &7533867842933639692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405543046269781028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: info-button
 --- !u!1 &2557524835047959901
 GameObject:
   m_ObjectHideFlags: 0
@@ -1370,10 +1847,137 @@ Transform:
   m_Children:
   - {fileID: 6793220435274754754}
   - {fileID: 536169453535548390}
+  - {fileID: 1854784805536218027}
   - {fileID: 8638684320632474381}
   - {fileID: 6489334383740819528}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3103977095546686549
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 505552213359985803}
+  - component: {fileID: 850344593675551279}
+  - component: {fileID: 3872885790559933307}
+  m_Layer: 0
+  m_Name: music-value-text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &505552213359985803
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3103977095546686549}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3026728862603222213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &850344593675551279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3103977095546686549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 3872885790559933307}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 361f6798647f5fe45ab33f8e7a1f7aae, type: 2}
+  m_FormatArgs: []
+--- !u!114 &3872885790559933307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3103977095546686549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: music-value-text
+--- !u!1 &3203785597000386524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5497372464153725380}
+  - component: {fileID: 2782937237735677892}
+  - component: {fileID: 6312492604863181322}
+  m_Layer: 0
+  m_Name: settings-button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5497372464153725380
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3203785597000386524}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 674871016578803582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2782937237735677892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3203785597000386524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 6312492604863181322}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: ae3f0841591a2164f830e6cb8358bcf6, type: 2}
+  m_FormatArgs: []
+--- !u!114 &6312492604863181322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3203785597000386524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: settings-button
 --- !u!1 &3256970830361585953
 GameObject:
   m_ObjectHideFlags: 0
@@ -1546,6 +2150,69 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Button
+--- !u!1 &3359621519315827403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1914363424429990871}
+  - component: {fileID: 2073590618039925599}
+  - component: {fileID: 6243069420984610647}
+  m_Layer: 0
+  m_Name: exit-button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1914363424429990871
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3359621519315827403}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 674871016578803582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2073590618039925599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3359621519315827403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 6243069420984610647}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: e99f8dd6761cb084fbde0c89f1c57ece, type: 2}
+  m_FormatArgs: []
+--- !u!114 &6243069420984610647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3359621519315827403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: exit-button
 --- !u!1 &3423941996848856893
 GameObject:
   m_ObjectHideFlags: 0
@@ -1760,6 +2427,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inatesi.Inputs.Virtual.VirtualButton
   _ButtonName: 4
+--- !u!1 &3705816177993465547
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 674871016578803582}
+  m_Layer: 0
+  m_Name: buttons-panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &674871016578803582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3705816177993465547}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8799343117401578203}
+  - {fileID: 1914363424429990871}
+  - {fileID: 6899169680303903858}
+  - {fileID: 2573062465738682558}
+  - {fileID: 2718324993226558652}
+  - {fileID: 5634408340691175706}
+  - {fileID: 2294215245859940910}
+  - {fileID: 4160471356997660516}
+  - {fileID: 5497372464153725380}
+  m_Father: {fileID: 1854784805536218027}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3787974135934357937
 GameObject:
   m_ObjectHideFlags: 0
@@ -2022,6 +2729,132 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &4228769184835381895
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1933648835856165367}
+  - component: {fileID: 5421592529296439644}
+  - component: {fileID: 1069669217570695169}
+  m_Layer: 0
+  m_Name: setting-name
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1933648835856165367
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4228769184835381895}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3026728862603222213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5421592529296439644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4228769184835381895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 1069669217570695169}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 99b1412ba286af24e80c5c656029e8d7, type: 2}
+  m_FormatArgs: []
+--- !u!114 &1069669217570695169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4228769184835381895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: setting-name
+--- !u!1 &4247685071199267262
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6801699250211495585}
+  - component: {fileID: 8161464029489171908}
+  - component: {fileID: 6459863074962118206}
+  m_Layer: 0
+  m_Name: inatesi-info
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6801699250211495585
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4247685071199267262}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 842162200340935417}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8161464029489171908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4247685071199267262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 6459863074962118206}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 06975fb29f4d44c44ab49facfbd2a648, type: 2}
+  m_FormatArgs: []
+--- !u!114 &6459863074962118206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4247685071199267262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: inatesi-info-text
 --- !u!1 &4422523025928695131
 GameObject:
   m_ObjectHideFlags: 0
@@ -2419,6 +3252,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inatesi.Inputs.Virtual.VirtualButton
   _ButtonName: Secondary Attack
+--- !u!1 &4759655095333069975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1854784805536218027}
+  m_Layer: 0
+  m_Name: localize
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1854784805536218027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4759655095333069975}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 674871016578803582}
+  - {fileID: 5926340618136262923}
+  - {fileID: 842162200340935417}
+  - {fileID: 3026728862603222213}
+  m_Father: {fileID: 2787373519701210641}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4822202455230983301
 GameObject:
   m_ObjectHideFlags: 0
@@ -2498,6 +3366,46 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Button
+--- !u!1 &4840527842793426273
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3026728862603222213}
+  m_Layer: 0
+  m_Name: settings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3026728862603222213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4840527842793426273}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5520312699163983684}
+  - {fileID: 638404977485156797}
+  - {fileID: 6360492080728951798}
+  - {fileID: 505552213359985803}
+  - {fileID: 8322990800796647753}
+  - {fileID: 1933648835856165367}
+  - {fileID: 4188133403634086598}
+  - {fileID: 7299074842436923460}
+  - {fileID: 4977848354023403265}
+  m_Father: {fileID: 1854784805536218027}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4924404882724731495
 GameObject:
   m_ObjectHideFlags: 0
@@ -2573,6 +3481,38 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5029016333858944045
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 842162200340935417}
+  m_Layer: 0
+  m_Name: info
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &842162200340935417
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5029016333858944045}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6801699250211495585}
+  m_Father: {fileID: 1854784805536218027}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5269643379485015591
 GameObject:
   m_ObjectHideFlags: 0
@@ -2730,6 +3670,69 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &5587093627564974649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4188133403634086598}
+  - component: {fileID: 1495416674027842305}
+  - component: {fileID: 9013347640471671306}
+  m_Layer: 0
+  m_Name: sfx-value-text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4188133403634086598
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5587093627564974649}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3026728862603222213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1495416674027842305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5587093627564974649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 9013347640471671306}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 113f878b7a9eee04a84f0eb0d0746ac1, type: 2}
+  m_FormatArgs: []
+--- !u!114 &9013347640471671306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5587093627564974649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: sfx-value-text
 --- !u!1 &5958549351943452070
 GameObject:
   m_ObjectHideFlags: 0
@@ -2865,6 +3868,258 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inatesi.Inputs.Virtual.VirtualButton
   _ButtonName: 3
+--- !u!1 &5983259612679417592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4160471356997660516}
+  - component: {fileID: 7017330124810233643}
+  - component: {fileID: 7971923691919759267}
+  m_Layer: 0
+  m_Name: save-game-button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4160471356997660516
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5983259612679417592}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 674871016578803582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7017330124810233643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5983259612679417592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 7971923691919759267}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 9e790bb9f06b156419364b454ee95b53, type: 2}
+  m_FormatArgs: []
+--- !u!114 &7971923691919759267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5983259612679417592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: save-game-button
+--- !u!1 &6154876319749868439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 397650614345977818}
+  - component: {fileID: 9024662385110703516}
+  - component: {fileID: 4762434881347987149}
+  m_Layer: 0
+  m_Name: games-text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &397650614345977818
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154876319749868439}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5926340618136262923}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9024662385110703516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154876319749868439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 4762434881347987149}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 0a5482e4917312c4797fca2346366790, type: 2}
+  m_FormatArgs: []
+--- !u!114 &4762434881347987149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154876319749868439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: games-text
+--- !u!1 &6824066683655458420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2294215245859940910}
+  - component: {fileID: 2167768178050262836}
+  - component: {fileID: 1904147407072227203}
+  m_Layer: 0
+  m_Name: play-button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2294215245859940910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824066683655458420}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 674871016578803582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2167768178050262836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824066683655458420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 1904147407072227203}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 1f2a2dfdb835d6b4eb2a84948ac78746, type: 2}
+  m_FormatArgs: []
+--- !u!114 &1904147407072227203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824066683655458420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: play-button
+--- !u!1 &7396806477452031072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2718324993226558652}
+  - component: {fileID: 451000493081499411}
+  - component: {fileID: 8719210547847612540}
+  m_Layer: 0
+  m_Name: language-button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2718324993226558652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7396806477452031072}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 674871016578803582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &451000493081499411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7396806477452031072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 8719210547847612540}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 56699cae05b18ff4ba2bec3f9e76856d, type: 2}
+  m_FormatArgs: []
+--- !u!114 &8719210547847612540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7396806477452031072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: language-button1
 --- !u!1 &7538230147654149194
 GameObject:
   m_ObjectHideFlags: 0
@@ -3239,6 +4494,195 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inatesi.Inputs.Virtual.VirtualButton
   _ButtonName: MainMenu
+--- !u!1 &7821501881636337181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 638404977485156797}
+  - component: {fileID: 6996151416057322436}
+  - component: {fileID: 2615069877195383039}
+  m_Layer: 0
+  m_Name: graphic-value-text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &638404977485156797
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821501881636337181}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3026728862603222213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6996151416057322436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821501881636337181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 2615069877195383039}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: e969bf27466bd7441b1dbebfe7e29eff, type: 2}
+  m_FormatArgs: []
+--- !u!114 &2615069877195383039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821501881636337181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: graphic-value-text
+--- !u!1 &7987079518286153700
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6360492080728951798}
+  - component: {fileID: 5511188924395291372}
+  - component: {fileID: 6925853328078287462}
+  m_Layer: 0
+  m_Name: mouse-sensitivity-text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6360492080728951798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987079518286153700}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3026728862603222213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5511188924395291372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987079518286153700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 6925853328078287462}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: 7040fcd8e2c9288449fb00cd6fe8986f, type: 2}
+  m_FormatArgs: []
+--- !u!114 &6925853328078287462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987079518286153700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: mouse-sensitivity-text
+--- !u!1 &8282385809959116528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8799343117401578203}
+  - component: {fileID: 3812939327698189998}
+  - component: {fileID: 8630413588383913551}
+  m_Layer: 0
+  m_Name: continue-button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8799343117401578203
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282385809959116528}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 674871016578803582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3812939327698189998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282385809959116528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725bf5ddb878f09429d39010d9e2d59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Gametoolkit.Localization.Runtime::GameToolkit.Localization.LocalizedTextBehaviour
+  m_Component: {fileID: 8630413588383913551}
+  m_Property: Text
+  m_LocalizedAsset: {fileID: 11400000, guid: b187775167039ff4f9f145fa3c9a9daa, type: 2}
+  m_FormatArgs: []
+--- !u!114 &8630413588383913551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282385809959116528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145b597fef1c0734da286404dfd819df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.UI.TranlateLabelText
+  _document: {fileID: 4264137414748569812}
+  _ElementPath: continue-button
 --- !u!1 &8581516225921789052
 GameObject:
   m_ObjectHideFlags: 0

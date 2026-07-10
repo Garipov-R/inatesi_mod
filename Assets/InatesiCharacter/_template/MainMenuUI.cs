@@ -1,5 +1,7 @@
-﻿using InatesiCharacter.Testing.Shared;
+﻿using GameToolkit.Localization;
+using InatesiCharacter.Testing.Shared;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Rendering;
@@ -41,6 +43,11 @@ namespace InatesiCharacter.Template
         [SerializeField] private Volume _PostProcessing;
 
 
+        [Header("language")]
+        [SerializeField] private string _languageButtonName = "language-button";
+        [SerializeField] private List<Texture2D> _LanguageTextures = new List<Texture2D>();
+
+
         public UIDocument Document { get => _document; set => _document = value; }
         public string BackButtonName { get => _backButtonName; set => _backButtonName = value; }
         public string ContinueButtonName { get => _continueButtonName; set => _continueButtonName = value; }
@@ -50,10 +57,27 @@ namespace InatesiCharacter.Template
         {
             if (_document == null) return;
 
+            UpdateLanguage();
+
             _document.rootVisualElement.Q<Button>(_continueButtonName).clicked += ContinueClicked;
             _document.rootVisualElement.Q<Button>(BackButtonName).clicked += OpenButtonsPanelButtonClicked;
             _document.rootVisualElement.Q<Button>(_settingsButtonName).clicked += SettingsButtonClicked;
             _document.rootVisualElement.Q<Button>(_mobileInputButtonName).clicked += MobileInputClicked;
+            _document.rootVisualElement.Q<Button>(_languageButtonName).clicked += () =>
+            {
+                var currentLanguage = Localization.Instance.CurrentLanguage;
+                if (currentLanguage == Language.English)
+                {
+                    Localization.Instance.CurrentLanguage = Language.Russian;
+                }
+                else
+                {
+                    Localization.Instance.CurrentLanguage = Language.English;
+                }
+
+                UpdateLanguage();
+            };
+
 
             _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices = new();
             _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices.Clear();
@@ -130,7 +154,21 @@ namespace InatesiCharacter.Template
             SetRootPanel(false);    
         }
 
+        private void UpdateLanguage()
+        {
+            Texture2D iconLanguage = _LanguageTextures[0];
+            var currentLanguage = Localization.Instance.CurrentLanguage;
+            if (currentLanguage == Language.English)
+            {
+                iconLanguage = _LanguageTextures[1];
+            }
+            else
+            {
+                iconLanguage = _LanguageTextures[0];
+            }
 
+            _document.rootVisualElement.Q<Button>(_languageButtonName).Q<VisualElement>("icon").style.backgroundImage = new StyleBackground(iconLanguage);
+        }
 
         public void SetActiveVirtualInput(bool state)
         {
