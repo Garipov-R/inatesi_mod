@@ -78,7 +78,7 @@ namespace InatesiCharacter.Template
                 UpdateLanguage();
             };
 
-
+            QualitySettings.activeQualityLevelChanged += QualityLevelChanged;
             _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices = new();
             _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices.Clear();
             foreach (var qualityName in QualitySettings.names)
@@ -152,6 +152,11 @@ namespace InatesiCharacter.Template
 
             SetActivePanel(_buttonsPanelName);
             SetRootPanel(false);    
+        }
+
+        private void QualityLevelChanged(int arg1, int arg2)
+        {
+            _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).index = QualitySettings.GetQualityLevel();
         }
 
         private void UpdateLanguage()

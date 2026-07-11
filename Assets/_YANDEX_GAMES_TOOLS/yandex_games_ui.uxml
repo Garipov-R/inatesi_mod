@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="ad-panel" style="flex-grow: 1; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.745); display: none;">
+        <ui:Label text="Ad..." name="ad-info" style="-unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255); font-size: 58px; top: 50%; -unity-text-align: middle-center;"/>
+        <ui:Label text="3" name="ad-timer" style="-unity-font-definition: url(&quot;project://database/Assets/inatesi_mod/Assets/InatesiCharacter/_template/fonts/CormorantInfant-VariableFont_wght.ttf?fileID=12800000&amp;guid=d1a3b84db50ba254995db5d2ada7834b&amp;type=3#CormorantInfant-VariableFont_wght&quot;); color: rgb(255, 255, 255); font-size: 58px; top: 50%; -unity-text-align: middle-center;"/>
+    </ui:VisualElement>
+</ui:UXML>
