@@ -1,0 +1,60 @@
+.scroll-view-horizontal > #unity-content-and-vertical-scroll-container > #unity-content-viewport > #unity-content-container {
+    flex-wrap: nowrap;
+    flex-direction: row;
+    white-space: normal;
+    flex-shrink: 1;
+    flex-grow: 0;
+}
+
+.select-button {
+    margin-top: 0;
+    margin-right: 14px;
+    margin-bottom: 5px;
+    margin-left: 0;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    font-size: 21px;
+    width: 300px;
+    background-color: rgb(0, 0, 0);
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    color: rgb(255, 255, 255);
+}
+
+.scroll-view-vertical > #unity-content-and-vertical-scroll-container > #unity-content-viewport > #unity-content-container {
+    flex-wrap: wrap;
+    flex-direction: row;
+    white-space: normal;
+    flex-shrink: 1;
+    flex-grow: 0;
+}
+
+.select-item {
+    margin-bottom: 5px;
+    margin-right: 5px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-width: 0;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+    border-bottom-right-radius: 11px;
+    border-bottom-left-radius: 11px;
+    background-color: rgb(0, 0, 0);
+}

@@ -216,8 +216,6 @@
     background-color: rgb(0, 0, 0);
 }
 
-
-
 .inatesi-info:hover {
     scale: 1.2 1.2 1.2;
     rotate: 1440deg;
@@ -268,3 +266,5 @@
     transition-delay: 0s, 700ms;
     transition-property: all, scale;
 }
+
+
