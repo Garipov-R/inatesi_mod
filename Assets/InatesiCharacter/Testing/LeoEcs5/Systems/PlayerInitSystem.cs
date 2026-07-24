@@ -70,7 +70,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                     playerComponent.fpc = true;
                     playerComponent.inputEnabled = true;
                     playerComponent.cameraMotion.Follow = characterComponent.transform;
-                    playerComponent.gameObject = characterComponent.characterMotion.gameObject;
+                    playerComponent.gameObject = characterComponent.gameObject;
                     characterComponent.characterMotion.LookSource = camera;
                     playerComponent.riggingTest = characterComponent.gameObject.GetComponent<RiggingTest>();
                     // end ===============================

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: truba
   m_EditorClassIdentifier: Assembly-CSharp::InatesiCharacter.Testing.InatesiArch.InventorySystems.WeaponItemScriptableObject
   _name: truba
-  _localizedText: {fileID: 0}
+  _localizedText: {fileID: 11400000, guid: cdd0acf37d6a2f548a5f798b458617cd, type: 2}
   _sprite: {fileID: 0}
   _entityPrefab: {fileID: 0}
   _WeaponThirdPersonMonoPrefab: {fileID: -6405749228122395040, guid: 29d303f53c0aaf146bf209d0894dcf1e,

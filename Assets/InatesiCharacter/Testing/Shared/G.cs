@@ -16,7 +16,7 @@ namespace InatesiCharacter.Testing.Shared
 
         public static bool MuteAudio { get => _MuteAudio; set => _MuteAudio = value; }
         public static Action<bool> OnPauseGameAction { get => _OnPauseGameAction; set => _OnPauseGameAction = value; }
-        public static bool IsPause { get => _IsPause; set => _IsPause = value; }
+        public static bool IsPause { get => _IsPause; }
         public static GameSettingsValue GameSettingsValue { get => _GameSettingsValue; set => _GameSettingsValue = value; }
 
         public static void SetPause(bool state)
@@ -24,7 +24,6 @@ namespace InatesiCharacter.Testing.Shared
             _IsPause = state;
             _OnPauseGameAction?.Invoke(state);
             Time.timeScale = _IsPause ? 0 : 1;
-            //Debug.Log(Time.timeScale);
         }
 
         public static void SetVisibleCursor(bool state)

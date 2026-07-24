@@ -18,14 +18,14 @@ namespace Inatesi.YandexGames
 
             YG2.onOpenAnyAdv += OnOpenAdv;
             YG2.onCloseAnyAdv += OnCloseAdv;
-            YG2.onErrorInterAdv += OnCloseAdv;
+            YG2.onErrorAnyAdv += OnCloseAdv;
         }
 
         private void OnDestroy()
         {
             YG2.onOpenAnyAdv -= OnOpenAdv;
             YG2.onCloseAnyAdv -= OnCloseAdv;
-            YG2.onErrorInterAdv -= OnCloseAdv;
+            YG2.onErrorAnyAdv -= OnCloseAdv;
         }
 
         private void OnOpenAdv()
@@ -38,11 +38,13 @@ namespace Inatesi.YandexGames
         {
             YandexGamesManager.Instance.CloseAd();
             G.SetPause(false);
+            YG2.PauseGameNoEditEventSystem(false);
+            YG2.PauseGame(false, false, false, false, false); 
         }
 
         private IEnumerator AdTimer()
         {
-            yield return new WaitForSeconds(60f);
+            yield return new WaitForSeconds(50f);
 
             while (YG2.isTimerAdvCompleted == false)
             {
@@ -51,7 +53,7 @@ namespace Inatesi.YandexGames
 
             OnOpenAdv();
 
-            float timer = 3;
+            float timer = 2;
 
             while (timer > 0)
             {
@@ -69,7 +71,6 @@ namespace Inatesi.YandexGames
 
         private void OnDisable()
         {
-            YG2.InterstitialAdvShow();
             YG2.GameplayStop();
         }
     }

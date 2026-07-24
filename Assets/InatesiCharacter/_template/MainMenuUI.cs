@@ -1,5 +1,6 @@
 ﻿using GameToolkit.Localization;
 using InatesiCharacter.Testing.Shared;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace InatesiCharacter.Template
         [SerializeField] private string _backButtonName = "back-button";
         [SerializeField] private string _settingsButtonName = "settings-button";
         [SerializeField] private string _exitButtonName = "exit-button";
+        [SerializeField] private string _characterCustomizeButtonName = "character-customize-button";
 
         [Header("Panels")]
         [SerializeField] private string _buttonsPanelName = "buttons-panel";
@@ -60,7 +62,7 @@ namespace InatesiCharacter.Template
             UpdateLanguage();
 
             _document.rootVisualElement.Q<Button>(_continueButtonName).clicked += ContinueClicked;
-            _document.rootVisualElement.Q<Button>(BackButtonName).clicked += OpenButtonsPanelButtonClicked;
+            _document.rootVisualElement.Q<Button>(_backButtonName).clicked += OpenButtonsPanelButtonClicked;
             _document.rootVisualElement.Q<Button>(_settingsButtonName).clicked += SettingsButtonClicked;
             _document.rootVisualElement.Q<Button>(_mobileInputButtonName).clicked += MobileInputClicked;
             _document.rootVisualElement.Q<Button>(_languageButtonName).clicked += () =>
@@ -77,6 +79,8 @@ namespace InatesiCharacter.Template
 
                 UpdateLanguage();
             };
+
+            Localization.Instance.LocaleChanged += UpdateLanguage;
 
             QualitySettings.activeQualityLevelChanged += QualityLevelChanged;
             _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices = new();
@@ -150,6 +154,12 @@ namespace InatesiCharacter.Template
             });
 
 
+            _document.rootVisualElement.Q<Button>(_characterCustomizeButtonName).clicked += () =>
+            {
+                SetActivePanel("");
+            };
+
+
             SetActivePanel(_buttonsPanelName);
             SetRootPanel(false);    
         }
@@ -159,7 +169,8 @@ namespace InatesiCharacter.Template
             _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).index = QualitySettings.GetQualityLevel();
         }
 
-        private void UpdateLanguage()
+
+        private void UpdateLanguage(object sender = null, LocaleChangedEventArgs e = null)
         {
             Texture2D iconLanguage = _LanguageTextures[0];
             var currentLanguage = Localization.Instance.CurrentLanguage;

@@ -20,6 +20,8 @@ namespace Inatesi.YandexGames
 
             Localization.Instance.LocaleChanged += Instance_LocaleChanged;
 
+            YG2.onSwitchLang += OnSwitchLang;
+
             if (YG2.lang == "ru")
             {
                 Localization.Instance.CurrentLanguage = Language.Russian;
@@ -41,6 +43,22 @@ namespace Inatesi.YandexGames
             Localization.Instance.LocaleChanged -= Instance_LocaleChanged;
         }
 
+        private void OnSwitchLang(string lang)
+        {
+            if (YG2.lang == "ru")
+            {
+                Localization.Instance.CurrentLanguage = Language.Russian;
+            }
+            else if (YG2.lang == "en")
+            {
+                Localization.Instance.CurrentLanguage = Language.English;
+            }
+            else
+            {
+                Localization.Instance.CurrentLanguage = Language.Russian;
+            }
+        }
+
         private void Instance_LocaleChanged(object sender, LocaleChangedEventArgs e)
         {
             if (Localization.Instance.CurrentLanguage == Language.Russian)
@@ -55,6 +73,8 @@ namespace Inatesi.YandexGames
             {
                 YG2.lang = "ru";
             }
+
+            Debug.Log(YG2.lang);
         }
 
         public void ShowAd()

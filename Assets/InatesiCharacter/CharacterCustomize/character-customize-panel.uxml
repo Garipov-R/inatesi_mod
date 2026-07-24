@@ -1,0 +1,26 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="character-custom-panel" style="flex-grow: 1; display: flex;">
+        <ui:ScrollView touch-scroll-type="Elastic" vertical-scroller-visibility="Hidden" mode="Horizontal" horizontal-scroller-visibility="Hidden" class="unity-scroll-view--vertical scroll-view-horizontal" style="width: 100%; height: 127px; padding-top: 14px; padding-bottom: 14px; background-color: rgba(0, 0, 0, 0.463); padding-right: 15px; padding-left: 14px;">
+            <ui:Button text="Button" class="select-button"/>
+            <ui:Button text="Button" class="select-button"/>
+            <ui:Button text="Button" class="select-button"/>
+        </ui:ScrollView>
+        <ui:ScrollView vertical-scroller-visibility="Hidden" touch-scroll-type="Elastic" class="scroll-view-vertical" style="width: 809px; height: 677px; padding-top: 37px; padding-right: 37px; padding-bottom: 37px; padding-left: 37px; background-color: rgba(0, 0, 0, 0.447); margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px; border-top-left-radius: 18px; border-top-right-radius: 18px; border-bottom-right-radius: 18px; border-bottom-left-radius: 18px;">
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+            <ui:VisualElement class="select-item" style="width: 100px; height: 100px;"/>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>
