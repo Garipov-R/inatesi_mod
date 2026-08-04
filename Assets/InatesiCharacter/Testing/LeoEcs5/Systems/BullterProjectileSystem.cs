@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using InatesiCharacter.SuperCharacter;
 using InatesiCharacter.Testing.LeoEcs5.Components;
+using InatesiCharacter.Testing.LeoEcs5.PoolSystems;
+using InatesiCharacter.Testing.Shared;
 using Leopotam.EcsLite;
 using UnityEngine;
 
@@ -56,6 +58,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         {
                             if ((bulletProjectileComponent.ignoreLayer.value & (1 << _results[i].transform.gameObject.layer)) != 0)
                             {
+                                Debug.Log($"cont {i}");
                                 continue;
 
                             }
@@ -91,17 +94,28 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
 
                             if (_results[i].rigidbody != null)
                             {
-                                _results[i].rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+                                _results[i].rigidbody.AddForce(-_results[i].normal * 30f, ForceMode.VelocityChange);
                             }
 
                             Shared.ParticlesManager.SendParticleEvent(systems.GetWorld(), _results[i]);
 
-                            if (i == 0)
+
+                            if (bulletProjectileComponent.isRigidbody == false)
                             {
-                                if (bulletProjectileComponent.isRigidbody == false)
-                                {
-                                    bulletProjectileComponent.transform.position = _results[i].point;
-                                }
+                                bulletProjectileComponent.transform.position = _results[i].point;
+                            }
+
+                            if (bulletProjectileComponent.explosionClip != null)
+                            {
+                                Debug.Log(222);
+                                SendEventObjectPool.Send(
+                                    systems.GetWorld(),
+                                    systems.GetShared<SharedData>().ParticleSettingsSO.AudioSource.gameObject,
+                                    bulletProjectileComponent.gameObject.transform.position,
+                                    Quaternion.identity,
+                                    bulletProjectileComponent.explosionClip,
+                                    PoolType.SoundFx
+                                );
                             }
 
                             break;
@@ -146,7 +160,21 @@ namespace InatesiCharacter.Testing.LeoEcs5.Systems
                         //bulletProjectileComponent.rigidbody.isKinematic = true;
                     }
 
+
+                    if (bulletProjectileComponent.explosionVfxPrefab != null)
+                    {
+                        SendEventObjectPool.Send(
+                            systems.GetWorld(),
+                            bulletProjectileComponent.explosionVfxPrefab.gameObject,
+                            bulletProjectileComponent.gameObject.transform.position,
+                            Quaternion.identity,
+                            PoolType.Particle
+                        );
+                    }
+
+
                     GameObject.Destroy(bulletProjectileComponent.gameObject, bulletProjectileComponent.lifetimeAfterDestroy);
+
 
                     _BulletProjectilePool.Del(entity);
                     continue;

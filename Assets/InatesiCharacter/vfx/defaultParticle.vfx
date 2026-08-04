@@ -498,7 +498,7 @@ MonoBehaviour:
       slotIndex: 0
   m_OutputFlowSlot:
   - link: []
-  blendMode: 1
+  blendMode: 0
   cullMode: 0
   zWriteMode: 0
   zTestMode: 0
@@ -1732,7 +1732,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615012}
       inputSlot: {fileID: 8926484042661615397}
-    position: {x: -2, y: 3070}
+    position: {x: 87, y: 3104}
     expandedSlots: []
     expanded: 1
     supecollapsed: 0
@@ -7968,7 +7968,7 @@ MonoBehaviour:
       slotIndex: 0
   m_OutputFlowSlot:
   - link: []
-  blendMode: 1
+  blendMode: 0
   cullMode: 0
   zWriteMode: 0
   zTestMode: 0

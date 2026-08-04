@@ -8,6 +8,7 @@ using InatesiCharacter.Testing.Shared.Components;
 using Leopotam.EcsLite;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.VFX;
 using Input = Inatesi.Inputs.Input;
 
 namespace InatesiCharacter.Testing.Character.Weapons
@@ -19,6 +20,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
         [SerializeField] private float _projectileMoveSpeed = 10f;
         [SerializeField] private GameObject _Projectile;
         [SerializeField] protected AudioClip[] _ShootAudioClips;
+        [SerializeField] private VisualEffect _ExplosionVfxPrefab;
+        [SerializeField] private AudioClip[] _ExplosionClips;
 
 
         public override void UpdateTick()
@@ -59,6 +62,10 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 return;
             }
             if (IsEmpty()) return;
+
+            if (_inputDisabled)
+                return;
+
             //if (EcsWorld == null) return;
             if (_StartEcs == null && _StartEcs.EcsWorld == null) return;
 
@@ -95,7 +102,7 @@ namespace InatesiCharacter.Testing.Character.Weapons
             bulletComponent.moveSpeed = _projectileMoveSpeed;
             bulletComponent.moveDirection = (_CharacterMotionBase.LookSource.LookDirection());
             var startPosition = 
-                (_CharacterMotionBase.transform.forward * _CharacterMotionBase.Radius * 2
+                (_CharacterMotionBase.LookSource.LookDirection() * _CharacterMotionBase.Radius * 2
                 + (_CharacterMotionBase.Height - _CharacterMotionBase.Radius / 2) * _CharacterMotionBase.Up)  + _CharacterMotionBase.transform.position;
 
             if (FPC)
@@ -108,6 +115,15 @@ namespace InatesiCharacter.Testing.Character.Weapons
             bulletComponent.lifetimeAfterDestroy = 0f;
             bulletComponent.isRigidbody = projectile.GetComponent<Rigidbody>() != null;
             bulletComponent.addForce = new Vector3(bulletComponent.moveDirection.x, bulletComponent.moveDirection.y * 5f, bulletComponent.moveDirection.z * 11f);
+            bulletComponent.explosionVfxPrefab = _ExplosionVfxPrefab ? _ExplosionVfxPrefab : null;
+            
+            
+            if (_ExplosionClips != null)
+            {
+                int r = Random.Range(0, _ExplosionClips.Length);
+
+                bulletComponent.explosionClip = _ExplosionClips[r] ? _ExplosionClips[r] : null;
+            }
 
             if (bulletComponent.isRigidbody)
             {

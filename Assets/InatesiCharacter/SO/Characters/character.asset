@@ -36,10 +36,7 @@ MonoBehaviour:
     _Gravity: -9.81
   _audioCharacter:
     _HurtClips:
-    - {fileID: 8300000, guid: 56e09c36bcb9e414a8192a0c8a4395b2, type: 3}
-    - {fileID: 8300000, guid: 598c11620ae84a14b873a9609f04ea19, type: 3}
-    - {fileID: 8300000, guid: 3e344c0e8d34c0346bb93819c0fa1632, type: 3}
-    - {fileID: 8300000, guid: f2cb368e5c1c70148bcfa1a9adc46b85, type: 3}
+    - {fileID: 8300000, guid: 23b4a14543114d94a888eb39fb749b2d, type: 3}
     _RebornClip: {fileID: 0}
     _OnJumpClip: {fileID: 8300000, guid: 55baa167fcf684f4481077548f62230e, type: 3}
     _OnLandedClip: {fileID: 8300000, guid: 88a034c2a66fb324bbc9b6adf3cbf28d, type: 3}

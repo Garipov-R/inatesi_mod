@@ -383,7 +383,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
                 }
                 else
                 {
-                    Debug.Log(123);
                     if (obj.TryGetComponent(out Rigidbody rigidbody))
                     {
                         rigidbody.position = spawnPos;
@@ -488,8 +487,6 @@ namespace InatesiCharacter.Testing.LeoEcs5.PoolSystems
 
             if (GetPoolManagerComponent().clonePrefabMap.TryGetValue(gameObject, out GameObject value))
             {
-                Debug.Log(value.name);
-
                 component.sourceObject = GetPoolManagerComponent().clonePrefabMap[gameObject];
             }
 

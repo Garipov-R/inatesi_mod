@@ -1,10 +1,12 @@
 ﻿#if YandexGamesPlatform_yg
 
+using Inatesi.Inputs;
 using InatesiCharacter.Testing.LeoEcs5.Utility;
 using InatesiCharacter.Testing.Shared;
 using System.Collections;
 using UnityEngine;
 using YG;
+using Input = Inatesi.Inputs.Input;
 
 namespace Inatesi.YandexGames
 {
@@ -32,12 +34,14 @@ namespace Inatesi.YandexGames
         {
             YandexGamesManager.Instance.ShowAd();
             G.SetPause(true);
+            G.SetVisibleCursor(true);
         }
 
         private void OnCloseAdv()
         {
             YandexGamesManager.Instance.CloseAd();
             G.SetPause(false);
+            G.SetVisibleCursor(false);
             YG2.PauseGameNoEditEventSystem(false);
             YG2.PauseGame(false, false, false, false, false); 
         }
@@ -57,6 +61,7 @@ namespace Inatesi.YandexGames
 
             while (timer > 0)
             {
+
                 YandexGamesManager.Instance.AdTimer(timer);
 
                 timer -= Time.unscaledDeltaTime;

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using InatesiCharacter.Testing.Decals;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace InatesiCharacter.Testing.LeoEcs5.Components
 {
@@ -22,5 +24,9 @@ namespace InatesiCharacter.Testing.LeoEcs5.Components
         public Rigidbody rigidbody;
         public Vector3 addForce;
         public GameObject owner;
+        public VisualEffect explosionVfxPrefab;
+        public AudioClip explosionClip;
+        public MeshDecal explosionMeshDecal;
+        public Material explosionDecalMaterial;
     }
 }

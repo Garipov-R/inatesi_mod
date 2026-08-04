@@ -34,6 +34,8 @@ namespace InatesiCharacter.Testing.Character.Weapons
         {
             base.UpdateTick();
 
+
+
             if (Input.Pressed("Secondary Attack"))
             {
                 ref var combatEvent = ref ECSHelper.Create<CombatEvent>(_StartEcs.EcsWorld);
@@ -89,6 +91,10 @@ namespace InatesiCharacter.Testing.Character.Weapons
                 Reload();
                 return;
             }
+
+
+            if (_inputDisabled)
+                return;
 
             _SwayBob.Shake(_ForceShake);
 

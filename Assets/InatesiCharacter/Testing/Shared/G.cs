@@ -24,6 +24,7 @@ namespace InatesiCharacter.Testing.Shared
             _IsPause = state;
             _OnPauseGameAction?.Invoke(state);
             Time.timeScale = _IsPause ? 0 : 1;
+            AudioListener.pause = _IsPause;
         }
 
         public static void SetVisibleCursor(bool state)

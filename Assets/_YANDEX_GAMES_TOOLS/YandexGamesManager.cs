@@ -20,20 +20,9 @@ namespace Inatesi.YandexGames
 
             Localization.Instance.LocaleChanged += Instance_LocaleChanged;
 
+            YG2.GetLanguage();
             YG2.onSwitchLang += OnSwitchLang;
-
-            if (YG2.lang == "ru")
-            {
-                Localization.Instance.CurrentLanguage = Language.Russian;
-            }
-            else if (YG2.lang == "en")
-            {
-                Localization.Instance.CurrentLanguage = Language.English;
-            }
-            else
-            {
-                Localization.Instance.CurrentLanguage = Language.Russian;
-            }
+            YG2.SwitchLanguage(YG2.lang);
 
             YG2.GameReadyAPI();
         }
@@ -41,6 +30,7 @@ namespace Inatesi.YandexGames
         private void OnDisable()
         {
             Localization.Instance.LocaleChanged -= Instance_LocaleChanged;
+            YG2.onSwitchLang -= OnSwitchLang;
         }
 
         private void OnSwitchLang(string lang)
@@ -61,18 +51,18 @@ namespace Inatesi.YandexGames
 
         private void Instance_LocaleChanged(object sender, LocaleChangedEventArgs e)
         {
-            if (Localization.Instance.CurrentLanguage == Language.Russian)
+            /*if (Localization.Instance.CurrentLanguage == Language.Russian)
             {
-                YG2.lang = "ru";
+                YG.YG2.SwitchLanguage("ru");
             }
             else if (Localization.Instance.CurrentLanguage == Language.English)
             {
-                YG2.lang = "en";
+                YG.YG2.SwitchLanguage("en");
             }
             else
             {
-                YG2.lang = "ru";
-            }
+                YG.YG2.SwitchLanguage("ru");
+            }*/
 
             Debug.Log(YG2.lang);
         }

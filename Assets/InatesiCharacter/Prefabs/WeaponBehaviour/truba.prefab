@@ -86,6 +86,7 @@ MonoBehaviour:
   _OutOfAmmoClip: {fileID: 8300000, guid: 82cde416193136f4ca518f7c2fbf7d73, type: 3}
   _VolumeShoot: 1
   _ForceShake: -1
+  _ForceShakeVector: {x: 0, y: 0, z: -0.5}
   _VelocityParticle: 10
   _SizeParticle: 0.4
   _RecoilShooting: 0
@@ -94,6 +95,12 @@ MonoBehaviour:
     type: 3}
   _ShootAudioClips:
   - {fileID: 8300000, guid: 82cde416193136f4ca518f7c2fbf7d73, type: 3}
+  _ExplosionVfxPrefab: {fileID: 5564781442904651201, guid: cf37ac4aff0631b4c839daf01c22ed58,
+    type: 3}
+  _ExplosionClips:
+  - {fileID: 8300000, guid: e706c0e5a3ec33c41bc2f1722f322a3a, type: 3}
+  - {fileID: 8300000, guid: 1bd888e5c90e5184cbe2da2c61226bbb, type: 3}
+  - {fileID: 8300000, guid: 4febe852eb8ad2743beeb1c087ef6e60, type: 3}
 --- !u!1001 &6983815132634538719
 PrefabInstance:
   m_ObjectHideFlags: 0

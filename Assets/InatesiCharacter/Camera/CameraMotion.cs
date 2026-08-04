@@ -47,6 +47,7 @@ namespace InatesiCharacter.Camera
         private Quaternion _LookRotation;
         private Vector3 _ShakeRotation;
         private Vector3 _ShakeLerp;
+        private bool _fps;
 
         public Transform Follow { get => _Follow; set => _Follow = value; }
         public Vector3 AnchorOffset { get => _AnchorOffset; set => _AnchorOffset = value; }
@@ -91,9 +92,9 @@ namespace InatesiCharacter.Camera
            _SpeedLook = new Vector2(20, 20);
 #endif
 
-            //_ZoomAmount = Mathf.Clamp(_StartZoom, _ZoomRange.x, _ZoomRange.y);
+            _ZoomAmount = Mathf.Clamp(_StartZoom, _ZoomRange.x, _ZoomRange.y);
 
-            
+            _fps = _ZoomAmount <= 0.01f ? true : false;
         }
 
         private void OnValidate()
@@ -210,6 +211,14 @@ namespace InatesiCharacter.Camera
 
             if (_ZoomAmount <= 0.01f) // first player camera ...... FPC
             {
+                if (_fps == false)
+                {
+                    //_LookRotationEuler.x += 180f;
+                    _LookRotationEuler.y -= 180f;
+
+                    _fps = true;
+                }
+
                 if (_Follow)
                 {
                     transform.SetPositionAndRotation(
@@ -226,7 +235,15 @@ namespace InatesiCharacter.Camera
                 }
             }
             else
-            {   
+            {
+                if (_fps == true)
+                {
+                    //_LookRotationEuler.x -= 180f;
+                    _LookRotationEuler.y -= 180f;
+
+                    _fps = false;
+                }
+
                 if (_IsSmooth == true)
                 {
                     transform.position = Vector3.Lerp(transform.position, followPositionOrbit, _SmoothTime * Time.deltaTime);
@@ -241,7 +258,7 @@ namespace InatesiCharacter.Camera
             }
 
 
-            _ShakeRotation = Vector3.Lerp(_ShakeRotation, Vector3.zero, Time.deltaTime * 10f);
+            //_ShakeRotation = Vector3.Lerp(_ShakeRotation, Vector3.zero, Time.deltaTime * 10f);
         }
 
         private float GetDistance()
@@ -297,11 +314,41 @@ namespace InatesiCharacter.Camera
             return GetAnchorPosition() + orbit;
         }
 
+        Tweener Tweener;
+
         public void Shake(Vector3 shake)
         {
             _ShakeLerp = shake;
 
-            _ShakeRotation = _ShakeLerp;
+            Debug.Log(123);
+
+            if (Tweener != null)
+            {
+                _ShakeRotation = Vector3.zero;
+                Tweener.Kill();
+            }
+
+            Tweener = DOTween.Punch(
+                () => _ShakeRotation,
+                x => _ShakeRotation = x,
+                new Vector3(-2, 0, 0),
+                1f,
+                20,
+                3f
+            );
+
+            DOTween.Shake(
+                () => _ShakeRotation,      
+                x => _ShakeRotation = x,   
+                duration: 0.5f,      
+                strength: new Vector3(20,0,0),         
+                vibrato: 30, 
+                randomness: 0,
+                fadeOut: true
+            );
+            Tweener.SetId<Tweener>("s");
+            Tweener.SetAutoKill(false);
+            Tweener.Play();
         }
     }
 }

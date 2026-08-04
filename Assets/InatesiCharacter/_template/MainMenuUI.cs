@@ -59,7 +59,7 @@ namespace InatesiCharacter.Template
         {
             if (_document == null) return;
 
-            UpdateLanguage();
+            OnUpdateLanguage();
 
             _document.rootVisualElement.Q<Button>(_continueButtonName).clicked += ContinueClicked;
             _document.rootVisualElement.Q<Button>(_backButtonName).clicked += OpenButtonsPanelButtonClicked;
@@ -77,10 +77,24 @@ namespace InatesiCharacter.Template
                     Localization.Instance.CurrentLanguage = Language.English;
                 }
 
-                UpdateLanguage();
+#if YandexGamesPlatform_yg
+
+
+                if (currentLanguage == Language.English)
+                {
+                    YG.YG2.SwitchLanguage("ru");
+                }
+                else
+                {
+                    YG.YG2.SwitchLanguage("en");
+                }
+
+#endif
+
+                OnUpdateLanguage();
             };
 
-            Localization.Instance.LocaleChanged += UpdateLanguage;
+            Localization.Instance.LocaleChanged += OnUpdateLanguage;
 
             QualitySettings.activeQualityLevelChanged += QualityLevelChanged;
             _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).choices = new();
@@ -164,13 +178,18 @@ namespace InatesiCharacter.Template
             SetRootPanel(false);    
         }
 
+        private void OnDisable()
+        {
+            QualitySettings.activeQualityLevelChanged -= QualityLevelChanged;
+        }
+
         private void QualityLevelChanged(int arg1, int arg2)
         {
             _document.rootVisualElement.Q<DropdownField>(_graphicSettingDropdown).index = QualitySettings.GetQualityLevel();
         }
 
 
-        private void UpdateLanguage(object sender = null, LocaleChangedEventArgs e = null)
+        private void OnUpdateLanguage(object sender = null, LocaleChangedEventArgs e = null)
         {
             Texture2D iconLanguage = _LanguageTextures[0];
             var currentLanguage = Localization.Instance.CurrentLanguage;

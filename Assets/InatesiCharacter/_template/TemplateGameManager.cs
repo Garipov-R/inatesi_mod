@@ -41,8 +41,6 @@ namespace InatesiCharacter.Template
         {
             G.SetVisibleCursor(false);
 
-            Localization.Instance.CurrentLanguage = Language.Russian;
-
             Invoke(nameof(StartGame), .2f);
             //StartGame();
         }
