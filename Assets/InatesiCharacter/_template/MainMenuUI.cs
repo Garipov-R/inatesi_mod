@@ -291,6 +291,8 @@ namespace InatesiCharacter.Template
 
         public void LoadScene(string nameScene)
         {
+            if (SceneManager.GetSceneByName(nameScene) == null) return;
+
             SetActiveElement(_loadingPanelName, true);
             _document.rootVisualElement.Q<Label>(_loadingProgressTextName).text = $"{0}%";
             StartCoroutine(LoadSceneAsyncCoroutine(nameScene));

@@ -142,6 +142,7 @@ namespace InatesiCharacter.Testing.Character.InteractionSystem
 
         public void Use()
         {
+            Debug.Log(33);
             _OnUse?.Invoke();
         }
 

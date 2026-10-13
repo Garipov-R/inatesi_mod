@@ -15,6 +15,7 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
     public class GameLogicBase : MonoBehaviour, IGameLogic
     {
         public virtual bool PlayerAlive { get; set; }
+        public virtual bool PlayerInput { get; set; }
         public bool FPS 
         {
             get
@@ -105,7 +106,8 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
 
             FPS = state;
 
-            CameraMotion.ZoomAmount = FPS ? 0 : 2.5f;
+            CameraMotion.ZoomAmount = FPS ? 0 : 7.5f;
+            //CameraMotion.ZoomAmount = FPS ? 0 : 2.5f;
 
             if (!FPS)
             {
@@ -227,6 +229,11 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
             if (_StartEcs == null)
                 return;
 
+            if (PlayerAlive == false)
+                return;
+
+            /*if (PlayerInput == false)
+                return;*/
 
             var input = Inatesi.Inputs.Input.GetVector("Move");
             var wishJump = Inatesi.Inputs.Input.Pressed("Jump");
@@ -269,12 +276,13 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
                 characterComponent.characterMotion.LookSource.LookDirection(),
                 out RaycastHit hitInfo,
                 3f,
-                LayerMask.NameToLayer("Everything"),
+                 Configs.Config.s_DefaultLayerMask,
                     QueryTriggerInteraction.Collide
                 );
 
                 if (cast)
                 {
+                    Debug.Log($"{hitInfo.transform.name}");
                     if (hitInfo.transform.TryGetComponent(out InatesiCharacter.Testing.Character.InteractionSystem.CollisionEvent collisionEvent))
                     {
                         collisionEvent.Use();
@@ -305,6 +313,12 @@ namespace InatesiCharacter.Testing.LeoEcs5.Utility
                 SetFPSCamera(!FPS);
                 characterComponent.characterMotion.FirstPersonSettings.HideObjects(!FPS);
             }
+        }
+
+        public virtual void CharacterInputUpdate()
+        {
+            if (_StartEcs == null)
+                return;
         }
     }
 }

@@ -140,6 +140,14 @@ namespace InatesiCharacter.Camera
 
             //_LookInputVector = Inatesi.Inputs.Input.GetVector(_InputName) * 10f;
 
+            if (Input.GetAxis(_HorizontalInputName) == 0 && UnityEngine.InputSystem.Gamepad.all.Count > 0)
+            {
+                _NewInputSystem = true;
+            }
+            else
+            {
+                _NewInputSystem = false;    
+            }
 
             if (_NewInputSystem)
             {
@@ -286,6 +294,11 @@ namespace InatesiCharacter.Camera
 
             if (cast)
             {
+                if (_ColliderRaycast.transform == _Follow)
+                {
+                    return _ZoomAmount;
+                }
+
                 return _ColliderRaycast.distance;
             }
 
